@@ -25,3 +25,13 @@ jobs:
       - run: pod install
         working-directory: ios
         name: Install Pod dependencies
+      - name: Build IOS 
+        run: "xcodebuild \
+        -workspace ios/ReactNativeSemaphoreNew.xcworkspace \
+        -scheme ReactNativeSemaphoreNew \
+        clean archive \
+        -sdk iphoneos \
+        -configuration Debug \
+        -UseModernBuildSystem=NO \
+        -archivePath $PWD/HelloReactNative \
+        CODE_SIGNING_ALLOWED=NO"
