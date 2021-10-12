@@ -21,3 +21,7 @@ jobs:
 
       - name: Check Xcode Version
         run: xcodebuild -version
+      - run: xcode-select -p
+      - run: pod install
+        working-directory: ios
+        name: Install Pod dependencies
