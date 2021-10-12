@@ -10,11 +10,11 @@ jobs:
     steps:
       - name: Checkout 
         uses: actions/checkout@v2
-      - name: Install Node
-        uses: brew install node 
       - name: Install Yarn
-        uses: brew install yarn
+        run: brew install yarn
+      - name: Install Node Modules
+        run: yarn install
       - name: Install Ruby
-        uses: brew install ruby 
+        run: brew install ruby
       - name: Install Cocoapods
-        uses: gem install cocoapods
+        run: gem install cocoapods
