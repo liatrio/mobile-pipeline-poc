@@ -25,6 +25,8 @@ jobs:
       - run: pod install
         working-directory: ios
         name: Install Pod dependencies
+      - name: Run Tests
+        run: yarn test
       - name: Build IOS 
         run: "xcodebuild \
         -workspace ios/ReactNativeSemaphoreNew.xcworkspace \
