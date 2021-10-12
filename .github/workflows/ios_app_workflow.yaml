@@ -1,0 +1,20 @@
+name: "IOS App Workflow"
+
+on:
+  pull_request: 
+  push:
+
+jobs:
+  setup:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout 
+        uses: actions/checkout@v2
+      - name: Install Node
+        uses: brew install node 
+      - name: Install Yarn
+        uses: brew install yarn
+      - name: Install Ruby
+        uses: brew install ruby 
+      - name: Install Cocoapods
+        uses: gem install cocoapods
