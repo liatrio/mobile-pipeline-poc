@@ -47,13 +47,35 @@ The example pipeline contains 4 blocks:
 ### Installation
 
 ```bash
-$ npm install
+$ yarn install
 ```
+
+##### IOS
+
+```bash
+$ cd ios
+$ pod install
+```
+
+##### Android
+
+Make sure your `JAVA_HOME`, `ANDROID_HOME`, and `ANDROID_SDK_ROOT` environment variables are all setup.
 
 ### Running the app
 
 ```bash
 $ npm start
+```
+
+If you want to run the app in a phone simulator you will run one of these commands:
+##### IOS
+```bash
+$ npm run ios
+```
+
+##### Android
+```bash
+$ npm run android
 ```
 
 ### Lint
