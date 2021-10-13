@@ -36,4 +36,11 @@ jobs:
         -configuration release \
         -UseModernBuildSystem=NO \
         -archivePath $PWD/ReactNativeSemaphoreNew \
-        CODE_SIGNING_ALLOWED=NO"
+        -CODE_SIGNING_ALLOWED=NO"
+
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: IOS artifact
+          path: /Users/runner/Library/Developer/Xcode/DerivedData/ReactNativeSemaphoreNew-esatjbmkgsfjzgakujdszjsvlsyw/Build/Intermediates.noindex/ArchiveIntermediates/ReactNativeSemaphoreNew/BuildProductsPath/Release-iphoneos/ReactNativeSemaphoreNew.app.dSYM 
