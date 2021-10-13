@@ -52,6 +52,11 @@ $ yarn install
 
 ##### IOS
 
+If you haven't used Cocoapods before you'll also need to install Cocoapods
+```bash
+$ sudo gem install cocoapods 
+```
+
 ```bash
 $ cd ios
 $ pod install
