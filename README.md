@@ -71,6 +71,11 @@ export ANDROID_HOME=".../Android/sdk"
 export ANDROID_SDK_root=".../Android/sdk"
 ```
 
+You might have to install `android-platform-tools`.
+```bash
+$ brew install android-platform-tools
+```
+
 ### Running the app
 
 ```bash
