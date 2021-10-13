@@ -65,6 +65,11 @@ $ pod install
 ##### Android
 
 Make sure your `JAVA_HOME`, `ANDROID_HOME`, and `ANDROID_SDK_ROOT` environment variables are all setup.
+```bash
+export JAVA_home=".../openjdk"
+export ANDROID_HOME=".../Android/sdk"
+export ANDROID_SDK_root=".../Android/sdk"
+```
 
 ### Running the app
 
