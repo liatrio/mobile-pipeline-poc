@@ -35,5 +35,5 @@ jobs:
         -sdk iphoneos \
         -configuration release \
         -UseModernBuildSystem=NO \
-        -archivePath $PWD/HelloReactNative \
+        -archivePath $PWD/ReactNativeSemaphoreNew \
         CODE_SIGNING_ALLOWED=NO"
