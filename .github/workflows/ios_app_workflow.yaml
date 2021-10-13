@@ -33,7 +33,7 @@ jobs:
         -scheme ReactNativeSemaphoreNew \
         clean archive \
         -sdk iphoneos \
-        -configuration Debug \
+        -configuration release \
         -UseModernBuildSystem=NO \
         -archivePath $PWD/HelloReactNative \
         CODE_SIGNING_ALLOWED=NO"
