@@ -58,3 +58,4 @@ vendor/bundle
 
 # CocoaPods
 /ios/Pods/
+variables.sh
