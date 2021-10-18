@@ -44,7 +44,7 @@ jobs:
         run: |
           git fetch --tags
           echo ::set-output name=TAG::$(jq -r .version package.json)
-          echo ::set-output name=SOURCE_TAG::$(git describe --tags $(git rev-list --all --max-count=1))
+          echo ::set-output name=SOURCE_TAG::$(git describe --tags main)
       - name: Bump version check
         run: |
           if [ ${{ steps.tag.outputs.TAG }} == ${{ steps.tag.outputs.SOURCE_TAG }} ]; then exit 1
