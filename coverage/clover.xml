@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1634574162074" clover="3.2.0">
-  <project timestamp="1634574162074" name="All files">
+<coverage generated="1634579102013" clover="3.2.0">
+  <project timestamp="1634579102013" name="All files">
     <metrics statements="124" coveredstatements="114" conditionals="90" coveredconditionals="65" methods="39" coveredmethods="32" elements="253" coveredelements="211" complexity="0" loc="124" ncloc="124" packages="15" files="24" classes="24"/>
     <package name="mobile-pipeline-poc">
       <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>

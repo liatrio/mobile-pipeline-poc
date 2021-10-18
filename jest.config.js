@@ -11,9 +11,5 @@ module.exports = {
       'jest-transform-stub',
   },
   modulePathIgnorePatterns: ['e2e'],
-  // reporters: ['default', ['jest-sonar', {
-  //   outputDirectory: 'code_coverage/',
-  //   outputName: 'code_coverage_output.xml',
-  //   reportedFilePath: 'relative'
-  // }]],
+  testResultsProcessor: 'jest-sonar-reporter',
 };

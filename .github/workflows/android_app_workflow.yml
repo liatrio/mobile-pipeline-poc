@@ -14,17 +14,17 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: SonarQube Scan
-        uses: docker://sonarsource/sonar-scanner-cli:latest
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_SHAREDSVC_TOKEN }}
-          SONAR_HOST_URL: ${{ env.SONAR_HOST }}
       - name: Install node modules
         run: |
           yarn install
       - name: Test
         run: |
           yarn test
+      - name: SonarQube Scan
+        uses: docker://sonarsource/sonar-scanner-cli:latest
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_SHAREDSVC_TOKEN }}
+          SONAR_HOST_URL: ${{ env.SONAR_HOST }}
       # - uses: actions/setup-node@master
       # - uses: c-hive/gha-yarn-cache@v1
       # - name: Build Android App Bundle

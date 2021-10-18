@@ -20,10 +20,6 @@ buildscript {
     }
 }
 
-plugins {
-    id 'jacoco'
-}
-
 allprojects {
     repositories {
         mavenLocal()
