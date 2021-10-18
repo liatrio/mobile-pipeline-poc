@@ -78,6 +78,7 @@
   "jestSonar": {
     "reportPath": "reports",
     "reportFile": "test-reporter.xml",
-    "indent": 4
+    "reportedFilePath": "relative",
+    "relativeRootDir": "/home/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/"
   }
 }
