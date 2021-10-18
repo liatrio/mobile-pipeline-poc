@@ -1,8 +1,8 @@
 name: "Android App Workflow"
 
-on:
-  pull_request:
-  push:
+# on:
+#   pull_request:
+#   push:
 
 # env:
 #   ARTIFACT_NAME: ghcr.io/${{ github.repository_owner }}/mobile-pipeline-poc
