@@ -10,7 +10,7 @@ env:
   GIHUB_REPO: liatrio/mobile-pipeline-poc
 
 jobs:
-  Build-and-Publish:
+  Build-ios:
     runs-on: macos-latest
     steps:
       - name: Checkout 
@@ -45,8 +45,22 @@ jobs:
         -UseModernBuildSystem=NO \
         -archivePath $PWD/ReactNativeSemaphoreNew \
         CODE_SIGNING_ALLOWED=NO"
-      
-      - name: Generate tag
+
+      - name: 'upload artifact to be used with other jobs'
+        uses: actions/upload-artifact@v2
+        with:
+          name: 'ios-artifact'
+          path: 'ReactNativeSemaphoreNew.xcarchive/Products/Applications/ReactNativeSemaphoreNew.app'
+
+
+  Publish-ios-binary: 
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 
+        uses: actions/checkout@v2
+        with: 
+          fetch-depth: 0
+    - name: Generate tag
         id: tag
         run: |
           echo ::set-output name=TAG::$(jq -r .version package.json)
@@ -68,11 +82,15 @@ jobs:
           token_name: 'token'
           pat: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Download IOS artifact
+        uses: actions/download-artifact@v2
+        with: 
+          name: ios-artifact
       - name: Deploy IOS binary to Github Packages
         uses: liatrio/github-actions/github-package@github-release-package-actions
         with: 
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          FILE: 'ReactNativeSemaphoreNew.xcarchive/Products/Applications/ReactNativeSemaphoreNew.app'
+          FILE: ios-artifact
           GITHUB_REPOSITORY: ${{ env.GITHUB_REPO }}
 
 
