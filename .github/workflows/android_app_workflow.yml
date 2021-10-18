@@ -19,12 +19,10 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_SHAREDSVC_TOKEN }}
           SONAR_HOST_URL: ${{ env.SONAR_HOST }}
-      - name: Setup upterm session
-        uses: lhotari/action-upterm@v1  
       - name: Install node modules
         run: |
           yarn install
-      - name: Generate Reports
+      - name: Test
         run: |
           yarn test
       # - uses: actions/setup-node@master
