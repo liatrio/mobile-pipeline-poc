@@ -43,7 +43,8 @@ jobs:
         id: tag
         run: |
           echo ::set-output name=tag::$(jq -r .version package.json)
-          echo ::set-output name=gitTag::$(git describe --abbrev=0)
+          git tag --list
+      #    echo ::set-output name=gitTag::$(git describe --abbrev=0)
       - name: Bump version check
         run: |
           if [ ${{ steps.tag.outputs.tag }} == ${{ steps.tag.outputs.gitTag }} ]; then exit 1
