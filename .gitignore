@@ -34,6 +34,9 @@ local.properties
 node_modules/
 npm-debug.log
 yarn-error.log
+code_coverage/
+coverage/
+reports/
 
 # BUCK
 buck-out/

@@ -74,5 +74,10 @@
     "react-test-renderer": "17.0.1",
     "ts-jest": "^26.5.4",
     "typescript": "^4.2.4"
+  },
+  "jestSonar": {
+    "reportPath": "reports",
+    "reportFile": "test-reporter.xml",
+    "indent": 4
   }
 }
