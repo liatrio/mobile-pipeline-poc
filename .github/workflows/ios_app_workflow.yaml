@@ -49,18 +49,18 @@ jobs:
           echo ::set-output name=SOURCE_TAG::$(git describe --tags --abbrev=0)
       - name: Bump version check
         run: |
-          if [ ${{ steps.tag.outputs.TAG }} == ${{ steps.tag.outputs.SOURCE_TAG }} ]; then exit 1
-          fi
-      - name: Setup upterm session
-        uses: lhotari/action-upterm@v1 
-      # - name: Create release
-      #   uses: liatrio/github-actions/github-release@github-release-package-actions
-      #   if: github.ref == 'refs/heads/main'
-      #   with:
-      #     owner: 'liatrio'
-      #     repo: 'mobile-pipeline-poc'
-      #     tag_name: ${{ steps.tag.output.tag }}
-      #     name: 'Testing release action'
-      #     token_name: 'token'
-      #     pat: ${{ secrets.GITHUB_TOKEN }}
+          if [ ${{ steps.tag.outputs.TAG }} == ${{ steps.tag.outputs.SOURCE_TAG }} ]; then
+            echo "Version: ${{ steps.tag.outputs.TAG }} needs to be updated in package.json" 
+            exit 1
+          fi 
+      - name: Create release
+        uses: liatrio/github-actions/github-release@github-release-package-actions
+        if: github.ref == 'refs/heads/main'
+        with:
+          owner: 'liatrio'
+          repo: 'mobile-pipeline-poc'
+          tag_name: ${{ steps.tag.output.tag }}
+          name: 'Testing release action'
+          token_name: 'token'
+          pat: ${{ secrets.GITHUB_TOKEN }}
 
