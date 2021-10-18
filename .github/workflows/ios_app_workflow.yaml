@@ -70,7 +70,7 @@ jobs:
             echo "Version: ${{ steps.tag.outputs.TAG }} needs to be updated in package.json" 
             exit 1
           fi 
-      - name: Create release 
+      - name: Create release
         uses: liatrio/github-actions/github-release@github-release-package-actions
         if: github.ref == 'refs/heads/main'
         with:
