@@ -11,5 +11,9 @@ module.exports = {
       'jest-transform-stub',
   },
   modulePathIgnorePatterns: ['e2e'],
-  testResultsProcessor: 'jest-sonar-reporter',
+  reporters: ['default',  ['jest-sonar', {
+    outputDirectory: 'reports',
+    outputName: 'test-reporter.xml',
+    reportedFilePath: 'relative'
+  }]],
 };
