@@ -59,10 +59,10 @@ jobs:
         with: 
           fetch-depth: 0
       - name: Generate tag
-          id: tag
-          run: |
-            echo ::set-output name=TAG::$(jq -r .version package.json)
-            echo ::set-output name=SOURCE_TAG::$(git describe --tags --abbrev=0)
+        id: tag
+        run: |
+          echo ::set-output name=TAG::$(jq -r .version package.json)
+          echo ::set-output name=SOURCE_TAG::$(git describe --tags --abbrev=0)
       - name: Bump version check
         run: |
           if [ ${{ steps.tag.outputs.TAG }} == ${{ steps.tag.outputs.SOURCE_TAG }} ]; then
