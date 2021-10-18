@@ -53,6 +53,7 @@ jobs:
 
   Publish-ios-binary: 
     runs-on: ubuntu-latest
+    needs: Build-ios
     steps:
       - name: Checkout 
         uses: actions/checkout@v2
