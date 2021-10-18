@@ -11,6 +11,9 @@ jobs:
     steps:
       - name: Checkout 
         uses: actions/checkout@v2
+        with: 
+          fetch-depth: 0
+
       # - name: Install Yarn
       #   run: brew install yarn
       # - name: Install Node Modules
@@ -42,9 +45,8 @@ jobs:
       - name: Generate tag
         id: tag
         run: |
-          git fetch
           echo ::set-output name=TAG::$(jq -r .version package.json)
-          echo ::set-output name=SOURCE_TAG::$(git describe --tags main)
+          echo ::set-output name=SOURCE_TAG::$(git describe --tags)
       - name: Bump version check
         run: |
           if [ ${{ steps.tag.outputs.TAG }} == ${{ steps.tag.outputs.SOURCE_TAG }} ]; then exit 1
