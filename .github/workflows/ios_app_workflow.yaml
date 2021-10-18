@@ -42,7 +42,7 @@ jobs:
       - name: Generate tag
         id: tag
         run: |
-          git fetch --tags
+          git fetch
           echo ::set-output name=TAG::$(jq -r .version package.json)
           echo ::set-output name=SOURCE_TAG::$(git describe --tags main)
       - name: Bump version check
