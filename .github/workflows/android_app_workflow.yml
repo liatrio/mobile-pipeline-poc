@@ -14,15 +14,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Make Gradlew Executable
-        run: cd android && chmod +x ./gradlew
-      - name: Install node modules
-        run: |
-          yarn install
-      - name: Generate Reports
-        run: |
-          yarn test
-          cd android && ./gradlew clean build
       - name: SonarQube Scan
         uses: docker://sonarsource/sonar-scanner-cli:latest
         env:
@@ -30,6 +21,12 @@ jobs:
           SONAR_HOST_URL: ${{ env.SONAR_HOST }}
       - name: Setup upterm session
         uses: lhotari/action-upterm@v1  
+      - name: Install node modules
+        run: |
+          yarn install
+      - name: Generate Reports
+        run: |
+          yarn test
       # - uses: actions/setup-node@master
       # - uses: c-hive/gha-yarn-cache@v1
       # - name: Build Android App Bundle
