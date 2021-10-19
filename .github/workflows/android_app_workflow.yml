@@ -31,7 +31,7 @@ jobs:
       - name: 'upload artifact to be used with other jobs'
         uses: actions/upload-artifact@v2
         with:
-          name: 'android-artifact'
+          name: 'app-release.aab'
           path: '/home/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/android/app/build/outputs/bundle/release'
 
   Publish-android-binary: 
@@ -45,12 +45,12 @@ jobs:
       - name: Download Android artifact
         uses: actions/download-artifact@v2
         with: 
-          name: android-artifact
+          name: app-release.aab
           path: /home/runner/work/mobile-pipeline-poc/mobile-pipeline-poc
       - name: Deploy Android binary to release assets
         uses: liatrio/github-actions/github-package@github-release-package-actions
         with: 
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          FILE: android-artifact
+          FILE:  app-release.aab
           GITHUB_REPOSITORY: ${{ env.GITHUB_REPO }}
 
