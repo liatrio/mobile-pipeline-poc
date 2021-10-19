@@ -6,7 +6,7 @@ on:
 
 env:
   ARTIFACT_NAME: ghcr.io/${{ github.repository_owner }}/mobile-pipeline-poc
-  GIHUB_REPO: liatrio/mobile-pipeline-poc
+  GIHUB_REPO: liatrio/mobile-pipeline-poc 
 
 jobs:
   Build-android:
