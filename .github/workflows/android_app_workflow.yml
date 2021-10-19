@@ -21,10 +21,16 @@ jobs:
         run: |
           yarn test
       - name: SonarQube Scan
-        uses: docker://sonarsource/sonar-scanner-cli:latest
+        uses: docker://sonarsource/sonar-scanner-cli:4.6
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_SHAREDSVC_TOKEN }}
           SONAR_HOST_URL: ${{ env.SONAR_HOST }}
+      - name: SonarQube Quality Gate check
+        uses: sonarsource/sonarqube-quality-gate-action@master
+        # Force to fail step after specific time
+        timeout-minutes: 5
+        env:
+         SONAR_TOKEN: ${{ secrets.SONAR_SHAREDSVC_TOKEN }}
       # - uses: actions/setup-node@master
       # - uses: c-hive/gha-yarn-cache@v1
       # - name: Build Android App Bundle
