@@ -48,7 +48,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: 'ios-artifact'
-          path: '/home/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/ReactNativeSemaphoreNew.xcarchive/Products/Applications/ReactNativeSemaphoreNew.app'
+          path: 'ReactNativeSemaphoreNew.xcarchive/Products/Applications/ReactNativeSemaphoreNew.app'
 
 
   Publish-ios-binary: 
@@ -90,7 +90,7 @@ jobs:
         uses: liatrio/github-actions/github-package@github-release-package-actions
         with: 
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          FILE: ReactNativeSemaphoreNew.app
+          FILE: ReactNativeSemaphoreNew
           GITHUB_REPOSITORY: ${{ env.GITHUB_REPO }}
 
 
