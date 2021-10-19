@@ -28,31 +28,29 @@ jobs:
         run: |
           cd android && ./gradlew bundleRelease --no-daemon
 
-      # - name: Generate tag
-      #   id: tag
-      #   run: |
-      #     echo ::set-output name=TAG::$(jq -r .version package.json)
-      #     echo ::set-output name=SOURCE_TAG::$(git describe --tags --abbrev=0)
-      # - name: Bump version check
-      #   run: |
-      #     if [ ${{ steps.tag.outputs.TAG }} == ${{ steps.tag.outputs.SOURCE_TAG }} ]; then
-      #       echo "Version: ${{ steps.tag.outputs.TAG }} needs to be updated in package.json" 
-      #       exit 1
-      #     fi 
-      # - name: Create release
-      #   uses: liatrio/github-actions/github-release@github-release-package-actions
-      #   if: github.ref == 'refs/heads/main'
-      #   with:
-      #     owner: 'liatrio'
-      #     repo: 'mobile-pipeline-poc'
-      #     tag_name: ${{ steps.tag.output.TAG }}
-      #     name: 'Testing release action'
-      #     token_name: 'token'
-      #     pat: ${{ secrets.GITHUB_TOKEN }}
+      - name: 'upload artifact to be used with other jobs'
+        uses: actions/upload-artifact@v2
+        with:
+          name: 'android-artifact'
+          path: '/home/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/android/app/build/outputs/bundle/release'
 
-      # - name: Deploy Android binary to Github Packages
-      #   uses: liatrio/github-actions/github-package@github-release-package-actions
-      #   with: 
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #     FILE: 'ReactNativeSemaphoreNew.xcarchive/Products/Applications/ReactNativeSemaphoreNew.app'
-      #     GITHUB_REPOSITORY: ${{ env.GITHUB_REPO }}
+ Publish-android-binary: 
+    runs-on: ubuntu-latest
+    needs: Build-android
+    steps:
+      - name: Checkout 
+        uses: actions/checkout@v2
+        with: 
+          fetch-depth: 0
+
+      - name: Download Android artifact
+        uses: actions/download-artifact@v2
+        with: 
+          name: android-artifact
+      - name: Deploy Android binary to release assets
+        uses: liatrio/github-actions/github-package@github-release-package-actions
+        with: 
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          FILE: ios-artifact
+          GITHUB_REPOSITORY: ${{ env.GITHUB_REPO }}
+
