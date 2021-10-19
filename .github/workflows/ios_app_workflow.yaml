@@ -76,7 +76,7 @@ jobs:
         with:
           owner: 'liatrio'
           repo: 'mobile-pipeline-poc'
-          tag_name: ${{ steps.tag.output.TAG }}
+          tag_name: ${{ steps.tag.outputs.TAG }}
           name: 'Testing release action'
           token_name: 'token'
           pat: ${{ secrets.GITHUB_TOKEN }}
