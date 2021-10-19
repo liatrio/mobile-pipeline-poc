@@ -48,7 +48,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: 'ios-artifact'
-          path: 'ReactNativeSemaphoreNew.xcarchive/Products/Applications/ReactNativeSemaphoreNew.app'
+          path: '/home/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/ReactNativeSemaphoreNew.xcarchive/Products/Applications/ReactNativeSemaphoreNew.app'
 
 
   Publish-ios-binary: 
@@ -85,7 +85,7 @@ jobs:
         uses: actions/download-artifact@v2
         with: 
           name: ios-artifact
-          path: .
+          path: /home/runner/work/mobile-pipeline-poc/mobile-pipeline-poc
       - name: Deploy IOS binary to release assets
         uses: liatrio/github-actions/github-package@github-release-package-actions
         with: 
