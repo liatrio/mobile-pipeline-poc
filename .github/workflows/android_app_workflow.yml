@@ -9,7 +9,7 @@ env:
   GIHUB_REPO: liatrio/mobile-pipeline-poc
 
 jobs:
-  setup:
+  Build-android:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
