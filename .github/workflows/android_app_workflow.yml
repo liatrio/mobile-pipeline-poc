@@ -34,7 +34,7 @@ jobs:
           name: 'android-artifact'
           path: '/home/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/android/app/build/outputs/bundle/release'
 
- Publish-android-binary: 
+  Publish-android-binary: 
     runs-on: ubuntu-latest
     needs: Build-android
     steps:
