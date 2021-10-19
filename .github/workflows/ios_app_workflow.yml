@@ -36,7 +36,7 @@ jobs:
         run: yarn test
 
       - name: SonarQube Scan
-        uses: docker://sonarsource/sonar-scanner-cli:4.6
+        uses: sonarsource/sonarqube-scan-action@master
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_SHAREDSVC_TOKEN }}
           SONAR_HOST_URL: ${{ env.SONAR_HOST }}
