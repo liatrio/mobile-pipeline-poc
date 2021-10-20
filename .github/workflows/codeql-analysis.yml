@@ -47,7 +47,7 @@ jobs:
       with:
         path: '**/node_modules'
         key: npm-modules-${{ hashFiles('**/yarn.lock') }}
-        
+        restore-keys: npm-modules-
 
     # - name: Install node modules
     #   run: yarn install
