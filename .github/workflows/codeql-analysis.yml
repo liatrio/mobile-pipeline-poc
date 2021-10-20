@@ -41,8 +41,15 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
     - uses: actions/setup-node@master
-    - name: Install node modules
-      run: yarn install
+
+    - name: Un-cache Node Modules
+      uses: actions/cache@v2
+      with:
+        path: '**/node_modules'
+        key: npm-modules-${{ hashFiles('**/yarn.lock') }}
+
+    # - name: Install node modules
+    #   run: yarn install
     # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v1
