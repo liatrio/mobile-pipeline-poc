@@ -17,6 +17,8 @@ jobs:
       
       - name: Install node modules
         run: yarn install
+      - name: Test targeted install of react-native
+        run: yarn install react-native-community/cli
       - name: Cache Node Modules
         uses: actions/cache@v2
         with:
