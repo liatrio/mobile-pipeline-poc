@@ -25,6 +25,7 @@ jobs:
 
   analyze_android:
     name: Analyze Android
+    needs: Caching-npm-modules
     runs-on: ubuntu-latest
     permissions:
       actions: read
@@ -39,21 +40,26 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
-#     - uses: actions/setup-node@master
-#     - name: Install node modules
-#       run: |
-#         yarn install
-#     # Initializes the CodeQL tools for scanning.
-#     - name: Initialize CodeQL
-#       uses: github/codeql-action/init@v1
-#       with:
-#         languages: ${{ matrix.language }}
-#     - name: Make Gradlew Executable
-#       run: cd android && chmod +x ./gradlew
-#     - name: Autobuild
-#       uses: github/codeql-action/autobuild@v1
-#     - name: Perform CodeQL Analysis
-#       uses: github/codeql-action/analyze@v1
+
+    - name: Un-cache Node Modules
+      uses: actions/cache@v2
+      with:
+        path: '**/node_modules'
+        key: npm-modules-${{ hashFiles('**/yarn.lock') }}
+
+    # Initializes the CodeQL tools for scanning.
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v1
+      with:
+        languages: ${{ matrix.language }}
+    
+    - name: Make Gradlew Executable
+      run: cd android && chmod +x ./gradlew
+    - name: Autobuild
+      uses: github/codeql-action/autobuild@v1
+    
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v1
 
 #   analyze_mac:
 #     name: Analyze Mac
