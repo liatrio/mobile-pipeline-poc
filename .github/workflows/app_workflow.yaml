@@ -98,7 +98,7 @@ jobs:
           fi 
       - name: Create release
         uses: liatrio/github-actions/github-release@github-release-package-actions
-        #if: github.ref == 'refs/heads/main'
+        #if: github.ref == 'refs/heads/main' 
         with:
           owner: 'liatrio'
           repo: 'mobile-pipeline-poc'
