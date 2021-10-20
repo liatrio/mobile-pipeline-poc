@@ -115,7 +115,8 @@ jobs:
         uses: liatrio/github-actions/github-package@github-release-package-actions
         with: 
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          FILE: ReactNativeSemaphoreNew,app-release.aab
+          ANDROID_FILE: app-release.aab
+          IOS_FILE: ReactNativeSemaphoreNew
           GITHUB_REPOSITORY: ${{ env.GITHUB_REPO }}
 
 
