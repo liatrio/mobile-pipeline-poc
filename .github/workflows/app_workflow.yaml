@@ -60,9 +60,7 @@ jobs:
       - name: Install node modules
         run: |
           yarn install
-      - name: Run test
-        run: |
-          yarn test
+      
       - name: Make Gradlew Executable
         run: cd android && chmod +x ./gradlew
       - name: Build Android App Bundle
@@ -98,7 +96,7 @@ jobs:
           fi 
       - name: Create release
         uses: liatrio/github-actions/github-release@github-release-package-actions
-        #if: github.ref == 'refs/heads/main' 
+        #if: github.ref == 'refs/heads/main'  
         with:
           owner: 'liatrio'
           repo: 'mobile-pipeline-poc'
@@ -115,7 +113,7 @@ jobs:
         uses: liatrio/github-actions/github-package@github-release-package-actions
         with: 
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          ANDROID_FILE: app-release.aab
+          ANDROID_FILE: app-release.aab 
           IOS_FILE: ReactNativeSemaphoreNew
           GITHUB_REPOSITORY: ${{ env.GITHUB_REPO }}
 
