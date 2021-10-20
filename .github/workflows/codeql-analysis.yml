@@ -2,16 +2,16 @@ name: "CodeQL"
 
 on:
   push:
-    branches: [ codeql-testing, main ]
+    branches: [ main ]
   pull_request:
     # The branches below must be a subset of the branches above
-    branches: [ codeql-testing, main ]
+    branches: [ main ]
   schedule:
     - cron: '33 7 * * 6'
 
 jobs:
-  analyze:
-    name: Analyze
+  analyze_android:
+    name: Analyze Android
     runs-on: ubuntu-latest
     permissions:
       actions: read
@@ -42,7 +42,7 @@ jobs:
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v1
 
-  analyzeMac:
+  analyze_mac:
     name: Analyze Mac
     runs-on: macos-latest
     permissions:
