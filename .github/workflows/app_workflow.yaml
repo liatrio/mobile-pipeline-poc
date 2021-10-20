@@ -96,7 +96,7 @@ jobs:
           fi 
       - name: Create release
         uses: liatrio/github-actions/github-release@github-release-package-actions
-        #if: github.ref == 'refs/heads/main'   
+        #if: github.ref == 'refs/heads/main'    
         with:
           owner: 'liatrio'
           repo: 'mobile-pipeline-poc'
@@ -105,7 +105,7 @@ jobs:
           token_name: 'token'
           pat: ${{ secrets.GITHUB_TOKEN }}  
 
-      - name: Download IOS artifact
+      - name: Download IOS/Android artifact
         uses: actions/download-artifact@v2
         with: 
           path: /home/runner/work/mobile-pipeline-poc/mobile-pipeline-poc
