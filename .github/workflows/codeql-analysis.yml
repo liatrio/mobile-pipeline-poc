@@ -10,7 +10,20 @@ on:
     - cron: '33 7 * * 6'
 
 jobs:
-  analyze_android:
+  Caching-npm-modules:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Install node modules
+        run: yarn install
+      - name: Cache Node Modules
+        uses: actions/cache@v2
+        with:
+          path: '**/node_modules'
+          key: npm-modules-${{ hashFiles('**/yarn.lock') }}
+
+  Analyze-android:
     name: Analyze Android
     runs-on: ubuntu-latest
     permissions:
@@ -26,23 +39,29 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
-    - uses: actions/setup-node@master
+
     - name: Install node modules
-      run: |
-        yarn install
+      run: yarn install
+    - name: Un-cache Node Modules
+      uses: actions/cache@v2
+      with:
+        path: '**/node_modules'
+        key: npm-modules-${{ hashFiles('**/yarn.lock') }}
     # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v1
       with:
         languages: ${{ matrix.language }}
+    
     - name: Make Gradlew Executable
       run: cd android && chmod +x ./gradlew
     - name: Autobuild
       uses: github/codeql-action/autobuild@v1
+    
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v1
 
-  analyze_mac:
+  Analyze-mac:
     name: Analyze Mac
     runs-on: macos-latest
     permissions:
@@ -53,28 +72,27 @@ jobs:
     steps:
     - name: Checkout 
       uses: actions/checkout@v2
+    
+    - name: Un-cache Node Modules
+      uses: actions/cache@v2
+      with:
+        path: '**/node_modules'
+        key: npm-modules-${{ hashFiles('**/yarn.lock') }}
+    
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v1
       with:
         languages: "cpp"
-    - name: Install Yarn
-      run: brew install yarn
-    - name: Install Node Modules
-      run: yarn install
+    
     - name: Install Ruby
       run: brew install ruby
     - name: Install Cocoapods
       run: gem install cocoapods
-
-    - name: Check Xcode Version
-      run: xcodebuild -version
     - run: xcode-select -p
-    - run: pod install
+    - name: Install Pod dependencies
+      run: pod install
       working-directory: ios
-      name: Install Pod dependencies
-    - name: Run Tests
-      run: yarn test
-
+    
     - name: Build IOS
       run: "xcodebuild \ 
       -workspace ios/ReactNativeSemaphoreNew.xcworkspace \
@@ -85,6 +103,6 @@ jobs:
       -UseModernBuildSystem=NO \
       -archivePath $PWD/ReactNativeSemaphoreNew \
       CODE_SIGNING_ALLOWED=NO"
-
+    
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v1
