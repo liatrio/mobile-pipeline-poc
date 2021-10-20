@@ -10,25 +10,9 @@ on:
     - cron: '33 7 * * 6'
 
 jobs:
-  Testing_and_cache:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      
-      - name: Install node modules
-        run: yarn install
-      - name: Test targeted install of react-native
-        run: yarn add @react-native-community/cli
-      - name: Cache Node Modules
-        uses: actions/cache@v2
-        with:
-          path: '**/node_modules'
-          key: npm-modules-${{ hashFiles('**/yarn.lock') }}
-
   Analyze_android:
     name: Analyze Android
     runs-on: ubuntu-latest
-    needs: Testing_and_cache
     permissions:
       actions: read
       contents: read
@@ -42,17 +26,9 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
-    - uses: actions/setup-node@master
-
-    - name: Un-cache Node Modules
-      uses: actions/cache@v2
-      with:
-        path: '**/node_modules'
-        key: npm-modules-${{ hashFiles('**/yarn.lock') }}
-        restore-keys: npm-modules-
-
-    # - name: Install node modules
-    #   run: yarn install
+      
+    - name: Install node modules
+      run: yarn install
     # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v1
