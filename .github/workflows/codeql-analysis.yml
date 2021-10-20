@@ -56,8 +56,11 @@ jobs:
     
     - name: Make Gradlew Executable
       run: cd android && chmod +x ./gradlew
-    - name: Autobuild
-      uses: github/codeql-action/autobuild@v1
+    # - name: Autobuild
+    #   uses: github/codeql-action/autobuild@v1
+
+    - name: Android build
+      run: cd android && ./gradlew clean build --no-daemon
     
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v1
@@ -83,17 +86,18 @@ jobs:
 #       run: brew install yarn
 #     - name: Install Node Modules
 #       run: yarn install
-#     - name: Install Ruby
-#       run: brew install ruby
-#     - name: Install Cocoapods
-#       run: gem install cocoapods
+    - name: Install Ruby
+      run: brew install ruby
+    - name: Install Cocoapods
+      run: gem install cocoapods
 
 #     - name: Check Xcode Version
 #       run: xcodebuild -version
-#     - run: xcode-select -p
-#     - run: pod install
-#       working-directory: ios
-#       name: Install Pod dependencies
+    - run: xcode-select -p
+    - name: Install Pod dependencies
+      run: pod install
+      working-directory: ios
+      
 #     - name: Run Tests
 #       run: yarn test
 
