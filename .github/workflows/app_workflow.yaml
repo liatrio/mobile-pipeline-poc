@@ -33,18 +33,6 @@ jobs:
         name: Install Pod dependencies
       - name: Run Tests
         run: yarn test
-      - name: SonarQube Scan
-        uses: docker://sonarsource/sonar-scanner-cli:4.6
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_SHAREDSVC_TOKEN }}
-          SONAR_HOST_URL: ${{ env.SONAR_HOST }}
-      - name: SonarQube Quality Gate check
-        uses: sonarsource/sonarqube-quality-gate-action@master
-        # Force to fail step after specific time
-        timeout-minutes: 5
-        env:
-         SONAR_TOKEN: ${{ secrets.SONAR_SHAREDSVC_TOKEN }}
-
       - name: Build IOS
         run: "xcodebuild \ 
         -workspace ios/ReactNativeSemaphoreNew.xcworkspace \
@@ -76,6 +64,17 @@ jobs:
       - name: Generate Sonarqube reports
         run: |
           yarn test
+      - name: SonarQube Scan
+        uses: docker://sonarsource/sonar-scanner-cli:4.6
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_SHAREDSVC_TOKEN }}
+          SONAR_HOST_URL: ${{ env.SONAR_HOST }}
+      - name: SonarQube Quality Gate check
+        uses: sonarsource/sonarqube-quality-gate-action@master
+        # Force to fail step after specific time
+        timeout-minutes: 5
+        env:
+         SONAR_TOKEN: ${{ secrets.SONAR_SHAREDSVC_TOKEN }}
       - name: Make Gradlew Executable
         run: cd android && chmod +x ./gradlew
       - name: Build Android App Bundle
