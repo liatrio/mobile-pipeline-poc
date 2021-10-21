@@ -49,6 +49,8 @@
     "@typescript-eslint/eslint-plugin": "^4.22.0",
     "@typescript-eslint/parser": "^4.22.0",
     "@wojtekmaj/enzyme-adapter-react-17": "^0.3.2",
+    "appium": "^1.22.0",
+    "appium-doctor": "^1.16.0",
     "babel-jest": "^25.1.0",
     "babel-plugin-module-resolver": "^4.1.0",
     "babel-plugin-transform-remove-console": "^6.9.4",
