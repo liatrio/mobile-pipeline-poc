@@ -113,8 +113,8 @@ jobs:
         uses: liatrio/github-actions/github-package@github-release-package-actions
         with: 
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          ANDROID_FILE: android-artifact.zip
-          IOS_FILE: ios-artifact.zip
+          ANDROID_FILE: android-artifact
+          IOS_FILE: ios-artifact
           GITHUB_REPOSITORY: ${{ env.GITHUB_REPO }}
 
 
