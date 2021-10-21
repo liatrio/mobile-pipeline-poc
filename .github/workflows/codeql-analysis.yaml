@@ -1,0 +1,87 @@
+name: "CodeQL"
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    # The branches below must be a subset of the branches above
+    branches: [ main ]
+  schedule:
+    - cron: '33 7 * * 6'
+
+jobs:
+  Analyze_android:
+    name: Analyze Android
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ 'java', 'javascript' ]
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Install node modules
+      run: yarn install
+    # Initializes the CodeQL tools for scanning.
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v1
+      with:
+        languages: ${{ matrix.language }}
+    - name: Make Gradlew Executable
+      run: cd android && chmod +x ./gradlew
+    - name: Autobuild
+      uses: github/codeql-action/autobuild@v1
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v1
+
+  Analyze_IOS:
+    name: Analyze iOS
+    runs-on: macos-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    steps:
+    - name: Checkout 
+      uses: actions/checkout@v2
+
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v1
+      with:
+        languages: "cpp"
+
+    - name: Install Yarn
+      run: brew install yarn
+    - name: Install Node Modules
+      run: yarn install
+    - name: Install Ruby
+      run: brew install ruby
+    - name: Install Cocoapods
+      run: gem install cocoapods
+
+    - run: xcode-select -p
+    - name: Install Pod dependencies
+      run: pod install
+      working-directory: ios
+
+    - name: Build IOS
+      run: "xcodebuild \ 
+      -workspace ios/ReactNativeSemaphoreNew.xcworkspace \
+      -scheme ReactNativeSemaphoreNew \
+      clean archive \
+      -sdk iphoneos \
+      -configuration release \
+      -UseModernBuildSystem=NO \
+      -archivePath $PWD/ReactNativeSemaphoreNew \
+      CODE_SIGNING_ALLOWED=NO"
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v1
