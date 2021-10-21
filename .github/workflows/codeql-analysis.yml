@@ -42,7 +42,7 @@ jobs:
       uses: github/codeql-action/analyze@v1
 
   Analyze_IOS:
-    name: Analyze IOS
+    name: Analyze iOS
     runs-on: macos-latest
     permissions:
       actions: read
