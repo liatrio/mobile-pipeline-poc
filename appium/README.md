@@ -1,14 +1,14 @@
 
 # Integration Tests using Appium 
-Appium is an open source tool used to automate mobile applications. It is cross-platform allowing users to write tests against multiple platforms while using the same API allowing for code reuse. Find out more on Appium [here] (https://github.com/appium/appium/blob/master/docs/en/about-appium/intro.md). 
+Appium is an open source tool used to automate mobile applications. It is cross-platform allowing users to write tests against multiple platforms while using the same API allowing for code reuse. Find out more on Appium [here](https://github.com/appium/appium/blob/master/docs/en/about-appium/intro.md). 
 
 ## Local Installation
 
-For a more intricate introduction to setting up Appium locally check out their [getting started] (https://github.com/appium/appium/blob/master/docs/en/about-appium/getting-started.md) documentation. 
+For a more intricate introduction to setting up Appium locally check out their [getting started](https://github.com/appium/appium/blob/master/docs/en/about-appium/getting-started.md) documentation. 
 
 ### Installing Appium
 
-1. Make sure you have [Node.js and NPM] (http://nodejs.org) installed. 
+1. Make sure you have [Node.js and NPM](http://nodejs.org) installed. 
 2. Install appium using: ` npm install -g appium `
 
 ### Appium Driver Setup
@@ -35,7 +35,7 @@ For a more intricate introduction to setting up Appium locally check out their [
 ### Starting Appium
 1. As long as the installation process was successful, you should be able to run your Appium server directly from the command line: `appium`
 	- Appium runs on the default port `4723`. You can utilize the -p flag to run Appium on a custom port.
-	- Other configuration options are available by using other [server parameters] (https://github.com/appium/appium/blob/master/docs/en/writing-running-appium/server-args.md)
+	- Other configuration options are available by using other [server parameters](https://github.com/appium/appium/blob/master/docs/en/writing-running-appium/server-args.md)
 	
 ## Running Example Tests on Semaphore
 In this section we'll run through setting up a simple test on a Semaphore Android build.
