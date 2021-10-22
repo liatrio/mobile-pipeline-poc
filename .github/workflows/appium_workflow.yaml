@@ -22,8 +22,10 @@ jobs:
     runs-on: ubuntu-latest
     needs: Caching-npm-modules
     env:
-      ANDROID_SDK_ROOT: '/usr/lib/android-sdk'
-      ANDROID_HOME: '/usr/lib/android-sdk'
+      # ANDROID_SDK_ROOT: '/usr/lib/android-sdk'
+      # ANDROID_HOME: '/usr/lib/android-sdk'
+      ANDROID_SDK_ROOT: '~/Android/Sdk'
+      ANDROID_HOME: '~/Android/Sdk'
       JAVA_HOME: '/opt/hostedtoolcache/jdk/11.0.13/x64/bin/java'
     steps:
       - name: Checkout 
