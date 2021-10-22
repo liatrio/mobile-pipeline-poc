@@ -5,6 +5,19 @@ on:
   push:
 
 jobs:
+  Caching-npm-modules:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Install node modules
+        run: yarn install
+      - name: Cache Node Modules
+        uses: actions/cache@v2
+        with:
+          path: '**/node_modules'
+          key: npm-modules-${{ hashFiles('**/yarn.lock') }}
+
   Appium-android:
     runs-on: ubuntu-latest
     env:
@@ -22,15 +35,21 @@ jobs:
         with:
           java-version: '11'
           
-      - name: Install node modules        
+      - name: Install node modules
         run: yarn install
+      - name: Test targeted install of react-native
+        run: yarn install react-native-community/cli
+      - name: Un-cache Node Modules
+        uses: actions/cache@v2
+        with:
+          path: '**/node_modules'
+          key: npm-modules-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: npm-modules-
 
       - name: Run appium-doctor        
         run: npm run appium-doctor
       - name: Run appium in the background        
         run: npm run appium &
-      # - name: Setup upterm session
-      #   uses: lhotari/action-upterm@v1
 
       # - name: Setup upterm session
       #   uses: lhotari/action-upterm@v1
@@ -51,8 +70,18 @@ jobs:
 
       - name: Install Yarn
         run: brew install yarn
-      - name: Install Node Modules
+
+      - name: Install node modules
         run: yarn install
+      - name: Test targeted install of react-native
+        run: yarn install react-native-community/cli
+      - name: Un-cache Node Modules
+        uses: actions/cache@v2
+        with:
+          path: '**/node_modules'
+          key: npm-modules-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: npm-modules-
+
       - name: Install Ruby
         run: brew install ruby
       - name: Install Cocoapods
