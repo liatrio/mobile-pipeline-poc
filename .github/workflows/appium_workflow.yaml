@@ -108,5 +108,5 @@ jobs:
         run: |
           curl -H 'Content-type: application/json' \
           http://localhost:4723/wd/hub/session \
-          -d '{"capabilities": {"alwaysMatch": {"automationName": "XCUITest", "platformName": "iOS", "platformVersion": "13.3", "deviceName": "iPhone ${{matrix.device}}"}}}'
+          -d '{"capabilities": {"alwaysMatch": {"automationName": "XCUITest", "platformName": "iOS", "platformVersion": "14.3", "deviceName": "iPhone ${{matrix.device}}"}}}'
 
