@@ -48,8 +48,8 @@ jobs:
       # - name: Install android-build-tools
       #   run: yarn add android-build-tools  --dev
 
-      - name: Install android-build-tools
-        uses: android-actions/setup-android
+      - name: Setup android SDK
+        uses: android-actions/setup-android@v2
 
       - name: Run appium-doctor        
         run: npm run appium-doctor
