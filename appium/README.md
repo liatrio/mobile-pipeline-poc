@@ -8,16 +8,17 @@ For a more intricate introduction to setting up Appium locally check out their [
 
 ### Installing Appium
 
-1. Make sure you have [Node.js](http://nodejs.org) installed. 
+1. Make sure you have [Node.js](http://nodejs.org) and [Yarn](https://www.npmjs.com/package/yarn) installed. 
 2. Appium should be installed after running the `yarn install` command.
 3. You can run appium by running the appium script: `yarn run appium`
+	- It is possible to install appium globally by running `yarn add -g appium` flag, however this approach is not recommended. 
 
 ### Appium Driver Setup
 1. Make sure your requirements are set up for app development using the platform you want to use Appium with. (For example Android Studio/Android SDK for Android and XCode for IOS). 
 2. To automate a specific platform, an Appium "driver" is required. In the context of mobile development, an IOS and Android driver should be sufficient.
-	- The [XCUITest Driver](https://appium.io/docs/en/drivers/ios-xcuitest.md) (for iOS and tvOS apps)
-	- The [Espresso Driver](/docs/en/drivers/android-espresso.md) (for Android apps) 
-	- The [UiAutomator2 Driver](/docs/en/drivers/android-uiautomator2.md) (for Android apps)
+	- The [XCUITest Driver](https://github.com/appium/appium/blob/master/docs/en/drivers/ios-xcuitest.md) (for iOS and tvOS apps)
+	- The [Espresso Driver](https://github.com/appium/appium/blob/master/docs/en/drivers/android-espresso.md) (for Android apps) 
+	- The [UiAutomator2 Driver](https://github.com/appium/appium/blob/master/docs/en/drivers/android-uiautomator2.md) (for Android apps)
 
 ### Verifying Installation
 1. To verify that Appium's dependencies are met run appium-doctor command. 
@@ -51,3 +52,47 @@ In this section we'll run through setting up a simple test on a Semaphore Androi
 
 ### Set up Appium Client 
 For this example, we'll be using [Webdriver.io](http://webdriver.io) for our Appium Client.
+
+1. CD into your `Appium-Example` directory and run: `npm init -y`
+2. When the project has been initialized, install webdriverio: `yarn install webdriverio`
+
+### Initializing a Session
+
+1. Create a file in your `helper` directory called `index.js`
+2. Initialize a client object in your file:
+```
+// JavaScript
+const wdio = require("webdriverio");
+```
+3. Start an Appium Session. To do this we need to define a set of server options and capabilities while calling `wdio.remote()` with them. The minimum capabilities we want for our Appium driver should include:
+	- `platformName`
+	- `platformVersion`
+	- `deviceName`
+	- `app`
+	- `automationName`
+
+4. To start creating our session file, we want something like this:
+```
+// JavaScript
+const opts = {
+  path: '/wd/hub',
+  port: 4723,
+  capabilities: {
+    platformName: "Android",
+    platformVersion: ""process.env.ANDRIOID_PLATFORM_VERSION,
+    deviceName: "process.env.ANDROID_DEVICE_NAME",
+    app: "/path/to/the/downloaded/ApiDemos-debug.apk",
+    appPackage: "com.reactnativesemaphorenew",
+    appActivity: "com.reactnativesemaphorenew.MainActivity",
+    automationName: "UiAutomator2"
+  }
+};
+
+async function main () {
+  const client = await wdio.remote(opts);
+
+  await client.deleteSession();
+}
+
+main();
+```
