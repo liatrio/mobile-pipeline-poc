@@ -94,6 +94,8 @@ jobs:
 
       - name: Check Xcode Version
         run: xcodebuild -version
+      - name: Check software versions
+        run: softwareupdate --list
       - name: Update Command Line Tools for Xcode
         run: softwareupdate --install "Command Line Tools for Xcode-13.0"
 
