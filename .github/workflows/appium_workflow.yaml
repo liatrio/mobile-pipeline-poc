@@ -58,7 +58,7 @@ jobs:
         run: npm run appium &
 
       - name: Setup upterm session
-       uses: lhotari/action-upterm@v1
+        uses: lhotari/action-upterm@v1
 
   Appium-iOS:
     runs-on: macos-latest
