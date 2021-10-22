@@ -68,6 +68,11 @@ jobs:
       - name: Check appium server status        
         run: curl http://localhost:4723/wd/hub/status
 
+      - name: Install SDK
+        run: sdkmanager --install "system-images;android-30;google_apis;x86"
+      - name: Create AVD
+        run: avdmanager create avd -n test -k "system-images;android-30;google_apis;x86"
+
       - name: Setup upterm session
         uses: lhotari/action-upterm@v1
 
