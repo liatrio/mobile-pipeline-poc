@@ -48,12 +48,12 @@ jobs:
         uses: android-actions/setup-android@v2
       - name: Platform tools installation
         run: sdkmanager "platform-tools" "platforms;android-${{matrix.sdk}}"
-      - name: System images installation
-        run: sdkmanager --install "system-images;android-${{matrix.sdk}};default;x86"
-      - name: Create emulator
-        run: echo "no" | avdmanager --verbose create avd --force --name "appium_emulator" --package "system-images;android-${{matrix.sdk}};default;x86" --tag "default" --abi "x86"
-      - name: Run emulator
-        run: emulator @appium_emulator &
+      # - name: System images installation
+      #   run: sdkmanager --install "system-images;android-${{matrix.sdk}};default;x86"
+      # - name: Create emulator
+      #   run: echo "no" | avdmanager --verbose create avd --force --name "appium_emulator" --package "system-images;android-${{matrix.sdk}};default;x86" --tag "default" --abi "x86"
+      # - name: Run emulator
+      #   run: emulator @appium_emulator &
       # - name: AVD installation
       #   run: avdmanager create avd -n test -k "system-images;android-${{matrix.sdk}};google_apis;x86"
       - name: List sdks
