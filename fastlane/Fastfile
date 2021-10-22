@@ -37,12 +37,31 @@ platform :ios do
   end
 end
 
+# platform :android do
+#   desc "Build"
+#   desc "Build without code sign. Just to see if the build is working"
+#   lane :build do |options|
+#     gradle(task: "assembleRelease", project_dir: 'android/')
+#   end
+# end
+
 platform :android do
-  desc "Build"
-  desc "Build without code sign. Just to see if the build is working"
+  desc "Build and Post to Slack"
   lane :build do |options|
-    gradle(task: "assembleRelease", project_dir: 'android/')
+    gradle(
+      task: 'bundle',
+      build_type: 'Release',
+      project_dir: 'android/'
+    )
+    upload_to_play_store(
+      track: 'internal',
+      release_status: 'draft'
+    ) # uploads the APK built in the gradle step before this and releases it to all production users
+    slack(
+      slack_url: "https://hooks.slack.com/services/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",
+      channel: "fastlane-automation-testing",
+      success: true,
+      message: "Build was successful!"
+    )
   end
 end
-
-

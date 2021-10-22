@@ -31,9 +31,7 @@ Build without code sign. Just to see if the build is working
 ```
 fastlane android build
 ```
-Build
-
-Build without code sign. Just to see if the build is working
+Build and Post to Slack
 
 ----
 
