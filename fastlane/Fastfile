@@ -57,11 +57,5 @@ platform :android do
       track: 'internal',
       release_status: 'draft'
     ) # uploads the APK built in the gradle step before this and releases it to all production users
-    slack(
-      slack_url: "https://hooks.slack.com/services/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",
-      channel: "fastlane-automation-testing",
-      success: true,
-      message: "Build was successful!"
-    )
   end
 end
