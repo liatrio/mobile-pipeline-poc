@@ -48,8 +48,10 @@ jobs:
         uses: android-actions/setup-android@v2
       - name: Emulator installation
         run: sdkmanager "platform-tools" "platforms;android-${{matrix.sdk}}"
-      - name: AVD installation
-        run: avdmanager create avd -n test -k "system-images;android-${{matrix.sdk}};google_apis;x86"
+      # - name: AVD installation
+      #   run: avdmanager create avd -n test -k "system-images;android-${{matrix.sdk}};google_apis;x86"
+      - name: List sdks
+        run: sdkmanager --list
 
       - name: Run appium-doctor        
         run: npm run appium-doctor
