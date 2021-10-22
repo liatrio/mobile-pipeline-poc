@@ -57,8 +57,8 @@ jobs:
       - name: Run appium in the background        
         run: npm run appium &
 
-      #- name: Setup upterm session
-      #  uses: lhotari/action-upterm@v1
+      - name: Setup upterm session
+       uses: lhotari/action-upterm@v1
 
   Appium-iOS:
     runs-on: macos-latest
