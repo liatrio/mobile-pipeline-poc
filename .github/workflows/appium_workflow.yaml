@@ -64,6 +64,9 @@ jobs:
     needs: Caching-npm-modules
     env:
       JAVA_HOME: '/Library/Java/JavaVirtualMachines/Adopt-11.jdk/Contents/Home'
+    strategy:
+      matrix:
+        device: [9, 10, 11]
     steps:
       - name: Checkout 
         uses: actions/checkout@v2
@@ -105,5 +108,5 @@ jobs:
         run: |
           curl -H 'Content-type: application/json' \
           http://localhost:4723/wd/hub/session \
-          -d '{"capabilities": {"alwaysMatch": {"automationName": "XCUITest", "platformName": "iOS", "platformVersion": "13.3", "browserName": "Safari", "deviceName": "iPhone 11"}}}'
+          -d '{"capabilities": {"alwaysMatch": {"automationName": "XCUITest", "platformName": "iOS", "platformVersion": "13.3", "deviceName": "iPhone ${{matrix.device}}"}}}'
 
