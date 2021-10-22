@@ -1,0 +1,70 @@
+name: "Appium Workflow"
+
+on:
+  pull_request: 
+  push:
+
+jobs:
+  Appium-android:
+    runs-on: ubuntu-latest
+    env:
+      ANDROID_SDK_ROOT: '/usr/lib/android-sdk'
+      ANDROID_HOME: '/usr/lib/android-sdk'
+      JAVA_HOME: '/opt/hostedtoolcache/jdk/11.0.13/x64/bin/java'
+    steps:
+      - name: Checkout 
+        uses: actions/checkout@v2
+      - name: Install android platform tools
+        run: sudo apt install android-sdk
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: '11'
+          
+      - name: Install node modules        
+        run: yarn install
+
+      - name: Run appium-doctor        
+        run: npm run appium-doctor
+      - name: Run appium in the background        
+        run: npm run appium &
+      # - name: Setup upterm session
+      #   uses: lhotari/action-upterm@v1
+
+      # - name: Setup upterm session
+      #   uses: lhotari/action-upterm@v1
+
+  Appium-iOS:
+    runs-on: macos-latest
+    env:
+    # /Users/runner/hostedtoolcache/Java_Temurin-Hotspot_jdk/8.0.302-8/x64/Contents/Home/
+      JAVA_HOME: '/Library/Java/JavaVirtualMachines/Adopt-11.jdk/Contents/Home'
+    steps:
+      - name: Checkout 
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: '11'
+
+      - name: Install Yarn
+        run: brew install yarn
+      - name: Install Node Modules
+        run: yarn install
+      - name: Install Ruby
+        run: brew install ruby
+      - name: Install Cocoapods
+        run: gem install cocoapods
+      - name: Check Xcode Version
+        run: xcodebuild -version
+      - run: xcode-select -p
+      - name: Install Pod dependencies
+        run: pod install
+        working-directory: ios
+
+      - name: Run appium-doctor        
+        run: npm run appium-doctor
+      - name: Run appium in the background        
+        run: npm run appium &

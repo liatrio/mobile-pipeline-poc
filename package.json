@@ -18,7 +18,9 @@
     "detox-clean-and-build-cache": "detox clean-framework-cache && detox build-framework-cache",
     "lint": "eslint",
     "fastlane-build-ios": "bundle exec fastlane ios build",
-    "fastlane-build-android": "bundle exec fastlane android build --verbose"
+    "fastlane-build-android": "bundle exec fastlane android build --verbose",
+    "appium": "appium",
+    "appium-doctor": "appium-doctor"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.15.2",
@@ -49,6 +51,8 @@
     "@typescript-eslint/eslint-plugin": "^4.22.0",
     "@typescript-eslint/parser": "^4.22.0",
     "@wojtekmaj/enzyme-adapter-react-17": "^0.3.2",
+    "appium": "^1.22.0",
+    "appium-doctor": "^1.16.0",
     "babel-jest": "^25.1.0",
     "babel-plugin-module-resolver": "^4.1.0",
     "babel-plugin-transform-remove-console": "^6.9.4",
@@ -73,6 +77,7 @@
     "react-native-codegen": "^0.0.6",
     "react-test-renderer": "17.0.1",
     "ts-jest": "^26.5.4",
-    "typescript": "^4.2.4"
+    "typescript": "^4.2.4",
+    "webdriverio": "^7.16.1"
   }
 }
