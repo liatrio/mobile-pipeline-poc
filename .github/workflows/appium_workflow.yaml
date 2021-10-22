@@ -25,6 +25,9 @@ jobs:
       ANDROID_SDK_ROOT: '/usr/local/lib/android/sdk'
       ANDROID_HOME: '/usr/local/lib/android/sdk'
       JAVA_HOME: '/opt/hostedtoolcache/jdk/11.0.13/x64/bin/java'
+    strategy:
+      matrix:
+        sdk: [28, 29, 30]
     steps:
       - name: Checkout 
         uses: actions/checkout@v2
@@ -43,14 +46,16 @@ jobs:
 
       - name: Setup android SDK
         uses: android-actions/setup-android@v2
+      - name: Emulator installation
+        run: sdkmanager "platform-tools" "platforms;android-${{matrix.sdk}}"
 
       - name: Run appium-doctor        
         run: npm run appium-doctor
       - name: Run appium in the background        
         run: npm run appium &
 
-      - name: Setup upterm session
-        uses: lhotari/action-upterm@v1
+      # - name: Setup upterm session
+      #   uses: lhotari/action-upterm@v1
 
   Appium-iOS:
     runs-on: macos-latest
