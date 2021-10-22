@@ -24,8 +24,8 @@ jobs:
     env:
       # ANDROID_SDK_ROOT: '/usr/lib/android-sdk'
       # ANDROID_HOME: '/usr/lib/android-sdk'
-      ANDROID_SDK_ROOT: '/home/runner/Android/Sdk'
-      ANDROID_HOME: '/home/runner/Android/Sdk'
+      ##ANDROID_SDK_ROOT: '/home/runner/Android/Sdk'
+      ##ANDROID_HOME: '/home/runner/Android/Sdk'
       JAVA_HOME: '/opt/hostedtoolcache/jdk/11.0.13/x64/bin/java'
     steps:
       - name: Checkout 
@@ -45,8 +45,11 @@ jobs:
           key: npm-modules-${{ hashFiles('**/yarn.lock') }}
           restore-keys: npm-modules-
 
+      # - name: Install android-build-tools
+      #   run: yarn add android-build-tools  --dev
+
       - name: Install android-build-tools
-        run: yarn add android-build-tools  --dev
+        uses: android-actions/setup-android
 
       - name: Run appium-doctor        
         run: npm run appium-doctor
@@ -56,43 +59,43 @@ jobs:
       - name: Setup upterm session
         uses: lhotari/action-upterm@v1
 
-  Appium-iOS:
-    runs-on: macos-latest
-    needs: Caching-npm-modules
-    env:
-    # /Users/runner/hostedtoolcache/Java_Temurin-Hotspot_jdk/8.0.302-8/x64/Contents/Home/
-      JAVA_HOME: '/Library/Java/JavaVirtualMachines/Adopt-11.jdk/Contents/Home'
-    steps:
-      - name: Checkout 
-        uses: actions/checkout@v2
+  # Appium-iOS:
+  #   runs-on: macos-latest
+  #   needs: Caching-npm-modules
+  #   env:
+  #   # /Users/runner/hostedtoolcache/Java_Temurin-Hotspot_jdk/8.0.302-8/x64/Contents/Home/
+  #     JAVA_HOME: '/Library/Java/JavaVirtualMachines/Adopt-11.jdk/Contents/Home'
+  #   steps:
+  #     - name: Checkout 
+  #       uses: actions/checkout@v2
 
-      - name: Set up JDK 8
-        uses: actions/setup-java@v1
-        with:
-          java-version: '8'
+  #     - name: Set up JDK 8
+  #       uses: actions/setup-java@v1
+  #       with:
+  #         java-version: '8'
 
-      - name: Install Yarn
-        run: brew install yarn
+  #     - name: Install Yarn
+  #       run: brew install yarn
 
-      - name: Un-cache Node Modules
-        uses: actions/cache@v2
-        with:
-          path: '**/node_modules'
-          key: npm-modules-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: npm-modules-
+  #     - name: Un-cache Node Modules
+  #       uses: actions/cache@v2
+  #       with:
+  #         path: '**/node_modules'
+  #         key: npm-modules-${{ hashFiles('**/yarn.lock') }}
+  #         restore-keys: npm-modules-
 
-      - name: Install Ruby
-        run: brew install ruby
-      - name: Install Cocoapods
-        run: gem install cocoapods
-      - name: Check Xcode Version
-        run: xcodebuild -version
-      - run: xcode-select -p
-      - name: Install Pod dependencies
-        run: pod install
-        working-directory: ios
+  #     - name: Install Ruby
+  #       run: brew install ruby
+  #     - name: Install Cocoapods
+  #       run: gem install cocoapods
+  #     - name: Check Xcode Version
+  #       run: xcodebuild -version
+  #     - run: xcode-select -p
+  #     - name: Install Pod dependencies
+  #       run: pod install
+  #       working-directory: ios
 
-      - name: Run appium-doctor        
-        run: npm run appium-doctor
-      - name: Run appium in the background        
-        run: npm run appium &
+  #     - name: Run appium-doctor        
+  #       run: npm run appium-doctor
+  #     - name: Run appium in the background        
+  #       run: npm run appium &
