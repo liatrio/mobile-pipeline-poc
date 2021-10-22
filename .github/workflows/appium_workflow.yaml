@@ -100,3 +100,10 @@ jobs:
         run: npm run appium &
       - name: Check appium server status        
         run: curl http://localhost:4723/wd/hub/status
+
+      - name: Create a test session       
+        run: |
+          curl -H 'Content-type: application/json' \
+          http://localhost:4723/wd/hub/session \
+          -d '{"capabilities": {"alwaysMatch": {"automationName": "XCUITest", "platformName": "iOS", "platformVersion": "13.3", "browserName": "Safari", "deviceName": "iPhone 11"}}}'
+
