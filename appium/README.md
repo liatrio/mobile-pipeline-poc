@@ -9,17 +9,19 @@ For a more intricate introduction to setting up Appium locally check out their [
 ### Installing Appium
 
 1. Make sure you have [Node.js and NPM](http://nodejs.org) installed. 
-2. Install appium using: ` npm install -g appium `
+2. Appium should be installed after running the `yarn install` command.
+3. You can run appium by running the appium NPM script: `npm run appium`
 
 ### Appium Driver Setup
 1. Make sure your requirements are set up for app development using the platform you want to use Appium with. (For example Android Studio/Android SDK for Android and XCode for IOS). 
 2. To automate a specific platform, an Appium "driver" is required. In the context of mobile development, an IOS and Android driver should be sufficient.
-	- The [XCUITest Driver](/docs/en/drivers/ios-xcuitest.md) (for iOS and tvOS apps)
+	- The [XCUITest Driver](https://appium.io/docs/en/drivers/ios-xcuitest.md) (for iOS and tvOS apps)
 	- The [Espresso Driver](/docs/en/drivers/android-espresso.md) (for Android apps) 
 	- The [UiAutomator2 Driver](/docs/en/drivers/android-uiautomator2.md) (for Android apps)
 
 ### Verifying Installation
-1. To verify that Appium's dependencies are met use the `appium-doctor` command. You can install this by running `npm install -g appium-doctor`
+1. To verify that Appium's dependencies are met run appium-doctor command. 
+	- You can run appium-doctor by running the appium-doctor NPM script: `npm run appium-doctor`
 	- If you encounter problems with environment variables, make sure you have them exported in your shell's startup script. To update the startup script and export in your current environment run commands similar to those below (zshrc is specific to Zsh, make sure to use the startup script specific to your shell) 
 	
 ```
