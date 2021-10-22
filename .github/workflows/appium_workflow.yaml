@@ -56,8 +56,8 @@ jobs:
       - name: Check appium server status        
         run: curl http://localhost:4723/wd/hub/status
 
-      # - name: Setup upterm session
-      #   uses: lhotari/action-upterm@v1
+      - name: Setup upterm session
+        uses: lhotari/action-upterm@v1
 
   Appium-iOS:
     runs-on: macos-latest
@@ -113,9 +113,9 @@ jobs:
 
       # - name: Create a test session       
       #   run: |
-      #     curl -H 'Content-type: application/json' \
-      #     http://localhost:4723/wd/hub/session \
-      #     -d '{"capabilities": {"alwaysMatch": {"automationName": "XCUITest", "platformName": "iOS", "platformVersion": "${{matrix.simctl_SDKs}}", "deviceName": "iPhone ${{matrix.device}}"}}}'
+          # curl -H 'Content-type: application/json' \
+          # http://localhost:4723/wd/hub/session \
+          # -d '{"capabilities": {"alwaysMatch": {"automationName": "XCUITest", "platformName": "iOS", "platformVersion": "${{matrix.simctl_SDKs}}", "deviceName": "iPhone ${{matrix.device}}"}}}'
 
-      - name: Setup upterm session
-        uses: lhotari/action-upterm@v1
+      # - name: Setup upterm session
+      #   uses: lhotari/action-upterm@v1
