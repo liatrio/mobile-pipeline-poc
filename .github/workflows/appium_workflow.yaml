@@ -67,6 +67,7 @@ jobs:
     strategy:
       matrix:
         device: [9, 10, 11]
+        simctl_SDKs: [13.7, 14.5, 15.0]
     steps:
       - name: Checkout 
         uses: actions/checkout@v2
@@ -108,5 +109,5 @@ jobs:
         run: |
           curl -H 'Content-type: application/json' \
           http://localhost:4723/wd/hub/session \
-          -d '{"capabilities": {"alwaysMatch": {"automationName": "XCUITest", "platformName": "iOS", "platformVersion": "14.3", "deviceName": "iPhone ${{matrix.device}}"}}}'
+          -d '{"capabilities": {"alwaysMatch": {"automationName": "XCUITest", "platformName": "iOS", "platformVersion": "${{matrix.simctl_SDKs}}", "deviceName": "iPhone ${{matrix.device}}"}}}'
 
