@@ -49,9 +49,11 @@ jobs:
       - name: Platform tools installation
         run: sdkmanager "platform-tools" "platforms;android-${{matrix.sdk}}"
       # - name: System images installation
-      #   run: sdkmanager --install "system-images;android-${{matrix.sdk}};default;x86"
+      #   run: sdkmanager --install "system-images;android-${{matrix.sdk}};default;x86_64"
+      # system-images;android-28;default;x86_64
+      # 
       # - name: Create emulator
-      #   run: echo "no" | avdmanager --verbose create avd --force --name "appium_emulator" --package "system-images;android-${{matrix.sdk}};default;x86" --tag "default" --abi "x86"
+      #   run: echo "no" | avdmanager --verbose create avd --force --name "appium_emulator" --package "system-images;android-${{matrix.sdk}};default;x86_64" --tag "default" --abi "x86_64"
       # - name: Run emulator
       #   run: emulator @appium_emulator &
       # - name: AVD installation
