@@ -9,16 +9,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-
-      - name: Set up JDK 8
-        uses: actions/setup-java@v1
-        with:
-          java-version: '8'
       
       - name: Install node modules
-        run: |
-          yarn add android-build-tools  --dev
-          yarn install
+        run: yarn install
       - name: Cache Node Modules
         uses: actions/cache@v2
         with:
@@ -43,14 +36,15 @@ jobs:
         with:
           java-version: '8'
           
-      - name: Install node modules
-        run: yarn install
       - name: Un-cache Node Modules
         uses: actions/cache@v2
         with:
           path: '**/node_modules'
           key: npm-modules-${{ hashFiles('**/yarn.lock') }}
           restore-keys: npm-modules-
+
+      - name: Install android-build-tools
+        run: yarn add android-build-tools  --dev
 
       - name: Run appium-doctor        
         run: npm run appium-doctor
@@ -78,8 +72,6 @@ jobs:
       - name: Install Yarn
         run: brew install yarn
 
-      - name: Install node modules
-        run: yarn install
       - name: Un-cache Node Modules
         uses: actions/cache@v2
         with:
