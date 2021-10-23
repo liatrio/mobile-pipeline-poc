@@ -125,14 +125,14 @@ jobs:
           path: /home/runner/work/mobile-pipeline-poc/mobile-pipeline-poc
 
       - name: Deploy IOS binary to release assets
-        uses: liatrio/github-actions/github-package@github-release-package-actions
+        uses: liatrio/github-actions/github-assets@github-release-package-actions
         with: 
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           FILE: ios-artifact/ReactNativeSemaphoreNew
           GITHUB_REPOSITORY: ${{ env.GITHUB_REPO }}
 
       - name: Deploy Android binary to release assets
-        uses: liatrio/github-actions/github-package@github-release-package-actions
+        uses: liatrio/github-actions/github-assets@github-release-package-actions
         with: 
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           FILE: android-artifact/app-release.aab
