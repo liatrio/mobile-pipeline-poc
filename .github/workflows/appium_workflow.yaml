@@ -5,88 +5,14 @@ on:
   push:
 
 jobs:
-  Caching-npm-modules:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      
-      - name: Install node modules
-        run: yarn install
-      - name: Cache Node Modules
-        uses: actions/cache@v2
-        with:
-          path: '**/node_modules'
-          key: npm-modules-${{ hashFiles('**/yarn.lock') }}
-
-  Appium-android:
-    runs-on: ubuntu-latest
-    needs: Caching-npm-modules
-    env:
-      ANDROID_SDK_ROOT: '/usr/local/lib/android/sdk'
-      ANDROID_HOME: '/usr/local/lib/android/sdk'
-      JAVA_HOME: '/opt/hostedtoolcache/jdk/11.0.13/x64/bin/java'
-    strategy:
-      matrix:
-        sdk: [28, 29, 30]
-    steps:
-      - name: Checkout 
-        uses: actions/checkout@v2
-
-      - name: Set up JDK 8
-        uses: actions/setup-java@v1
-        with:
-          java-version: '8'
-          
-      - name: Un-cache Node Modules
-        uses: actions/cache@v2
-        with:
-          path: '**/node_modules'
-          key: npm-modules-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: npm-modules-
-
-      - name: Setup android SDK
-        uses: android-actions/setup-android@v2
-      - name: Platform tools installation
-        run: sdkmanager "platform-tools" "platforms;android-${{matrix.sdk}}"
-      # - name: System images installation
-      #   run: sdkmanager --install "system-images;android-${{matrix.sdk}};default;x86_64"
-      # system-images;android-28;default;x86_64
-      # 
-      # - name: Create emulator
-      #   run: echo "no" | avdmanager --verbose create avd --force --name "appium_emulator" --package "system-images;android-${{matrix.sdk}};default;x86_64" --tag "default" --abi "x86_64"
-      # - name: Run emulator
-      #   run: emulator @appium_emulator &
-      # - name: AVD installation
-      #   run: avdmanager create avd -n test -k "system-images;android-${{matrix.sdk}};google_apis;x86"
-      - name: List sdks
-        run: sdkmanager --list | grep system-images
-
-      - name: Run appium-doctor        
-        run: npm run appium-doctor
-      - name: Run appium in the background        
-        run: npm run appium &
-      - name: Check appium server status        
-        run: curl http://localhost:4723/wd/hub/status
-
-      - name: Install Emulator SDK
-        run: sdkmanager --install emulator
-      - name: Install SDK
-        run: sdkmanager --install "system-images;android-${{matrix.sdk}};google_apis;x86"
-      - name: Create AVD
-        run: echo "no" | avdmanager create avd -n test -k "system-images;android-${{matrix.sdk}};google_apis;x86"
-
-      - name: Setup upterm session
-        uses: lhotari/action-upterm@v1
-
-  Appium-iOS:
+  Appium:
     runs-on: macos-latest
     needs: Caching-npm-modules
     env:
       JAVA_HOME: '/Library/Java/JavaVirtualMachines/Adopt-11.jdk/Contents/Home'
-    # strategy:
-    #   matrix:
-    #     device: [9, 10, 11]
-    #     simctl_SDKs: [13.7, 14.5, 15.0]
+    strategy:
+      matrix:
+        sdk: [28, 29, 30]
     steps:
       - name: Checkout 
         uses: actions/checkout@v2
@@ -99,12 +25,27 @@ jobs:
       - name: Install Yarn
         run: brew install yarn
 
-      - name: Un-cache Node Modules
-        uses: actions/cache@v2
-        with:
-          path: '**/node_modules'
-          key: npm-modules-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: npm-modules-
+      - name: Install node modules
+        run: yarn install
+
+      ### Android
+
+      - name: Setup android SDK
+        uses: android-actions/setup-android@v2
+      - name: Platform tools installation
+        run: sdkmanager "platform-tools" "platforms;android-${{matrix.sdk}}"
+
+      - name: List sdks
+        run: sdkmanager --list | grep system-images
+
+      - name: Install Emulator SDK
+        run: sdkmanager --install emulator
+      - name: Install SDK
+        run: sdkmanager --install "system-images;android-${{matrix.sdk}};google_apis;x86"
+      - name: Create AVD
+        run: echo "no" | avdmanager create avd -n test -k "system-images;android-${{matrix.sdk}};google_apis;x86"
+
+      ### iOS
 
       - name: Install Ruby
         run: brew install ruby
@@ -123,6 +64,8 @@ jobs:
         run: pod install
         working-directory: ios
 
+      ### Both
+
       - name: Run appium-doctor        
         run: npm run appium-doctor
       - name: Run appium in the background        
@@ -130,11 +73,9 @@ jobs:
       - name: Check appium server status        
         run: curl http://localhost:4723/wd/hub/status
 
-      # - name: Create a test session       
-      #   run: |
-          # curl -H 'Content-type: application/json' \
-          # http://localhost:4723/wd/hub/session \
-          # -d '{"capabilities": {"alwaysMatch": {"automationName": "XCUITest", "platformName": "iOS", "platformVersion": "${{matrix.simctl_SDKs}}", "deviceName": "iPhone ${{matrix.device}}"}}}'
+      - name: Setup upterm session
+        uses: lhotari/action-upterm@v1
 
-      # - name: Setup upterm session
-      #   uses: lhotari/action-upterm@v1
+
+
+      
