@@ -74,7 +74,16 @@ jobs:
       - name: Setup adb server
         run: sudo adb devices && adb start-server &
 
-      - name: Setup upterm session
-        uses: lhotari/action-upterm@v1
+      - name: Run emulator
+        run: cd /Users/runner/Library/Android/sdk/emulator && ./emulator -avd test -no-audio -no-window -gpu swiftshader_indirect &
+
+        # Returns a JSON string representing Appium's build information
+      - name: Create a new session
+        run: >
+          curl -H 'Content-type: application/json' -X POST http://localhost:4723/wd/hub/session 
+          -d '{"capabilities": {"alwaysMatch": {"platformName": "Android", "platformVersion": "${{matrix.sdk}}", "deviceName": "Android Emulator", "app": "/Users/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/app-release.apk", "avd": "test", "avdLaunchTimeout": "300000", "avdReadyTimeout": "300000"}}}'
+
+      # - name: Setup upterm session
+      #   uses: lhotari/action-upterm@v1
 
       
