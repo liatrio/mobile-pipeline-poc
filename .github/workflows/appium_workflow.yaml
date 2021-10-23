@@ -53,10 +53,6 @@ jobs:
 
       - name: Check Xcode Version
         run: xcodebuild -version
-      - name: Check software versions
-        run: softwareupdate --list
-      - name: Update Command Line Tools for Xcode
-        run: softwareupdate --install "Command Line Tools for Xcode-13.0"
 
       - run: xcode-select -p
       - name: Install Pod dependencies
@@ -67,10 +63,10 @@ jobs:
 
       - name: Run appium-doctor        
         run: npm run appium-doctor
-      - name: Run appium in the background        
-        run: npm run appium &
-      - name: Check appium server status        
-        run: curl http://localhost:4723/wd/hub/status
+      # - name: Run appium in the background        
+      #   run: npm run appium &
+      # - name: Check appium server status        
+      #   run: curl http://localhost:4723/wd/hub/status
 
       - name: Setup upterm session
         uses: lhotari/action-upterm@v1
