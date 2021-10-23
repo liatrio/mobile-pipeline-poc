@@ -79,9 +79,7 @@ jobs:
 
         # Returns a JSON string representing Appium's build information
       - name: Create a new session
-        run: >
-          curl -H 'Content-type: application/json' -X POST http://localhost:4723/wd/hub/session 
-          -d '{"capabilities": {"alwaysMatch": {"platformName": "Android", "platformVersion": "${{matrix.sdk}}", "deviceName": "Android Emulator", "app": "/Users/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/app-release.apk", "avd": "test", "avdLaunchTimeout": "300000", "avdReadyTimeout": "300000"}}}'
+        run: curl -H "Content-type: application/json" -X POST "http://localhost:4723/wd/hub/session" -d '{"capabilities": {"alwaysMatch": {"platformName": "Android", "platformVersion": "${{matrix.sdk}}", "deviceName": "Android Emulator", "app": "/Users/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/app-release.apk", "avd": "test", "avdLaunchTimeout": "300000", "avdReadyTimeout": "300000"}}}'
 
       # - name: Setup upterm session
       #   uses: lhotari/action-upterm@v1
