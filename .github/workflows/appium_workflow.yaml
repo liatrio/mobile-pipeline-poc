@@ -9,9 +9,11 @@ jobs:
     runs-on: macos-latest
     env:
       JAVA_HOME: '/Library/Java/JavaVirtualMachines/Adopt-11.jdk/Contents/Home'
+      ANDROID_SDK_ROOT: '/Users/runner/Library/Android/sdk'
+      ANDROID_HOME: '/Users/runner/Library/Android/sdk'
     strategy:
       matrix:
-        sdk: [28, 29, 30]
+        sdk: [30]
     steps:
       - name: Checkout 
         uses: actions/checkout@v2
