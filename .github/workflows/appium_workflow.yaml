@@ -63,10 +63,10 @@ jobs:
 
       - name: Run appium-doctor        
         run: npm run appium-doctor
-      # - name: Run appium in the background        
-      #   run: npm run appium &
-      # - name: Check appium server status        
-      #   run: curl http://localhost:4723/wd/hub/status
+      - name: Run appium in the background        
+        run: npm run appium &
+      - name: Check appium server status        
+        run: curl http://localhost:4723/wd/hub/status
 
       - name: Setup upterm session
         uses: lhotari/action-upterm@v1
