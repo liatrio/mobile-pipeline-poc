@@ -68,6 +68,8 @@ jobs:
       - name: Check appium server status        
         run: curl http://localhost:4723/wd/hub/status
 
+      - name: Install Emulator SDK
+        run: sdkmanager --install emulator
       - name: Install SDK
         run: sdkmanager --install "system-images;android-${{matrix.sdk}};google_apis;x86"
       - name: Create AVD
