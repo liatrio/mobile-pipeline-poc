@@ -13,7 +13,7 @@ jobs:
       ANDROID_HOME: '/Users/runner/Library/Android/sdk'
     strategy:
       matrix:
-        sdk: [30]
+        sdk: [28]
     steps:
       - name: Checkout 
         uses: actions/checkout@v2
@@ -69,6 +69,10 @@ jobs:
         run: npm run appium &
       - name: Check appium server status        
         run: curl http://localhost:4723/wd/hub/status
+
+      ## Android
+      - name: Setup adb server
+        run: sudo adb devices && adb start-server &
 
       - name: Setup upterm session
         uses: lhotari/action-upterm@v1
