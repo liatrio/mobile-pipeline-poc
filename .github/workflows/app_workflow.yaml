@@ -13,6 +13,7 @@ env:
 jobs:
   Build-ios:
     runs-on: macos-latest
+    if: false
     steps:
       - name: Checkout 
         uses: actions/checkout@v2
@@ -98,7 +99,7 @@ jobs:
   create-release-and-publish-ios-android-binaries: 
     runs-on: ubuntu-latest
     needs: 
-    - Build-ios
+    # - Build-ios
     - Build-android
     steps:
       - name: Checkout 
@@ -126,13 +127,12 @@ jobs:
           name: 'Testing release action'
           token_name: 'token'
           pat: ${{ secrets.GITHUB_TOKEN }}  
-
       - name: Download IOS/Android artifact
         uses: actions/download-artifact@v2
         with: 
           path: /home/runner/work/mobile-pipeline-poc/mobile-pipeline-poc
       - name: Deploy IOS binary to release assets
-        uses: liatrio/github-actions/github-package@github-release-package-actions
+        uses: liatrio/github-actions/github-assets@github-release-package-actions
         with: 
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ANDROID_FILE: android-artifact/app-release.aab
