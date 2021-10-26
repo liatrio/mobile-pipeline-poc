@@ -82,8 +82,9 @@ jobs:
 
       - name: Keystore
         run: |
-          echo ${{ secrets.KEYSTORE }} | base64 -d >> android/app/liatrio.keystore
-          echo "password=${{ secrets.KEYSTORE_PASSWORD }}" >> android/keystore.properties
+          echo ${{ secrets.KEYSTORE }} | base64 -d > android/app/liatrio.keystore
+          echo "password=${{ secrets.KEYSTORE_PASSWORD }}" > android/keystore.properties
+          echo ${{ secrets.GOOGLE_API_KEY }} > fastlane/google_api_key.json
         
       - name: Build Android App Bundle
         run: |

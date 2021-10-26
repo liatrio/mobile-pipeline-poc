@@ -5,7 +5,7 @@
 # ANDROID
 # path is relative to where fastlane is ran. 
 # this path is subject to change depending on your file structure/machine
-json_key_file "../../googleplaystore.json" 
+json_key_file "google_api_key.json" 
 package_name("com.reactnativesemaphorenew")
 
 
