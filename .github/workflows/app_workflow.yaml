@@ -84,8 +84,7 @@ jobs:
         run: |
           echo ${{ secrets.KEYSTORE }} | base64 -d >> android/app/liatrio.keystore
           echo "password=${{ secrets.KEYSTORE_PASSWORD }}" >> android/keystore.properties
-          
-
+        
       - name: Build Android App Bundle
         run: |
           cd android && ./gradlew bundleRelease --no-daemon
@@ -95,6 +94,10 @@ jobs:
         with:
           name: 'android-artifact'
           path: '/home/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/android/app/build/outputs/bundle/release/app-release.aab'
+      
+      - name: Fastlane
+        run: |
+          fastlane android release
 
   create-release-and-publish-ios-android-binaries: 
     runs-on: ubuntu-latest
