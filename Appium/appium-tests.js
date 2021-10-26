@@ -6,7 +6,7 @@ const opts = {
 	port: 4723,
 	capabilities: {
 		platformName: "Android",
-		platformVersion: "9",
+		platformVersion: "8.1",
 		deviceName: "Android Emulator",
 		app: "app-release.apk",
 		appPackage: "com.reactnativesemaphorenew",

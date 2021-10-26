@@ -12,7 +12,7 @@ jobs:
       ANDROID_HOME: '/Users/runner/Library/Android/sdk'
     strategy:
       matrix:
-        sdk: [28]
+        sdk: [27]
         target: [default]
     steps:
       - name: Checkout 
@@ -57,6 +57,8 @@ jobs:
       ## Android abd
       - name: Setup adb server
         run: sudo adb devices && adb start-server &
+          # sudo adb shell settings put global hidden_api_policy_pre_p_apps  1
+          # sudo adb shell settings put global hidden_api_policy_p_apps 1
 
       - name: Run emulator
         run: cd /Users/runner/Library/Android/sdk/emulator && ./emulator -avd test -no-audio -no-window -gpu swiftshader_indirect &
@@ -64,6 +66,4 @@ jobs:
       - name: Run appium integration Tests
         run: |
           cd Appium
-          adb shell settings put global hidden_api_policy_pre_p_apps  1
-          adb shell settings put global hidden_api_policy_p_apps 1
           $(npm bin)/mocha .
