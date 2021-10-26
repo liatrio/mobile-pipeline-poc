@@ -11,6 +11,7 @@ const opts = {
 		app: "app-release.apk",
 		appPackage: "com.reactnativesemaphorenew",
 		automationName: "UiAutomator2",
+		ignoreHiddenApiPolicyError: "true"
 	}
 };
 
