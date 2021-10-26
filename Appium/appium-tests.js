@@ -8,7 +8,7 @@ const opts = {
 		platformName: "Android",
 		platformVersion: "9",
 		deviceName: "Pixel_5_API_28",
-		app: "/Users/connorm/liatrio-repos/mobile-pipeline-poc/app-release.apk",
+		app: "app-release.apk",
 		appPackage: "com.reactnativesemaphorenew",
 		automationName: "UiAutomator2",
 	}
