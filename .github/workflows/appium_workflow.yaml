@@ -12,7 +12,7 @@ jobs:
       ANDROID_HOME: '/Users/runner/Library/Android/sdk'
     strategy:
       matrix:
-        sdk: [27]
+        sdk: [28]
         target: [default]
     steps:
       - name: Checkout 
@@ -64,4 +64,6 @@ jobs:
       - name: Run appium integration Tests
         run: |
           cd Appium
+          adb shell settings put global hidden_api_policy_pre_p_apps  1
+          adb shell settings put global hidden_api_policy_p_apps 1
           $(npm bin)/mocha .
