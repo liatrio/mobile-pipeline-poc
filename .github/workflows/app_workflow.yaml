@@ -64,13 +64,13 @@ jobs:
       - name: Build IOS
         run: |
           xcodebuild \ 
-            -workspace ios/ReactNativeSemaphoreNew.xcworkspace \
+            -workspace "ios/ReactNativeSemaphoreNew.xcworkspace" \
             -scheme ReactNativeSemaphoreNew \
             clean archive \
             -sdk iphoneos \
             -configuration release \
             -UseModernBuildSystem=NO \
-            -archivePath $PWD/ReactNativeSemaphoreNew \
+            -archivePath "$PWD/ReactNativeSemaphoreNew" \
             CODE_SIGNING_ALLOWED=NO
       - name: 'upload artifact to be used with other jobs'
         uses: actions/upload-artifact@v2
