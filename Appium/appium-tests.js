@@ -8,7 +8,7 @@ const opts = {
 		platformName: "Android",
 		platformVersion: "9",
 		deviceName: "Pixel_5_API_28",
-		app: "app-release.apk",
+		app: "/Users/connorm/liatrio-repos/mobile-pipeline-poc/app-release.apk",
 		appPackage: "com.reactnativesemaphorenew",
 		automationName: "UiAutomator2",
 	}
@@ -61,23 +61,6 @@ describe('Mobile App POC Appium Tests', function () {
 		await client.elementClick(element.ELEMENT);
 		await client.getElementAttribute(element.ELEMENT, 'text').then((attr) => {
 		  assert.equal(attr, 'ON');
-		});
-	});
-
-	it('should find the `Search Countries` button and click it ', async function () {
-		this.timeout(50000);
-		
-		client.setImplicitTimeout(40000);
-		
-		const element = await client.findElement('xpath', '//android.view.ViewGroup/android.view.ViewGroup[2]/android.view.ViewGroup');
-		await client.elementClick(element.ELEMENT);
-
-		client.setImplicitTimeout(40000);
-
-		const search_element = await client.findElement('xpath', '//android.widget.Button[@content-desc="Home, back"]');
-
-		await client.getElementAttribute(search_element.ELEMENT, 'content-desc').then((attr) => {
-			assert.equal(attr, 'Home, back');
 		});
 	});
 

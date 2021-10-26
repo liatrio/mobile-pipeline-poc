@@ -61,14 +61,7 @@ jobs:
       - name: Run emulator
         run: cd /Users/runner/Library/Android/sdk/emulator && ./emulator -avd test -no-audio -no-window -gpu swiftshader_indirect &
 
-      - name: Setup upterm session
-        uses: lhotari/action-upterm@v1
-      
-      # - name: Run Appium Tests
-      #   uses: reactivecircus/android-emulator-runner@v1 # install and create the Emulator
-      #   with:
-      #     api-level: ${{ matrix.sdk }}
-      #     target: ${{ matrix.target }}
-      #     arch: x86_64
-      #     profile: Pixel 5
-      #     script: /android && ./gradlew test --info # running our test with info to check the results
+      - name: Run appium integration Tests
+        run: |
+          cd Appium
+          $(npm bin)/mocha .
