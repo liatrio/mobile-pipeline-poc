@@ -12,7 +12,7 @@ jobs:
       ANDROID_HOME: '/Users/runner/Library/Android/sdk'
     strategy:
       matrix:
-        sdk: [28]
+        sdk: [27]
         target: [default]
     steps:
       - name: Checkout 
