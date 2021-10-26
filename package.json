@@ -40,6 +40,8 @@
     "react-suspense-loadable": "^1.0.0"
   },
   "devDependencies": {
+    "appium": "^1.22.0",
+    "appium-doctor": "^1.16.0",
     "@babel/core": "^7.8.4",
     "@babel/runtime": "^7.8.4",
     "@react-native-community/eslint-config": "^1.1.0",
