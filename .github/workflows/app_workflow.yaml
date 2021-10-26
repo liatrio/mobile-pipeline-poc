@@ -119,7 +119,7 @@ jobs:
           fi 
       - name: Create release
         uses: liatrio/github-actions/github-release@github-release-package-actions
-        if: github.ref == 'refs/heads/main'    
+        # if: github.ref == 'refs/heads/main'    
         with:
           owner: 'liatrio'
           repo: 'mobile-pipeline-poc'
@@ -135,8 +135,8 @@ jobs:
         uses: liatrio/github-actions/github-assets@github-release-package-actions
         with: 
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          ANDROID_FILE: android-artifact/app-release.aab
-          IOS_FILE: ios-artifact/ReactNativeSemaphoreNew
+          FILE: android-artifact/app-release.aab
+          # IOS_FILE: ios-artifact/ReactNativeSemaphoreNew
           GITHUB_REPOSITORY: ${{ env.GITHUB_REPO }}
 
 
