@@ -7,10 +7,11 @@ const opts = {
 	capabilities: {
 		platformName: "Android",
 		platformVersion: "9",
-		deviceName: "test",
+		deviceName: "Android Emulator",
 		app: "app-release.apk",
 		appPackage: "com.reactnativesemaphorenew",
 		automationName: "UiAutomator2",
+		avd: "test"
 	}
 };
 
