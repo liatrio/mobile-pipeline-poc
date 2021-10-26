@@ -1,0 +1,46 @@
+name: "Appium Workflow"
+
+on:
+  pull_request: 
+  push:
+
+jobs:
+  Appium:
+    runs-on: macos-latest
+    env:
+      ANDROID_SDK_ROOT: '/Users/runner/Library/Android/sdk'
+      ANDROID_HOME: '/Users/runner/Library/Android/sdk'
+    strategy:
+      matrix:
+        sdk: [28]
+        target: [default]
+    steps:
+      - name: Checkout 
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 8
+        uses: actions/setup-java@v1
+        with:
+          java-version: '8'
+
+      - name: Install Yarn
+        run: brew install yarn
+
+      - name: Install node modules
+        run: yarn install
+
+      - name: Run appium-doctor        
+        run: npm run appium-doctor
+      - name: Run appium in the background        
+        run: npm run appium &
+      - name: Check appium server status        
+        run: curl http://localhost:4723/wd/hub/status
+
+      - name: Run Appium Tests
+        uses: reactivecircus/android-emulator-runner@v1 # install and create the Emulator
+        with:
+          api-level: ${{ matrix.sdk }}
+          target: ${{ matrix.target }}
+          arch: x86_64
+          profile: Nexus 6
+          script: ./gradlew test --info # running our test with info to check the results

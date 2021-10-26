@@ -1,135 +1,135 @@
-name: "Build Release ios/android"
+# name: "Build Release ios/android"
 
-on:
-  pull_request: 
-  push:
-
-
-env:
-  GIHUB_REPO: liatrio/mobile-pipeline-poc
-  SONAR_HOST: 'https://sonarqube.services.liatr.io'
-
-jobs:
-  Build-ios:
-    runs-on: macos-latest
-    steps:
-      - name: Checkout 
-        uses: actions/checkout@v2
-
-      - name: Install Yarn
-        run: brew install yarn
-      - name: Install Node Modules
-        run: yarn install
-      - name: Install Ruby
-        run: brew install ruby
-      - name: Install Cocoapods
-        run: gem install cocoapods
-
-      - name: Check Xcode Version
-        run: xcodebuild -version
-      - run: xcode-select -p
-      - run: pod install
-        working-directory: ios
-        name: Install Pod dependencies
-      - name: Run Tests
-        run: yarn test
-      - name: Build IOS
-        run: "xcodebuild \ 
-        -workspace ios/ReactNativeSemaphoreNew.xcworkspace \
-        -scheme ReactNativeSemaphoreNew \
-        clean archive \
-        -sdk iphoneos \
-        -configuration release \
-        -UseModernBuildSystem=NO \
-        -archivePath $PWD/ReactNativeSemaphoreNew \
-        CODE_SIGNING_ALLOWED=NO"
-
-      - name: 'upload artifact to be used with other jobs'
-        uses: actions/upload-artifact@v2
-        with:
-          name: 'ios-artifact'
-          path: 'ReactNativeSemaphoreNew.xcarchive/Products/Applications/ReactNativeSemaphoreNew.app'
+# # on:
+# #   pull_request: 
+# #   push:
 
 
-  Build-android:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - uses: actions/setup-node@master
-      - uses: c-hive/gha-yarn-cache@v1
-      - name: Install node modules
-        run: |
-          yarn install
-      - name: Generate Sonarqube reports
-        run: |
-          yarn test
-      - name: SonarQube Scan
-        uses: docker://sonarsource/sonar-scanner-cli:4.6
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_SHAREDSVC_TOKEN }}
-          SONAR_HOST_URL: ${{ env.SONAR_HOST }}
-      - name: SonarQube Quality Gate check
-        uses: sonarsource/sonarqube-quality-gate-action@master
-        # Force to fail step after specific time
-        timeout-minutes: 5
-        env:
-         SONAR_TOKEN: ${{ secrets.SONAR_SHAREDSVC_TOKEN }}
-      - name: Make Gradlew Executable
-        run: cd android && chmod +x ./gradlew
-      - name: Build Android App Bundle
-        run: |
-          cd android && ./gradlew bundleRelease --no-daemon
+# env:
+#   GIHUB_REPO: liatrio/mobile-pipeline-poc
+#   SONAR_HOST: 'https://sonarqube.services.liatr.io'
 
-      - name: 'upload artifact to be used with other jobs'
-        uses: actions/upload-artifact@v2
-        with:
-          name: 'android-artifact'
-          path: '/home/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/android/app/build/outputs/bundle/release/app-release.aab'
+# jobs:
+#   Build-ios:
+#     runs-on: macos-latest
+#     steps:
+#       - name: Checkout 
+#         uses: actions/checkout@v2
 
-  create-release-and-publish-ios-android-binaries: 
-    runs-on: ubuntu-latest
-    needs: 
-    - Build-ios
-    - Build-android
-    steps:
-      - name: Checkout 
-        uses: actions/checkout@v2
-        with: 
-          fetch-depth: 0
-      - name: Generate tag
-        id: tag
-        run: |
-          echo ::set-output name=TAG::$(jq -r .version package.json)
-          echo ::set-output name=SOURCE_TAG::$(git describe --tags --abbrev=0)
-      - name: Bump version check
-        run: |
-          if [ ${{ steps.tag.outputs.TAG }} == ${{ steps.tag.outputs.SOURCE_TAG }} ]; then
-            echo "Version: ${{ steps.tag.outputs.TAG }} needs to be updated in package.json" 
-            exit 1
-          fi 
-      - name: Create release
-        uses: liatrio/github-actions/github-release@github-release-package-actions
-        if: github.ref == 'refs/heads/main'    
-        with:
-          owner: 'liatrio'
-          repo: 'mobile-pipeline-poc'
-          tag_name: ${{ steps.tag.outputs.TAG }}
-          name: 'Testing release action'
-          token_name: 'token'
-          pat: ${{ secrets.GITHUB_TOKEN }}  
+#       - name: Install Yarn
+#         run: brew install yarn
+#       - name: Install Node Modules
+#         run: yarn install
+#       - name: Install Ruby
+#         run: brew install ruby
+#       - name: Install Cocoapods
+#         run: gem install cocoapods
 
-      - name: Download IOS/Android artifact
-        uses: actions/download-artifact@v2
-        with: 
-          path: /home/runner/work/mobile-pipeline-poc/mobile-pipeline-poc
-      - name: Deploy IOS binary to release assets
-        uses: liatrio/github-actions/github-package@github-release-package-actions
-        with: 
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          ANDROID_FILE: android-artifact/app-release.aab
-          IOS_FILE: ios-artifact/ReactNativeSemaphoreNew
-          GITHUB_REPOSITORY: ${{ env.GITHUB_REPO }}
+#       - name: Check Xcode Version
+#         run: xcodebuild -version
+#       - run: xcode-select -p
+#       - run: pod install
+#         working-directory: ios
+#         name: Install Pod dependencies
+#       - name: Run Tests
+#         run: yarn test
+#       - name: Build IOS
+#         run: "xcodebuild \ 
+#         -workspace ios/ReactNativeSemaphoreNew.xcworkspace \
+#         -scheme ReactNativeSemaphoreNew \
+#         clean archive \
+#         -sdk iphoneos \
+#         -configuration release \
+#         -UseModernBuildSystem=NO \
+#         -archivePath $PWD/ReactNativeSemaphoreNew \
+#         CODE_SIGNING_ALLOWED=NO"
+
+#       - name: 'upload artifact to be used with other jobs'
+#         uses: actions/upload-artifact@v2
+#         with:
+#           name: 'ios-artifact'
+#           path: 'ReactNativeSemaphoreNew.xcarchive/Products/Applications/ReactNativeSemaphoreNew.app'
+
+
+#   Build-android:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v2
+#       - uses: actions/setup-node@master
+#       - uses: c-hive/gha-yarn-cache@v1
+#       - name: Install node modules
+#         run: |
+#           yarn install
+#       - name: Generate Sonarqube reports
+#         run: |
+#           yarn test
+#       - name: SonarQube Scan
+#         uses: docker://sonarsource/sonar-scanner-cli:4.6
+#         env:
+#           SONAR_TOKEN: ${{ secrets.SONAR_SHAREDSVC_TOKEN }}
+#           SONAR_HOST_URL: ${{ env.SONAR_HOST }}
+#       - name: SonarQube Quality Gate check
+#         uses: sonarsource/sonarqube-quality-gate-action@master
+#         # Force to fail step after specific time
+#         timeout-minutes: 5
+#         env:
+#          SONAR_TOKEN: ${{ secrets.SONAR_SHAREDSVC_TOKEN }}
+#       - name: Make Gradlew Executable
+#         run: cd android && chmod +x ./gradlew
+#       - name: Build Android App Bundle
+#         run: |
+#           cd android && ./gradlew bundleRelease --no-daemon
+
+#       - name: 'upload artifact to be used with other jobs'
+#         uses: actions/upload-artifact@v2
+#         with:
+#           name: 'android-artifact'
+#           path: '/home/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/android/app/build/outputs/bundle/release/app-release.aab'
+
+#   create-release-and-publish-ios-android-binaries: 
+#     runs-on: ubuntu-latest
+#     needs: 
+#     - Build-ios
+#     - Build-android
+#     steps:
+#       - name: Checkout 
+#         uses: actions/checkout@v2
+#         with: 
+#           fetch-depth: 0
+#       - name: Generate tag
+#         id: tag
+#         run: |
+#           echo ::set-output name=TAG::$(jq -r .version package.json)
+#           echo ::set-output name=SOURCE_TAG::$(git describe --tags --abbrev=0)
+#       - name: Bump version check
+#         run: |
+#           if [ ${{ steps.tag.outputs.TAG }} == ${{ steps.tag.outputs.SOURCE_TAG }} ]; then
+#             echo "Version: ${{ steps.tag.outputs.TAG }} needs to be updated in package.json" 
+#             exit 1
+#           fi 
+#       - name: Create release
+#         uses: liatrio/github-actions/github-release@github-release-package-actions
+#         if: github.ref == 'refs/heads/main'    
+#         with:
+#           owner: 'liatrio'
+#           repo: 'mobile-pipeline-poc'
+#           tag_name: ${{ steps.tag.outputs.TAG }}
+#           name: 'Testing release action'
+#           token_name: 'token'
+#           pat: ${{ secrets.GITHUB_TOKEN }}  
+
+#       - name: Download IOS/Android artifact
+#         uses: actions/download-artifact@v2
+#         with: 
+#           path: /home/runner/work/mobile-pipeline-poc/mobile-pipeline-poc
+#       - name: Deploy IOS binary to release assets
+#         uses: liatrio/github-actions/github-package@github-release-package-actions
+#         with: 
+#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#           ANDROID_FILE: android-artifact/app-release.aab
+#           IOS_FILE: ios-artifact/ReactNativeSemaphoreNew
+#           GITHUB_REPOSITORY: ${{ env.GITHUB_REPO }}
 
 
        
