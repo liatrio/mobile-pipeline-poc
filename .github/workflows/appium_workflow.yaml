@@ -36,11 +36,39 @@ jobs:
       - name: Check appium server status        
         run: curl http://localhost:4723/wd/hub/status
 
-      - name: Run Appium Tests
-        uses: reactivecircus/android-emulator-runner@v1 # install and create the Emulator
-        with:
-          api-level: ${{ matrix.sdk }}
-          target: ${{ matrix.target }}
-          arch: x86_64
-          profile: Pixel 5
-          script: ./gradlew test --info # running our test with info to check the results
+     ### Android sdk
+
+      - name: Setup android SDK
+        uses: android-actions/setup-android@v2
+      - name: Platform tools installation
+        run: sdkmanager "platform-tools" "platforms;android-${{matrix.sdk}}"
+
+      - name: List sdks
+        run: sdkmanager --list | grep system-images
+
+      - name: Install Emulator SDK
+        run: sdkmanager --install emulator
+      - name: Install SDK
+        run: sdkmanager --install "system-images;android-${{matrix.sdk}};google_apis;x86"
+      - name: Create AVD
+        run: echo "no" | avdmanager create avd -n test -k "system-images;android-${{matrix.sdk}};google_apis;x86"
+
+
+      ## Android abd
+      - name: Setup adb server
+        run: sudo adb devices && adb start-server &
+
+      - name: Run emulator
+        run: cd /Users/runner/Library/Android/sdk/emulator && ./emulator -avd test -no-audio -no-window -gpu swiftshader_indirect &
+
+      - name: Setup upterm session
+        uses: lhotari/action-upterm@v1
+      
+      # - name: Run Appium Tests
+      #   uses: reactivecircus/android-emulator-runner@v1 # install and create the Emulator
+      #   with:
+      #     api-level: ${{ matrix.sdk }}
+      #     target: ${{ matrix.target }}
+      #     arch: x86_64
+      #     profile: Pixel 5
+      #     script: /android && ./gradlew test --info # running our test with info to check the results
