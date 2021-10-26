@@ -4,6 +4,8 @@
   "private": true,
   "scripts": {
     "android": "react-native run-android",
+    "appium": "appium",
+    "appium-doctor": "appium-doctor",
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest --coverage",
