@@ -11,7 +11,8 @@ const opts = {
 		app: "app-release.apk",
 		appPackage: "com.reactnativesemaphorenew",
 		automationName: "UiAutomator2",
-		avd: "test"
+		avd: "test",
+		uiautomator2ServerInstallTimeout: "200000"
 	}
 };
 
