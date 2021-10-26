@@ -12,6 +12,10 @@ jobs:
   Initial-check:
     runs-on: ubuntu-latest
     steps:
+      - name: checkout code
+        uses: actions/checkout@v2
+        with: 
+          fetch-depth: 0
       - name: Get tags
         id: tag
         run: |
