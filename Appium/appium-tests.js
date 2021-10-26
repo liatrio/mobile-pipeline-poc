@@ -12,7 +12,7 @@ const opts = {
 		appPackage: "com.reactnativesemaphorenew",
 		automationName: "UiAutomator2",
 		avd: "test",
-		uiautomator2ServerInstallTimeout: "200000"
+		uiautomator2ServerInstallTimeout: "1000000"
 	}
 };
 
