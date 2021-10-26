@@ -15,27 +15,27 @@
 
 default_platform(:ios)
 
-platform :ios do
-  before_all do
-    # installed via the semaphore plugin with `fastlane add_plugin semaphore`
-    setup_semaphore
-  end
+# platform :ios do
+#   before_all do
+#     # installed via the semaphore plugin with `fastlane add_plugin semaphore`
+#     setup_semaphore
+#   end
 
-  desc "Build"
-  desc "Build without code sign. Just to see if the build is working"
-  lane :build do |options|
-    build_app(
-      workspace: "./ios/ReactNativeSemaphoreNew.xcworkspace",
-      scheme: "ReactNativeSemaphoreNew",
-      skip_package_ipa: true,
-      skip_archive: true,
-      skip_codesigning: true,
-      xcargs: "ONLY_ACTIVE_ARCH=YES", # since for this demo we skip_codesigning, the build will be done for a simulator, and since XCode 12, this means arm64, thus build failing. Semaphore is running on x86 chips.
-      silent: true,
-      clean: true
-    )
-  end
-end
+#   desc "Build"
+#   desc "Build without code sign. Just to see if the build is working"
+#   lane :build do |options|
+#     build_app(
+#       workspace: "./ios/ReactNativeSemaphoreNew.xcworkspace",
+#       scheme: "ReactNativeSemaphoreNew",
+#       skip_package_ipa: true,
+#       skip_archive: true,
+#       skip_codesigning: true,
+#       xcargs: "ONLY_ACTIVE_ARCH=YES", # since for this demo we skip_codesigning, the build will be done for a simulator, and since XCode 12, this means arm64, thus build failing. Semaphore is running on x86 chips.
+#       silent: true,
+#       clean: true
+#     )
+#   end
+# end
 
 # platform :android do
 #   desc "Build"
@@ -45,9 +45,21 @@ end
 #   end
 # end
 
+platform :ios do
+  desc "Release to iOS Store"
+  lane :release do |options|
+    sync_code_signing(
+      type: "appstore"
+    )
+    upload_to_app_store
+  end
+end
+
+
+
 platform :android do
-  desc "Build and Post to Slack"
-  lane :build do |options|
+  desc "Release to Google Play Store"
+  lane :release do |options|
     gradle(
       task: 'bundle',
       build_type: 'Release',
@@ -59,3 +71,25 @@ platform :android do
     ) # uploads the APK built in the gradle step before this and releases it to all production users
   end
 end
+
+
+# platform :android do
+#   desc "Build and Post to Slack"
+#   lane :build do |options|
+#     gradle(
+#       task: 'bundle',
+#       build_type: 'Release',
+#       project_dir: 'android/'
+#     )
+#     upload_to_play_store(
+#       track: 'internal',
+#       release_status: 'draft'
+#     ) # uploads the APK built in the gradle step before this and releases it to all production users
+#     slack(
+#       slack_url: "https://hooks.slack.com/services/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",
+#       channel: "fastlane-automation-testing",
+#       success: true,
+#       message: "Build was successful!"
+#     )
+#   end
+# end

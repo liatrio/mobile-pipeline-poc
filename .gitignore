@@ -41,6 +41,7 @@ reports/
 buck-out/
 \.buckd/
 *.keystore
+keystore.*
 !debug.keystore
 
 # fastlane

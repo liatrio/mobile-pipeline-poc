@@ -8,6 +8,7 @@ on:
 env:
   GIHUB_REPO: liatrio/mobile-pipeline-poc
   SONAR_HOST: 'https://sonarqube.services.liatr.io'
+  KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
 
 jobs:
   Build-ios:
@@ -77,6 +78,13 @@ jobs:
          SONAR_TOKEN: ${{ secrets.SONAR_SHAREDSVC_TOKEN }}
       - name: Make Gradlew Executable
         run: cd android && chmod +x ./gradlew
+
+      - name: Keystore
+        run: |
+          echo ${{ secrets.KEYSTORE }} | base64 -D >> android/app/liatrio.keystore
+          echo "password=${{ secrets.KEYSTORE_PASSWORD }}" >> android/keystore.properties
+          
+
       - name: Build Android App Bundle
         run: |
           cd android && ./gradlew bundleRelease --no-daemon
