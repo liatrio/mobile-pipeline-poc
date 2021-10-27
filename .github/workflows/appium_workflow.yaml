@@ -70,4 +70,4 @@ jobs:
         run: sleep 120
 
       - name: Run appium integration Tests
-        run: cd appium && npm run mocha appium-android-tests.js
+        run: npm run mocha appium/android
