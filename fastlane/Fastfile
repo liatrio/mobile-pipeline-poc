@@ -58,10 +58,13 @@ end
 platform :android do
   desc "Release to Google Play Store"
   lane :release do |options|
+    versions = google_play_track_version_codes(track: "internal")
+    version_code = versions[0]
     supply(
       track: "internal",
       package_name: "com.reactnativesemaphorenew",
-      aab: "android/app/build/outputs/bundle/release/app-release.aab"
+      aab: "android/app/build/outputs/bundle/release/app-release.aab",
+      version_code: version_code
     ) 
     # versions = google_play_track_version_codes(track: "internal")
     # version_code = versions[0]
