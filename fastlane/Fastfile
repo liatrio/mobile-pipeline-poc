@@ -63,7 +63,7 @@ platform :android do
     upload_to_play_store(
       track: 'alpha',
       version_code: version_code,
-      release_status: 'draft'
+      release_status: 'completed'
     )
     # versions = google_play_track_version_codes(track: "internal")
     # version_code = versions[0]
