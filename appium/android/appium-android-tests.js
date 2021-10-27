@@ -12,22 +12,24 @@ const opts = {
 		appPackage: "com.reactnativesemaphorenew",
 		automationName: "UiAutomator2",
 		avd: "test",
-		uiautomator2ServerInstallTimeout: "1000000"
+		uiautomator2ServerInstallTimeout: "1000000",
+		newCommandTimeout: "240"
 	}
+
 };
 
 describe('Mobile App POC Appium Tests', function () {
 	let client;
 
-	console.log("Before Each-----------------------------")
 	beforeEach(async function () {
+		console.log("Before Each-----------------------------")
 		this.timeout(500000);
 		client = await wdio.remote(opts);
 		client.setImplicitTimeout(500000);
 	});
 
-	console.log("After Each-----------------------------")
 	afterEach(async function () {
+		console.log("After Each-----------------------------")
 		this.timeout(500000);
 		const delete_session = await client.deleteSession();
 		assert.isNull(delete_session);
