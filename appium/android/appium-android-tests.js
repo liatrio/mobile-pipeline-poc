@@ -13,12 +13,13 @@ const opts = {
 		appPackage: "com.reactnativesemaphorenew",
 		automationName: "UiAutomator2",
 		avd: "test",
-		//uiautomator2ServerInstallTimeout: "1000000",
+		uiautomator2ServerInstallTimeout: "4000000",
 		newCommandTimeout: "2400",
 		androidDeviceReadyTimeout: "2400",
 		avdLaunchTimeout: "400000",
 		avdReadyTimeout: "400000",
-		androidInstallTimeout: "400000"
+		androidInstallTimeout: "400000",
+		adbExecTimeout: "400000"
 	}
 
 };
