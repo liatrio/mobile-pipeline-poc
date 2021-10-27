@@ -64,6 +64,7 @@ platform :android do
       track: 'internal',
       release_status: 'draft',
       aab: 'android/app/build/outputs/bundle/release/app-release.aab',
+      version_code: options[:version_code]
       # version_code: version_code
     )
   end
