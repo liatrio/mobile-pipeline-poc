@@ -12,7 +12,7 @@ const opts = {
 		app: "app-release.apk",
 		appPackage: "com.reactnativesemaphorenew",
 		automationName: "UiAutomator2",
-		avd: "test",
+		avd: "sdk_gphone_x86",
 		uiautomator2ServerInstallTimeout: "4000000",
 		newCommandTimeout: "2400",
 		androidDeviceReadyTimeout: "2400",

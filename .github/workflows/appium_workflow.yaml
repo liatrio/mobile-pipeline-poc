@@ -45,7 +45,7 @@ jobs:
       - name: Install SDK
         run: sdkmanager --install "system-images;android-27;google_apis;x86"
       - name: Create AVD
-        run: echo "no" | avdmanager create avd -n test -k "system-images;android-27;google_apis;x86"
+        run: echo "no" | avdmanager create avd -n sdk_gphone_x86 -k "system-images;android-27;google_apis;x86"
 
       ## Android abd
       - name: Setup adb server
