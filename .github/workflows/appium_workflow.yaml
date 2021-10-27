@@ -57,7 +57,7 @@ jobs:
       #   run: sleep 120
 
       - name: Run emulator
-        run: cd /Users/runner/Library/Android/sdk/emulator && ./emulator -avd test -no-audio -no-window -gpu swiftshader_indirect &
+        run: cd /Users/runner/Library/Android/sdk/emulator && ./emulator -avd sdk_gphone_x86 -no-audio -no-window -gpu swiftshader_indirect &
 
       - name: Check current devices before operational check
         run: sudo adb devices
@@ -68,11 +68,14 @@ jobs:
       - name: Check current devices after operational check
         run: sudo adb devices
 
-      - name: Get emulator product name
-        run: adb -s emulator-5554 shell getprop ro.product.name
+      # - name: Get emulator product name
+      #   run: adb -s emulator-5554 shell getprop ro.product.name
 
       # - name: Wait for emulator to get up and running
       #   run: sleep 120
 
-      - name: Run appium integration Tests
-        run: npm run mocha appium/android
+      - name: Setup upterm session
+        uses: lhotari/action-upterm@v1 
+
+      # - name: Run appium integration Tests
+      #   run: npm run mocha appium/android
