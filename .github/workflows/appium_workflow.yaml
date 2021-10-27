@@ -39,15 +39,13 @@ jobs:
         run: sdkmanager --list | grep system-images
 
       ## Android emulator
-      - name: Install Emulator SDK
-        run: sdkmanager --install emulator
       - name: Install SDK
         run: sdkmanager --install "system-images;android-27;google_apis;x86"
       - name: Create AVD
         run: echo "no" | avdmanager create avd -n sdk_gphone_x86 -k "system-images;android-27;google_apis;x86"
 
       ## Android abd server
-      - name: Setup adb server
+      - name: Start adb server
         run: sudo adb start-server &
 
       - name: Run emulator
