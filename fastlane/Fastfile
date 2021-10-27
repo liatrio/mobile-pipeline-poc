@@ -58,12 +58,17 @@ end
 platform :android do
   desc "Release to Google Play Store"
   lane :release do |options|
-    versions = google_play_track_version_codes(track: "internal")
-    version_code = versions[0]
+    # versions = google_play_track_version_codes(track: "internal")
+    # version_code = versions[0]
+    gradle(
+      task: 'bundle',
+      build_type: 'Release',
+      project_dir: 'android/'
+    )
     upload_to_play_store(
       track: 'alpha',
       release_status: 'draft',
-      version_code: version_code
+      # version_code: version_code
       # skip_upload_changelogs: 'true'
     ) # uploads the APK built in the gradle step before this and releases it to all production users
   end
