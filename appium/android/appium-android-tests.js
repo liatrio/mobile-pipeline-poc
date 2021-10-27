@@ -29,7 +29,8 @@ describe('Mobile App POC Appium Tests', function () {
 		this.timeout(500000);
 		client = await wdio.remote(opts);
 		client.setImplicitTimeout(500000);
-		client.background(200);
+		//client.background(200);
+		await client.backgroundApp(-1);
 	});
 
 	afterEach(async function () {
