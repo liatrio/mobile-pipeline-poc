@@ -106,7 +106,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Create release
-        uses: liatrio/github-actions/github-create-release@master   
+        uses: liatrio/github-actions/github-create-release@fix-github-create-release
         with:
           owner: 'liatrio'
           repo: 'mobile-pipeline-poc'
