@@ -4,6 +4,7 @@ const assert = require('chai').assert;
 const opts = {
 	path: '/wd/hub',
 	port: 4723,
+	connectionRetryTimeout: 900000,
 	capabilities: {
 		platformName: "Android",
 		platformVersion: "8.1",
