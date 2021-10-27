@@ -19,9 +19,6 @@ jobs:
         with:
           java-version: '8'
 
-      - name: Install Yarn
-        run: brew install yarn
-
       - name: Install node modules
         run: yarn install
 
@@ -70,6 +67,9 @@ jobs:
 
       - name: Check current devices after operational check
         run: sudo adb devices
+
+      - name: Get emulator product name
+        run: adb -s emulator-5554 shell getprop ro.product.name
 
       # - name: Wait for emulator to get up and running
       #   run: sleep 120
