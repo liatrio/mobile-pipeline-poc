@@ -28,25 +28,18 @@ describe('Mobile App POC Appium Tests', function () {
 	let client;
 
 	beforeEach(async function () {
-		console.log("Before Each-----------------------------")
 		this.timeout(500000);
 		client = await wdio.remote(opts);
 		client.setImplicitTimeout(500000);
-		//client.background(200);
-		//client.backgroundApp(-1);
 	});
 
 	afterEach(async function () {
-		console.log("After Each-----------------------------")
 		this.timeout(500000);
 		const delete_session = await client.deleteSession();
 		assert.isNull(delete_session);
 	});
 
-	console.log("Start of Testing-----------------------------")
-
 	it('should create and delete a session', async function () {
-		console.log("Test-----------------------------")
 		this.timeout(500000);
 		const res = await client.status();
 		assert.isObject(res.build);
@@ -71,7 +64,7 @@ describe('Mobile App POC Appium Tests', function () {
 		this.timeout(200000);
 		client.setImplicitTimeout(100000);
 
-		const element = await client.findElement('class name', 'android.widget.Switch'); // await client.$("class name:android.widget.Switch");
+		const element = await client.findElement('class name', 'android.widget.Switch');
 
 		await client.getElementAttribute(element.ELEMENT, 'text').then((attr) => {
 			assert.equal(attr, 'OFF');
@@ -82,4 +75,4 @@ describe('Mobile App POC Appium Tests', function () {
 		});
 	});
 
-  });
+});
