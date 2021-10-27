@@ -56,14 +56,14 @@ jobs:
       # sudo adb shell settings put global hidden_api_policy_pre_p_apps  1
       # sudo adb shell settings put global hidden_api_policy_p_apps 1
 
-      - name: Wait for emulator to install
-        run: sleep 120
+      # - name: Wait for emulator to install
+      #   run: sleep 120
 
       - name: Run emulator
         run: cd /Users/runner/Library/Android/sdk/emulator && ./emulator -avd test -no-audio -no-window -gpu swiftshader_indirect &
 
-      - name: Wait for emulator to get up and running
-        run: sleep 120
+      # - name: Wait for emulator to get up and running
+      #   run: sleep 120
 
       - name: Run appium integration Tests
         run: npm run mocha appium/android
