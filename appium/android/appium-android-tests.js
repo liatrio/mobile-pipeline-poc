@@ -13,7 +13,11 @@ const opts = {
 		automationName: "UiAutomator2",
 		avd: "test",
 		uiautomator2ServerInstallTimeout: "1000000",
-		newCommandTimeout: "240"
+		newCommandTimeout: "240",
+		androidDeviceReadyTimeout: "240",
+		avdLaunchTimeout: "300000",
+		avdReadyTimeout: "300000"
+
 	}
 
 };
