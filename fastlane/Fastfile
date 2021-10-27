@@ -60,6 +60,7 @@ platform :android do
   lane :release do |options|
     upload_to_play_store(
       track: 'internal',
+      release_status: 'draft',
       skip_upload_changelogs: 'true'
     ) # uploads the APK built in the gradle step before this and releases it to all production users
   end
