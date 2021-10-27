@@ -27,6 +27,11 @@ jobs:
             echo "Version: ${{ steps.tag.outputs.TAG }} needs to be updated in package.json" 
             exit 1
           fi 
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+          cache: yarn
       - name: Install node modules
         run: yarn install
       - name: Generate Sonarqube reports
@@ -50,12 +55,13 @@ jobs:
     steps:
       - name: Checkout 
         uses: actions/checkout@v2
-      - name: Install Yarn
-        run: brew install yarn
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+          cache: yarn
       - name: Install Node Modules
         run: yarn install
-      - name: Install Ruby
-        run: brew install ruby
       - name: Install Cocoapods
         run: gem install cocoapods
       - name: Install Pod dependencies
@@ -74,8 +80,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - uses: actions/setup-node@master
-      - uses: c-hive/gha-yarn-cache@v1
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+          cache: yarn
       - name: Install node modules
         run: yarn install   
       - name: Build Android App Bundle
@@ -123,8 +132,3 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           FILE: ios-artifact/ReactNativeSemaphoreNew
           GITHUB_REPOSITORY: ${{ env.GITHUB_REPO }}
-           
-
-
-       
-
