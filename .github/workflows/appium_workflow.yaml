@@ -74,8 +74,8 @@ jobs:
       # - name: Wait for emulator to get up and running
       #   run: sleep 120
 
-      - name: Setup upterm session
-        uses: lhotari/action-upterm@v1 
+      # - name: Setup upterm session
+      #   uses: lhotari/action-upterm@v1 
 
       - name: Run appium integration Tests
         run: npm run mocha appium/android
