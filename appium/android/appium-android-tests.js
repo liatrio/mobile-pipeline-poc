@@ -9,7 +9,7 @@ const opts = {
 		platformName: "Android",
 		platformVersion: "8.1",
 		deviceName: "Android Emulator",
-		app: "app-release.apk",
+		app: "/Users/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/app-release.apk",
 		appPackage: "com.reactnativesemaphorenew",
 		automationName: "UiAutomator2",
 		avd: "sdk_gphone_x86",
