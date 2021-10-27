@@ -17,7 +17,6 @@ const opts = {
 		androidDeviceReadyTimeout: "240",
 		avdLaunchTimeout: "300000",
 		avdReadyTimeout: "300000"
-
 	}
 
 };
@@ -39,6 +38,8 @@ describe('Mobile App POC Appium Tests', function () {
 		const delete_session = await client.deleteSession();
 		assert.isNull(delete_session);
 	});
+
+	console.log("Start of Testing-----------------------------")
 
 	it('should create and delete a session', async function () {
 		console.log("Test-----------------------------")
