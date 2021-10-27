@@ -10,10 +10,6 @@ jobs:
     env:
       ANDROID_SDK_ROOT: '/Users/runner/Library/Android/sdk'
       ANDROID_HOME: '/Users/runner/Library/Android/sdk'
-    strategy:
-      matrix:
-        sdk: [27]
-        target: [default]
     steps:
       - name: Checkout 
         uses: actions/checkout@v2
@@ -41,7 +37,7 @@ jobs:
       - name: Setup android SDK
         uses: android-actions/setup-android@v2
       - name: Platform tools installation
-        run: sdkmanager "platform-tools" "platforms;android-${{matrix.sdk}}"
+        run: sdkmanager "platform-tools" "platforms;android-27"
 
       - name: List sdks
         run: sdkmanager --list | grep system-images
@@ -50,9 +46,9 @@ jobs:
       - name: Install Emulator SDK
         run: sdkmanager --install emulator
       - name: Install SDK
-        run: sdkmanager --install "system-images;android-${{matrix.sdk}};google_apis;x86"
+        run: sdkmanager --install "system-images;android-27;google_apis;x86"
       - name: Create AVD
-        run: echo "no" | avdmanager create avd -n test -k "system-images;android-${{matrix.sdk}};google_apis;x86"
+        run: echo "no" | avdmanager create avd -n test -k "system-images;android-27;google_apis;x86"
 
       ## Android abd
       - name: Setup adb server
