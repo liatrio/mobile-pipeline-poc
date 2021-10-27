@@ -18,8 +18,7 @@ const opts = {
 
 describe('Mobile App POC Appium Tests', function () {
 	let client;
-	
-	console.log("Before Each-----------------------------")
+
 	beforeEach(async function () {
 		this.timeout(500000);
 		client = await wdio.remote(opts);
@@ -31,9 +30,8 @@ describe('Mobile App POC Appium Tests', function () {
 		const delete_session = await client.deleteSession();
 		assert.isNull(delete_session);
 	});
-	console.log("After Each-----------------------------")
+
 	it('should create and delete a session', async function () {
-		console.log("Test-----------------------------")
 		this.timeout(500000);
 		const res = await client.status();
 		assert.isObject(res.build);

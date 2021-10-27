@@ -20,7 +20,8 @@
     "detox-clean-and-build-cache": "detox clean-framework-cache && detox build-framework-cache",
     "lint": "eslint",
     "fastlane-build-ios": "bundle exec fastlane ios build",
-    "fastlane-build-android": "bundle exec fastlane android build --verbose"
+    "fastlane-build-android": "bundle exec fastlane android build --verbose",
+    "mocha": "mocha"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.15.2",

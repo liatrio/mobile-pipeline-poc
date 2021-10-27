@@ -46,13 +46,13 @@ jobs:
       - name: List sdks
         run: sdkmanager --list | grep system-images
 
+      ## Android emulator
       - name: Install Emulator SDK
         run: sdkmanager --install emulator
       - name: Install SDK
         run: sdkmanager --install "system-images;android-${{matrix.sdk}};google_apis;x86"
       - name: Create AVD
         run: echo "no" | avdmanager create avd -n test -k "system-images;android-${{matrix.sdk}};google_apis;x86"
-
 
       ## Android abd
       - name: Setup adb server
@@ -70,6 +70,4 @@ jobs:
         run: sleep 120
 
       - name: Run appium integration Tests
-        run: |
-          cd Appium
-          $(npm bin)/mocha .
+        run: cd appium && npm run mocha appium-android-tests.js
