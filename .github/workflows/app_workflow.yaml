@@ -100,6 +100,11 @@ jobs:
       - name: Fastlane
         run: |
           fastlane android release
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: 'android-artifact'
+          path: '/home/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/android/app/build/outputs/bundle/release/app-release.aab'
 
   create-release-and-publish-ios-android-binaries: 
     runs-on: ubuntu-latest
