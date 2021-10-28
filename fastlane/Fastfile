@@ -48,6 +48,22 @@ platform :ios do
 end
 
 platform :android do
+  desc "Increment versionCode"
+  lane :increment do |options|
+  versions = google_play_track_version_codes(track: "internal")
+  version_code = versions[0] + 1
+  gradle(
+    task: "bundle",
+    build_type: "Release",
+    project_dir: "android/",
+    properties: {
+      "android.injected.version.code" => version_code
+    }
+  )
+  end
+end
+
+platform :android do
   desc "Release to Google Play Store"
   lane :release do |options|
     # versions = google_play_track_version_codes(track: "internal")
@@ -57,14 +73,7 @@ platform :android do
     #   build_type: 'Release',
     #   project_dir: 'android/'
     # )
-    code = google_play_track_version_codes(
-      track: "internal"
-    )
-    code_incremented = code[0] + 1
-    increment_version_code(
-      gradle_file_path: "android/build.gradle",
-      version_code: code_incremented
-    )
+
     upload_to_play_store(
       track: 'internal',
       release_status: 'draft',
@@ -73,7 +82,6 @@ platform :android do
     )
   end
 end
-
 
 # platform :android do
 #   desc "Build and Post to Slack"
