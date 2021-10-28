@@ -5,7 +5,7 @@ on:
   push:
 
 env:
-  GIHUB_REPO: liatrio/mobile-pipeline-poc
+  GIHUB_REPO: mobile-pipeline-poc
   SONAR_HOST: 'https://sonarqube.services.liatr.io'
 
 jobs:
