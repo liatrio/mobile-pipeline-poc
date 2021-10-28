@@ -110,7 +110,7 @@ jobs:
         with:
           owner: 'liatrio'
           repo: 'mobile-pipeline-poc'
-          tag_name: ${{ needs.Initial-check.outputs.tag }}
+          tag_name: ${{ Initial-check.outputs.tag }}
           token_name: 'token'
           name: 'Release: ${{ needs.Initial-check.outputs.tag }}'
           pat: ${{ secrets.GITHUB_TOKEN }}  
