@@ -7,10 +7,11 @@ const opts = {
 	connectionRetryTimeout: 900000,
 	capabilities: {
         "platformName": "iOS",
-        "platformVersion": "11.0",
-        "deviceName": "iPhone 7",
+        "platformVersion": "15",
+        "deviceName": "iPhone 11",
         "automationName": "XCUITest",
-		"app": "/Users/runner/work/mobile-pipeline-poc/mobile-pipeline-poc"
+		//"app": "/Users/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/"
+		"app": "ReactNativeSemaphoreNew.xcarchive/Products/Applications/ReactNativeSemaphoreNew.app"
 		// platformName: "Android",
 		// platformVersion: "8.1",
 		// deviceName: "Android Emulator",

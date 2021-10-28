@@ -30,14 +30,26 @@ jobs:
       - name: Check appium server status        
         run: curl http://localhost:4723/wd/hub/status
 
+        # xcodebuild clean test -project ios/ReactNativeSemaphoreNew.xcodeproj -scheme ReactNativeSemaphoreNew -destination "platform=iOS Simulator,name=iPhone 11 Pro"
+
       - name: Build IOS
         run: xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew clean archive -sdk iphoneos -configuration release -UseModernBuildSystem=NO -archivePath $PWD/ReactNativeSemaphoreNew.xcarchive CODE_SIGNING_ALLOWED=NO
 
-      - name: Convert the app's .app file to .ipa
-        run: |
-          mkdir Payload
-          cp -R ReactNativeSemaphoreNew.xcarchive/Products/Applications/ReactNativeSemaphoreNew.app Payload 
-          zip -r ReactNativeSemaphoreNew.ipa Payload
+
+      - name: 'upload artifact to be used with other jobs'
+        uses: actions/upload-artifact@v2
+        with:
+          name: 'ios-artifact'
+          path: 'ReactNativeSemaphoreNew.xcarchive/Products/Applications/ReactNativeSemaphoreNew.app'
+      # - name: Convert the app's .app file to .ipa
+      #   run: |
+      #     mkdir Payload
+      #     cp -R ReactNativeSemaphoreNew.xcarchive/Products/Applications/ReactNativeSemaphoreNew.app Payload 
+      #     zip -r ReactNativeSemaphoreNew.ipa Payload
+
+      # - name: Run the emulator in the background
+      #   run: |
+      #     /Applications/Xcode.app/Contents/Developer/Applications/Simulator.app/Contents/MacOS/Simulator -CurrentDeviceUDID ADDCA261-95B1-41D4-B911-FCBD965EDBF2 &
 
       - name: Setup upterm session
         uses: lhotari/action-upterm@v1 
