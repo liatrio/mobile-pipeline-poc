@@ -107,7 +107,9 @@ jobs:
     steps:
       - name: Checkout 
         uses: actions/checkout@v2
-
+      - name: echo tag *TESTING*
+        run: echo ${{ needs.Initial-check.outputs.tag }}
+        
       - name: Create release
         uses: liatrio/github-actions/github-create-release@fix-github-create-release
         with:
