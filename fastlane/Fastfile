@@ -37,14 +37,6 @@ default_platform(:ios)
 #   end
 # end
 
-# platform :android do
-#   desc "Build"
-#   desc "Build without code sign. Just to see if the build is working"
-#   lane :build do |options|
-#     gradle(task: "assembleRelease", project_dir: 'android/')
-#   end
-# end
-
 platform :ios do
   desc "Release to iOS Store"
   lane :release do |options|
@@ -65,12 +57,19 @@ platform :android do
     #   build_type: 'Release',
     #   project_dir: 'android/'
     # )
+    code = google_play_track_version_codes(
+      track: "internal"
+    )
+    code_incremented = code[0] + 1
+    increment_version_code(
+      gradle_file_path: "android/build.gradle",
+      version_code: code_incremented
+    )
     upload_to_play_store(
       track: 'internal',
       release_status: 'draft',
       aab: 'android/app/build/outputs/bundle/release/app-release.aab',
       # version_code: options[:version_code]
-      version_code: 9
     )
   end
 end

@@ -145,20 +145,22 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
-    def Properties versionProps = new Properties()
-    def versionPropsFile = file('version.properties')
-    if(versionPropsFile.exists())
-        versionProps.load(new FileInputStream(versionPropsFile))
-    def code = (versionProps['VERSION_CODE'] ?: "1").toInteger() + 1
-    versionProps['VERSION_CODE'] = code.toString()
-    versionProps.store(versionPropsFile.newWriter(), null)
+    // def Properties versionProps = new Properties()
+    // def versionPropsFile = file('version.properties')
+    // if(versionPropsFile.exists())
+    //     versionProps.load(new FileInputStream(versionPropsFile))
+    // def code = (versionProps['VERSION_CODE'] ?: "1").toInteger() + 1
+    // versionProps['VERSION_CODE'] = code.toString()
+    // versionProps.store(versionPropsFile.newWriter(), null)
 
     defaultConfig {
         applicationId "com.reactnativesemaphorenew"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode code
-        versionName "1.0"
+        // versionCode code
+        // versionName "1.0"
+        versionCode project.hasProperty('versionCode') ? project.property('versionCode') as int : 1
+        versionName project.hasProperty('versionName') ? project.property('versionName') : "No versionName"
         testBuildType System.getProperty('testBuildType', 'debug')  // This will later be used to control the test apk build type
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
