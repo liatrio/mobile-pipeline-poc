@@ -9,46 +9,46 @@ env:
   SONAR_HOST: 'https://sonarqube.services.liatr.io'
 
 jobs:
-  Initial-check:
-    runs-on: ubuntu-latest
-    outputs:
-      tag: ${{ steps.tag.outputs.TAG }}
-    steps:
-      - name: checkout code
-        uses: actions/checkout@v2
-        with: 
-          fetch-depth: 0
-      - name: Get tags
-        id: tag
-        run: |
-          echo ::set-output name=TAG::$(jq -r .version package.json)
-          echo ::set-output name=SOURCE_TAG::$(git describe --tags --abbrev=0)
-      - name: Check Version
-        run: |
-          if [ ${{ steps.tag.outputs.TAG }} == ${{ steps.tag.outputs.SOURCE_TAG }} ]; then
-            echo "Version: ${{ steps.tag.outputs.TAG }} needs to be updated in package.json" 
-            exit 1
-          fi 
-      - name: Setup Node
-        uses: actions/setup-node@v2
-        with:
-          node-version: '14'
-          cache: yarn
-      - name: Install node modules
-        run: yarn install
-      - name: Generate Sonarqube reports
-        run: yarn test
-      - name: SonarQube Scan
-        uses: docker://sonarsource/sonar-scanner-cli:4.6
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_SHAREDSVC_TOKEN }}
-          SONAR_HOST_URL: ${{ env.SONAR_HOST }}
-      - name: SonarQube Quality Gate check
-        uses: sonarsource/sonarqube-quality-gate-action@master
-        # Force to fail step after specific time
-        timeout-minutes: 5
-        env:
-         SONAR_TOKEN: ${{ secrets.SONAR_SHAREDSVC_TOKEN }}
+  # Initial-check:
+  #   runs-on: ubuntu-latest
+  #   outputs:
+  #     tag: ${{ steps.tag.outputs.TAG }}
+  #   steps:
+  #     - name: checkout code
+  #       uses: actions/checkout@v2
+  #       with: 
+  #         fetch-depth: 0
+  #     - name: Get tags
+  #       id: tag
+  #       run: |
+  #         echo ::set-output name=TAG::$(jq -r .version package.json)
+  #         echo ::set-output name=SOURCE_TAG::$(git describe --tags --abbrev=0)
+  #     - name: Check Version
+  #       run: |
+  #         if [ ${{ steps.tag.outputs.TAG }} == ${{ steps.tag.outputs.SOURCE_TAG }} ]; then
+  #           echo "Version: ${{ steps.tag.outputs.TAG }} needs to be updated in package.json" 
+  #           exit 1
+  #         fi 
+  #     - name: Setup Node
+  #       uses: actions/setup-node@v2
+  #       with:
+  #         node-version: '14'
+  #         cache: yarn
+  #     - name: Install node modules
+  #       run: yarn install
+  #     - name: Generate Sonarqube reports
+  #       run: yarn test
+  #     - name: SonarQube Scan
+  #       uses: docker://sonarsource/sonar-scanner-cli:4.6
+  #       env:
+  #         SONAR_TOKEN: ${{ secrets.SONAR_SHAREDSVC_TOKEN }}
+  #         SONAR_HOST_URL: ${{ env.SONAR_HOST }}
+  #     - name: SonarQube Quality Gate check
+  #       uses: sonarsource/sonarqube-quality-gate-action@master
+  #       # Force to fail step after specific time
+  #       timeout-minutes: 5
+  #       env:
+  #        SONAR_TOKEN: ${{ secrets.SONAR_SHAREDSVC_TOKEN }}
 
 
   # Build-ios:
@@ -107,15 +107,15 @@ jobs:
       - name: Checkout 
         uses: actions/checkout@v2
         
-      - name: Create release
-        uses: liatrio/github-actions/github-create-release@fix-github-create-release
-        with:
-          owner: 'liatrio'
-          repo: 'mobile-pipeline-poc'
-          tag_name: ${{ needs.Initial-check.outputs.tag }}
-          token_name: 'token'
-          name: 'Release: ${{ needs.Initial-check.outputs.tag }}'
-          pat: ${{ secrets.GITHUB_TOKEN }}  
+      # - name: Create release
+      #   uses: liatrio/github-actions/github-create-release@fix-github-create-release
+      #   with:
+      #     owner: 'liatrio'
+      #     repo: 'mobile-pipeline-poc'
+      #     tag_name: ${{ needs.Initial-check.outputs.tag }}
+      #     token_name: 'token'
+      #     name: 'Release: ${{ needs.Initial-check.outputs.tag }}'
+      #     pat: ${{ secrets.GITHUB_TOKEN }}  
       - name: Download IOS/Android artifact
         uses: actions/download-artifact@v2
         with: 
