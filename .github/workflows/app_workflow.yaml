@@ -7,7 +7,6 @@ on:
 env:
   GIHUB_REPO: liatrio/mobile-pipeline-poc
   SONAR_HOST: 'https://sonarqube.services.liatr.io'
-  KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
 
 jobs:
   Version:
