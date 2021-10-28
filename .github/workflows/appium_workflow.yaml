@@ -51,8 +51,8 @@ jobs:
       #   run: |
       #     /Applications/Xcode.app/Contents/Developer/Applications/Simulator.app/Contents/MacOS/Simulator -CurrentDeviceUDID ADDCA261-95B1-41D4-B911-FCBD965EDBF2 &
 
-      - name: Setup upterm session
-        uses: lhotari/action-upterm@v1 
+      # - name: Setup upterm session
+      #   uses: lhotari/action-upterm@v1 
         
   # Appium:
   #   runs-on: macos-latest
