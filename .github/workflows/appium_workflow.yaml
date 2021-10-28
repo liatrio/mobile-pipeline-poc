@@ -35,7 +35,6 @@ jobs:
 
       - name: Convert the app's .app file to .ipa
         run: mkdir Product 
-
       # && cp -R ReactNativeSemaphoreNew.xcarchive/Products/Applications/ReactNativeSemaphoreNew.app Product
 
       - name: Setup upterm session
