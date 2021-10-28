@@ -7,7 +7,7 @@ const opts = {
 	connectionRetryTimeout: 900000,
 	capabilities: {
         "platformName": "iOS",
-        "platformVersion": "15",
+        "platformVersion": "15.0",
         "deviceName": "iPhone 11",
         "automationName": "XCUITest",
 		//"app": "/Users/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/"
