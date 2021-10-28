@@ -99,8 +99,7 @@ jobs:
       
       - name: Fastlane
         run: |
-          echo ::set-output name=VERSION::$(cat version.properties | sed -En 's/^VERSION_CODE=(.*)$/\1/gp')
-          fastlane android release version_code:${{ steps.release-version.outputs.VERSION }}
+          fastlane android release
 
   create-release-and-publish-ios-android-binaries: 
     runs-on: ubuntu-latest
