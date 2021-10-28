@@ -52,7 +52,7 @@ jobs:
       - name: Echo tag *TESTING*
         run: echo ${{ steps.tag.outputs.TAG }}
       - name: Echo tag output *TESTING*
-        run: echo ${{ Initial-check.outputs.tag }}
+        run: echo ${{ outputs.tag }}
 
 
   # Build-ios:
