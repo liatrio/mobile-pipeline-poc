@@ -153,8 +153,6 @@ android {
     versionProps['VERSION_CODE'] = code.toString()
     versionProps.store(versionPropsFile.newWriter(), null)
 
-    println(code)
-
     defaultConfig {
         applicationId "com.reactnativesemaphorenew"
         minSdkVersion rootProject.ext.minSdkVersion
