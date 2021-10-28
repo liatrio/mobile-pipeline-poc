@@ -98,7 +98,7 @@ jobs:
 
   create-release-and-publish-ios-android-binaries: 
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/fix-github-create-release-action'
+    #if: github.ref == 'refs/heads/fix-github-create-release-action'
     needs: 
    #- Build-ios
     - Build-android
