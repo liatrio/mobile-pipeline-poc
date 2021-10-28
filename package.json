@@ -1,6 +1,6 @@
 {
   "name": "ReactNativeSemaphoreNew",
-  "version": "v0.0.12",
+  "version": "v0.0.13",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
