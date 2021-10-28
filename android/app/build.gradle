@@ -123,7 +123,20 @@ def jscFlavor = 'org.webkit:android-jsc:+'
  * on project.ext.react, JavaScript will not be compiled to Hermes Bytecode
  * and the benefits of using Hermes will therefore be sharply reduced.
  */
-def enableHermes = project.ext.react.get("enableHermes", false);
+def enableHermes = project.ext.react.get("enableHermes", false)
+def buildPropertiesFile = rootProject.file("build.properties")
+def buildProperties = new Properties()
+buildProperties.load(new FileInputStream(buildPropertiesFile))
+
+def match = (buildProperties['version'] =~ /^(\d+)\.(\d+)\.(\d+)$/)
+if (!match.find()) {
+    throw new GradleException("Invalid semantic version ${buildProperties['version']}")
+}
+def version_major = match.group(1)
+def version_minor = match.group(2)
+def version_patch = match.group(3)
+
+def version_code = (version_major + version_minor.padLeft(3, "0") + version_patch.padLeft(3, "0")) as int
 
 android {
     ndkVersion rootProject.ext.ndkVersion
@@ -135,12 +148,22 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    // def Properties versionProps = new Properties()
+    // def versionPropsFile = file('version.properties')
+    // if(versionPropsFile.exists())
+    //     versionProps.load(new FileInputStream(versionPropsFile))
+    // def code = (versionProps['VERSION_CODE'] ?: "1").toInteger() + 1
+    // versionProps['VERSION_CODE'] = code.toString()
+    // versionProps.store(versionPropsFile.newWriter(), null)
+
     defaultConfig {
         applicationId "com.reactnativesemaphorenew"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode version_code
+        versionName buildProperties['version']
+        // versionCode project.hasProperty('versionCode') ? project.property('versionCode') as int : 1
+        // versionName project.hasProperty('versionName') ? project.property('versionName') : "No versionName"
         testBuildType System.getProperty('testBuildType', 'debug')  // This will later be used to control the test apk build type
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
@@ -152,12 +175,19 @@ android {
             include "armeabi-v7a", "x86", "arm64-v8a", "x86_64"
         }
     }
+
     signingConfigs {
         debug {
             storeFile file('debug.keystore')
             storePassword 'android'
             keyAlias 'androiddebugkey'
             keyPassword 'android'
+        }
+        release {
+            storeFile file(RELEASE_STORE_FILE)
+            storePassword buildProperties['password']
+            keyAlias RELEASE_KEY_ALIAS
+            keyPassword buildProperties['password']
         }
     }
     buildTypes {
@@ -168,7 +198,7 @@ android {
         release {
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }

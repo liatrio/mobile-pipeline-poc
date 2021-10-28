@@ -7,6 +7,7 @@ on:
 env:
   GIHUB_REPO: liatrio/mobile-pipeline-poc
   SONAR_HOST: 'https://sonarqube.services.liatr.io'
+  KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
 
 jobs:
   Initial-check:
@@ -50,33 +51,35 @@ jobs:
     outputs:
       tag: ${{ steps.tag.outputs.TAG }}
 
-  Build-ios:
-    runs-on: macos-latest
-    steps:
-      - name: Checkout 
-        uses: actions/checkout@v2
-      - name: Setup Node
-        uses: actions/setup-node@v2
-        with:
-          node-version: '14'
-          cache: yarn
-      - name: Install Node Modules
-        run: yarn install
-      - name: Install Cocoapods
-        run: gem install cocoapods
-      - name: Install Pod dependencies
-        run: pod install
-        working-directory: ios
-      - name: Build IOS
-        run: xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew clean archive -sdk iphoneos -configuration release -UseModernBuildSystem=NO -archivePath $PWD/ReactNativeSemaphoreNew CODE_SIGNING_ALLOWED=NO
-      - name: 'upload artifact to be used with other jobs'
-        uses: actions/upload-artifact@v2
-        with:
-          name: 'ios-artifact'
-          path: 'ReactNativeSemaphoreNew.xcarchive/Products/Applications/ReactNativeSemaphoreNew.app'
+  # Build-ios:
+  #   runs-on: macos-latest
+  #   steps:
+  #     - name: Checkout 
+  #       uses: actions/checkout@v2
+  #     - name: Setup Node
+  #       uses: actions/setup-node@v2
+  #       with:
+  #         node-version: '14'
+  #         cache: yarn
+  #     - name: Install Node Modules
+  #       run: yarn install
+  #     - name: Install Cocoapods
+  #       run: gem install cocoapods
+  #     - name: Install Pod dependencies
+  #       run: pod install
+  #       working-directory: ios
+  #     - name: Build IOS
+  #       run: xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew clean archive -sdk iphoneos -configuration release -UseModernBuildSystem=NO -archivePath $PWD/ReactNativeSemaphoreNew CODE_SIGNING_ALLOWED=NO
+  #     - name: 'upload artifact to be used with other jobs'
+  #       uses: actions/upload-artifact@v2
+  #       with:
+  #         name: 'ios-artifact'
+  #         path: 'ReactNativeSemaphoreNew.xcarchive/Products/Applications/ReactNativeSemaphoreNew.app'
 
   Build-android:
     runs-on: ubuntu-latest
+    needs:
+      - Initial-check
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -87,48 +90,56 @@ jobs:
           cache: yarn
       - name: Install node modules
         run: yarn install   
+      - name: Keystore
+        run: |
+          echo ${{ secrets.KEYSTORE }} | base64 -d > android/app/liatrio.keystore
+          echo -e "password=${{ secrets.KEYSTORE_PASSWORD }}\nversion=${{ needs.Initial-check.outputs.tag }}" > android/build.properties       
+          echo ${{ secrets.GOOGLE_API_KEY }} | base64 -d > fastlane/google_api_key.json
       - name: Build Android App Bundle
         run: cd android && ./gradlew bundleRelease --no-daemon
+      - name: Fastlane
+        run: |
+          fastlane android release
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
           name: 'android-artifact'
           path: '/home/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/android/app/build/outputs/bundle/release/app-release.aab'
 
-  create-release-and-publish-ios-android-binaries: 
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
-    needs: 
-    - Build-ios
-    - Build-android
-    steps:
-      - name: Checkout 
-        uses: actions/checkout@v2
+  # create-release-and-publish-ios-android-binaries: 
+  #   runs-on: ubuntu-latest
+  #   if: github.ref == 'refs/heads/main'
+  #   needs: 
+  #   - Build-ios
+  #   - Build-android
+  #   steps:
+  #     - name: Checkout 
+  #       uses: actions/checkout@v2
 
-      - name: Create release
-        uses: liatrio/github-actions/github-create-release@master   
-        with:
-          owner: 'liatrio'
-          repo: 'mobile-pipeline-poc'
-          tag_name: ${{ needs.Initial-check.outputs.tag }}
-          token_name: 'token'
-          name: 'Release: ${{ needs.Initial-check.outputs.tag }}'
-          pat: ${{ secrets.GITHUB_TOKEN }}  
-      - name: Download IOS/Android artifact
-        uses: actions/download-artifact@v2
-        with: 
-          path: /home/runner/work/mobile-pipeline-poc/mobile-pipeline-poc
+  #     - name: Create release
+  #       uses: liatrio/github-actions/github-create-release@master   
+  #       with:
+  #         owner: 'liatrio'
+  #         repo: 'mobile-pipeline-poc'
+  #         tag_name: ${{ needs.Initial-check.outputs.tag }}
+  #         token_name: 'token'
+  #         name: 'Release: ${{ needs.Initial-check.outputs.tag }}'
+  #         pat: ${{ secrets.GITHUB_TOKEN }}  
+  #     - name: Download IOS/Android artifact
+  #       uses: actions/download-artifact@v2
+  #       with: 
+  #         path: /home/runner/work/mobile-pipeline-poc/mobile-pipeline-poc
 
-      - name: Deploy android binary to release assets
-        uses: liatrio/github-actions/github-upload-asset@master
-        with: 
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          FILE: android-artifact/app-release.aab
-          GITHUB_REPOSITORY: ${{ env.GITHUB_REPO }} 
+  #     - name: Deploy android binary to release assets
+  #       uses: liatrio/github-actions/github-upload-asset@master
+  #       with: 
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #         FILE: android-artifact/app-release.aab
+  #         GITHUB_REPOSITORY: ${{ env.GITHUB_REPO }} 
 
-      - name: Deploy IOS binary to release assets
-        uses: liatrio/github-actions/github-upload-asset@master
-        with: 
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          FILE: ios-artifact/ReactNativeSemaphoreNew
-          GITHUB_REPOSITORY: ${{ env.GITHUB_REPO }}
+  #     - name: Deploy IOS binary to release assets
+  #       uses: liatrio/github-actions/github-upload-asset@master
+  #       with: 
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #         FILE: ios-artifact/ReactNativeSemaphoreNew
+  #         GITHUB_REPOSITORY: ${{ env.GITHUB_REPO }}
