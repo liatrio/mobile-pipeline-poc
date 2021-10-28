@@ -58,14 +58,14 @@ end
 platform :android do
   desc "Release to Google Play Store"
   lane :release do |options|
-    # versions = google_play_track_version_codes(track: "internal")
-    # version_code = versions[0]
+    versions = google_play_track_version_codes(track: "internal")
+    version_code = versions[0]
     upload_to_play_store(
       track: 'internal',
       release_status: 'draft',
       aab: 'android/app/build/outputs/bundle/release/app-release.aab',
-      version_code: options[:version_code]
-      # version_code: version_code
+      # version_code: options[:version_code]
+      version_code: version_code
     )
   end
 end
