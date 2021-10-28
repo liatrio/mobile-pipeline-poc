@@ -110,9 +110,9 @@ jobs:
         with:
           owner: 'liatrio'
           repo: 'mobile-pipeline-poc'
-          tag_name: ${{ needs.Initial-check.outputs.TAG }}
+          tag_name: ${{ needs.Initial-check.outputs.tag }}
           token_name: 'token'
-          name: 'Release: ${{ needs.Initial-check.outputs.TAG }}'
+          name: 'Release: ${{ needs.Initial-check.outputs.tag }}'
           pat: ${{ secrets.GITHUB_TOKEN }}  
       - name: Download IOS/Android artifact
         uses: actions/download-artifact@v2
