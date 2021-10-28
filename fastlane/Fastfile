@@ -47,21 +47,21 @@ platform :ios do
   end
 end
 
-platform :android do
-  desc "Increment versionCode"
-  lane :increment do |options|
-  versions = google_play_track_version_codes(track: "internal")
-  version_code = versions[0] + 1
-  gradle(
-    task: "bundle",
-    build_type: "Release",
-    project_dir: "android/",
-    properties: {
-      "android.injected.version.code" => version_code
-    }
-  )
-  end
-end
+# platform :android do
+#   desc "Increment versionCode"
+#   lane :increment do |options|
+#   versions = google_play_track_version_codes(track: "internal")
+#   version_code = versions[0] + 1
+#   gradle(
+#     task: "bundle",
+#     build_type: "Release",
+#     project_dir: "android/",
+#     properties: {
+#       "android.injected.version.code" => version_code
+#     }
+#   )
+#   end
+# end
 
 platform :android do
   desc "Release to Google Play Store"
@@ -77,7 +77,7 @@ platform :android do
     upload_to_play_store(
       track: 'internal',
       release_status: 'draft',
-      aab: 'android/app/build/outputs/bundle/release/app-release.aab',
+      aab: 'android/app/build/outputs/bundle/release/app-release.aab'
       # version_code: options[:version_code]
     )
   end
