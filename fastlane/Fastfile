@@ -125,7 +125,7 @@ platform :android do
     upload_to_play_store(
       track: 'internal',
       release_status: 'draft',
-      aab: 'android/app/build/outputs/bundle/release/app-release.aab'
+      aab: options[:aab_path]
       # version_code: options[:version_code]
     )
   end

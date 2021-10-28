@@ -24,7 +24,7 @@ jobs:
           echo ::set-output name=SOURCE_TAG::$(git describe --tags --abbrev=0)
       - name: Check Version
         run: |
-          if [ ${{ steps.tag.outputs.TAG }} == ${{ steps.tag.outputs.SOURCE_TAG }} ]; then
+          if [ "v${{ steps.tag.outputs.TAG }}" == "${{ steps.tag.outputs.SOURCE_TAG }}" ]; then
             echo "Version: ${{ steps.tag.outputs.TAG }} needs to be updated in package.json" 
             exit 1
           fi 
@@ -90,56 +90,54 @@ jobs:
           cache: yarn
       - name: Install node modules
         run: yarn install   
-      - name: Keystore
+      - name: Build Properties Setup
         run: |
           echo ${{ secrets.KEYSTORE }} | base64 -d > android/app/liatrio.keystore
           echo -e "password=${{ secrets.KEYSTORE_PASSWORD }}\nversion=${{ needs.Initial-check.outputs.tag }}" > android/build.properties       
-          echo ${{ secrets.GOOGLE_API_KEY }} | base64 -d > fastlane/google_api_key.json
       - name: Build Android App Bundle
         run: cd android && ./gradlew bundleRelease --no-daemon
-      - name: Fastlane
-        run: |
-          fastlane android release
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
           name: 'android-artifact'
           path: '/home/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/android/app/build/outputs/bundle/release/app-release.aab'
 
-  # create-release-and-publish-ios-android-binaries: 
-  #   runs-on: ubuntu-latest
-  #   if: github.ref == 'refs/heads/main'
-  #   needs: 
-  #   - Build-ios
-  #   - Build-android
-  #   steps:
-  #     - name: Checkout 
-  #       uses: actions/checkout@v2
+  create-release-and-publish-ios-android-binaries: 
+    runs-on: ubuntu-latest
+    # if: github.ref == 'refs/heads/main'
+    needs: 
+    # - Build-ios
+    - Build-android
+    steps:
+      - name: Checkout 
+        uses: actions/checkout@v2
 
-  #     - name: Create release
-  #       uses: liatrio/github-actions/github-create-release@master   
-  #       with:
-  #         owner: 'liatrio'
-  #         repo: 'mobile-pipeline-poc'
-  #         tag_name: ${{ needs.Initial-check.outputs.tag }}
-  #         token_name: 'token'
-  #         name: 'Release: ${{ needs.Initial-check.outputs.tag }}'
-  #         pat: ${{ secrets.GITHUB_TOKEN }}  
-  #     - name: Download IOS/Android artifact
-  #       uses: actions/download-artifact@v2
-  #       with: 
-  #         path: /home/runner/work/mobile-pipeline-poc/mobile-pipeline-poc
-
-  #     - name: Deploy android binary to release assets
-  #       uses: liatrio/github-actions/github-upload-asset@master
-  #       with: 
-  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  #         FILE: android-artifact/app-release.aab
-  #         GITHUB_REPOSITORY: ${{ env.GITHUB_REPO }} 
-
-  #     - name: Deploy IOS binary to release assets
-  #       uses: liatrio/github-actions/github-upload-asset@master
-  #       with: 
-  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  #         FILE: ios-artifact/ReactNativeSemaphoreNew
-  #         GITHUB_REPOSITORY: ${{ env.GITHUB_REPO }}
+      - name: Create release
+        uses: liatrio/github-actions/github-create-release@master   
+        with:
+          owner: 'liatrio'
+          repo: 'mobile-pipeline-poc'
+          tag_name: 'v${{ needs.Initial-check.outputs.tag }}'
+          token_name: 'token'
+          name: 'Release: ${{ needs.Initial-check.outputs.tag }}'
+          pat: ${{ secrets.GITHUB_TOKEN }}  
+      - name: Download IOS/Android artifact
+        uses: actions/download-artifact@v2
+        with: 
+          path: /home/runner/work/mobile-pipeline-poc/mobile-pipeline-poc
+      - name: Deploy android binary to release assets
+        uses: liatrio/github-actions/github-upload-asset@master
+        with: 
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          FILE: android-artifact/app-release.aab
+          GITHUB_REPOSITORY: ${{ env.GITHUB_REPO }} 
+      # - name: Deploy IOS binary to release assets
+      #   uses: liatrio/github-actions/github-upload-asset@master
+      #   with: 
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #     FILE: ios-artifact/ReactNativeSemaphoreNew
+      #     GITHUB_REPOSITORY: ${{ env.GITHUB_REPO }}
+      - name: Fastlane
+        run: |
+          echo ${{ secrets.GOOGLE_API_KEY }} | base64 -d > fastlane/google_api_key.json
+          fastlane android release aab_path:android-artifact/app-release.aab
