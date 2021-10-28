@@ -133,4 +133,4 @@ jobs:
         with: 
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           FILE: ios-artifact/ReactNativeSemaphoreNew
-          GITHUB_REPOSITORY: ${{ env.GITHUB_REPO }}
+          GITHUB_REPO: ${{ env.GITHUB_REPO }}
