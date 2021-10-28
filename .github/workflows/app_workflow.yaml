@@ -11,6 +11,8 @@ env:
 jobs:
   Initial-check:
     runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.tag.outputs.TAG }}
     steps:
       - name: checkout code
         uses: actions/checkout@v2
@@ -47,8 +49,9 @@ jobs:
         timeout-minutes: 5
         env:
          SONAR_TOKEN: ${{ secrets.SONAR_SHAREDSVC_TOKEN }}
-    outputs:
-      tag: ${{ steps.tag.outputs.TAG }}
+      - name: Echo tag *TESTING*
+        run: echo ${{ steps.tag.outputs.TAG }}
+
 
   # Build-ios:
   #   runs-on: macos-latest
@@ -110,7 +113,7 @@ jobs:
         with:
           owner: 'liatrio'
           repo: 'mobile-pipeline-poc'
-          tag_name: ${{ Initial-check.outputs.tag }}
+          tag_name: ${{ needs.Initial-check.outputs.tag }}
           token_name: 'token'
           name: 'Release: ${{ needs.Initial-check.outputs.tag }}'
           pat: ${{ secrets.GITHUB_TOKEN }}  
