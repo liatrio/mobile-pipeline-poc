@@ -106,6 +106,7 @@ jobs:
     needs: 
     #- Build-ios
     - Build-android
+    - Initial-check
     steps:
       - name: Checkout 
         uses: actions/checkout@v2
