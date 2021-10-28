@@ -10,6 +10,7 @@ const opts = {
         "platformVersion": "11.0",
         "deviceName": "iPhone 7",
         "automationName": "XCUITest",
+		"app": "/Users/runner/work/mobile-pipeline-poc/mobile-pipeline-poc"
 		// platformName: "Android",
 		// platformVersion: "8.1",
 		// deviceName: "Android Emulator",

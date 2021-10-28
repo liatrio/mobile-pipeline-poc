@@ -34,8 +34,10 @@ jobs:
         run: xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew clean archive -sdk iphoneos -configuration release -UseModernBuildSystem=NO -archivePath $PWD/ReactNativeSemaphoreNew.xcarchive CODE_SIGNING_ALLOWED=NO
 
       - name: Convert the app's .app file to .ipa
-        run: mkdir Product 
-      # && cp -R ReactNativeSemaphoreNew.xcarchive/Products/Applications/ReactNativeSemaphoreNew.app Product
+        run: |
+          mkdir Payload
+          cp -R ReactNativeSemaphoreNew.xcarchive/Products/Applications/ReactNativeSemaphoreNew.app Payload 
+          zip -r ReactNativeSemaphoreNew.ipa Payload
 
       - name: Setup upterm session
         uses: lhotari/action-upterm@v1 
