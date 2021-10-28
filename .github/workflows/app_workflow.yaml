@@ -9,72 +9,72 @@ env:
   SONAR_HOST: 'https://sonarqube.services.liatr.io'
 
 jobs:
-  # Initial-check:
-  #   runs-on: ubuntu-latest
-  #   outputs:
-  #     tag: ${{ steps.tag.outputs.TAG }}
-  #   steps:
-  #     - name: checkout code
-  #       uses: actions/checkout@v2
-  #       with: 
-  #         fetch-depth: 0
-  #     - name: Get tags
-  #       id: tag
-  #       run: |
-  #         echo ::set-output name=TAG::$(jq -r .version package.json)
-  #         echo ::set-output name=SOURCE_TAG::$(git describe --tags --abbrev=0)
-  #     - name: Check Version
-  #       run: |
-  #         if [ ${{ steps.tag.outputs.TAG }} == ${{ steps.tag.outputs.SOURCE_TAG }} ]; then
-  #           echo "Version: ${{ steps.tag.outputs.TAG }} needs to be updated in package.json" 
-  #           exit 1
-  #         fi 
-  #     - name: Setup Node
-  #       uses: actions/setup-node@v2
-  #       with:
-  #         node-version: '14'
-  #         cache: yarn
-  #     - name: Install node modules
-  #       run: yarn install
-  #     - name: Generate Sonarqube reports
-  #       run: yarn test
-  #     - name: SonarQube Scan
-  #       uses: docker://sonarsource/sonar-scanner-cli:4.6
-  #       env:
-  #         SONAR_TOKEN: ${{ secrets.SONAR_SHAREDSVC_TOKEN }}
-  #         SONAR_HOST_URL: ${{ env.SONAR_HOST }}
-  #     - name: SonarQube Quality Gate check
-  #       uses: sonarsource/sonarqube-quality-gate-action@master
-  #       # Force to fail step after specific time
-  #       timeout-minutes: 5
-  #       env:
-  #        SONAR_TOKEN: ${{ secrets.SONAR_SHAREDSVC_TOKEN }}
+  Initial-check:
+    runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.tag.outputs.TAG }}
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v2
+        with: 
+          fetch-depth: 0
+      - name: Get tags
+        id: tag
+        run: |
+          echo ::set-output name=TAG::$(jq -r .version package.json)
+          echo ::set-output name=SOURCE_TAG::$(git describe --tags --abbrev=0)
+      - name: Check Version
+        run: |
+          if [ ${{ steps.tag.outputs.TAG }} == ${{ steps.tag.outputs.SOURCE_TAG }} ]; then
+            echo "Version: ${{ steps.tag.outputs.TAG }} needs to be updated in package.json" 
+            exit 1
+          fi 
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+          cache: yarn
+      - name: Install node modules
+        run: yarn install
+      - name: Generate Sonarqube reports
+        run: yarn test
+      - name: SonarQube Scan
+        uses: docker://sonarsource/sonar-scanner-cli:4.6
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_SHAREDSVC_TOKEN }}
+          SONAR_HOST_URL: ${{ env.SONAR_HOST }}
+      - name: SonarQube Quality Gate check
+        uses: sonarsource/sonarqube-quality-gate-action@master
+        # Force to fail step after specific time
+        timeout-minutes: 5
+        env:
+         SONAR_TOKEN: ${{ secrets.SONAR_SHAREDSVC_TOKEN }}
 
 
-  # Build-ios:
-  #   runs-on: macos-latest
-  #   steps:
-  #     - name: Checkout 
-  #       uses: actions/checkout@v2
-  #     - name: Setup Node
-  #       uses: actions/setup-node@v2
-  #       with:
-  #         node-version: '14'
-  #         cache: yarn
-  #     - name: Install Node Modules
-  #       run: yarn install
-  #     - name: Install Cocoapods
-  #       run: gem install cocoapods
-  #     - name: Install Pod dependencies
-  #       run: pod install
-  #       working-directory: ios
-  #     - name: Build IOS
-  #       run: xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew clean archive -sdk iphoneos -configuration release -UseModernBuildSystem=NO -archivePath $PWD/ReactNativeSemaphoreNew CODE_SIGNING_ALLOWED=NO
-  #     - name: Upload artifact
-  #       uses: actions/upload-artifact@v2
-  #       with:
-  #         name: 'ios-artifact'
-  #         path: 'ReactNativeSemaphoreNew.xcarchive/Products/Applications/ReactNativeSemaphoreNew.app'
+  Build-ios:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout 
+        uses: actions/checkout@v2
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+          cache: yarn
+      - name: Install Node Modules
+        run: yarn install
+      - name: Install Cocoapods
+        run: gem install cocoapods
+      - name: Install Pod dependencies
+        run: pod install
+        working-directory: ios
+      - name: Build IOS
+        run: xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew clean archive -sdk iphoneos -configuration release -UseModernBuildSystem=NO -archivePath $PWD/ReactNativeSemaphoreNew CODE_SIGNING_ALLOWED=NO
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: 'ios-artifact'
+          path: 'ReactNativeSemaphoreNew.xcarchive/Products/Applications/ReactNativeSemaphoreNew.app'
 
   Build-android:
     runs-on: ubuntu-latest
@@ -98,24 +98,24 @@ jobs:
 
   create-release-and-publish-ios-android-binaries: 
     runs-on: ubuntu-latest
-    #if: github.ref == 'refs/heads/fix-github-create-release-action'
+    #if: github.ref == 'refs/heads/main'
     needs: 
-   #- Build-ios
+    - Build-ios
     - Build-android
-   # - Initial-check
+    - Initial-check
     steps:
       - name: Checkout 
         uses: actions/checkout@v2
         
-      # - name: Create release
-      #   uses: liatrio/github-actions/github-create-release@fix-github-create-release
-      #   with:
-      #     owner: 'liatrio'
-      #     repo: 'mobile-pipeline-poc'
-      #     tag_name: ${{ needs.Initial-check.outputs.tag }}
-      #     token_name: 'token'
-      #     name: 'Release: ${{ needs.Initial-check.outputs.tag }}'
-      #     pat: ${{ secrets.GITHUB_TOKEN }}  
+      - name: Create release
+        uses: liatrio/github-actions/github-create-release@fix-github-create-release
+        with:
+          owner: 'liatrio'
+          repo: 'mobile-pipeline-poc'
+          tag_name: ${{ needs.Initial-check.outputs.tag }}
+          token_name: 'token'
+          name: 'Release: ${{ needs.Initial-check.outputs.tag }}'
+          pat: ${{ secrets.GITHUB_TOKEN }}  
       - name: Download IOS/Android artifact
         uses: actions/download-artifact@v2
         with: 
@@ -128,9 +128,9 @@ jobs:
           FILE: android-artifact/app-release.aab
           GITHUB_REPOSITORY: ${{ env.GITHUB_REPO }} 
 
-      # - name: Deploy IOS binary to release assets
-      #   uses: liatrio/github-actions/github-upload-asset@fix-github-create-release
-      #   with: 
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #     FILE: ios-artifact/ReactNativeSemaphoreNew
-      #     GITHUB_REPOSITORY: ${{ env.GITHUB_REPO }}
+      - name: Deploy IOS binary to release assets
+        uses: liatrio/github-actions/github-upload-asset@fix-github-create-release
+        with: 
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          FILE: ios-artifact/ReactNativeSemaphoreNew
+          GITHUB_REPOSITORY: ${{ env.GITHUB_REPO }}
