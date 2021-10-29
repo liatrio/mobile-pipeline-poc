@@ -6,27 +6,13 @@ const opts = {
 	port: 4723,
 	connectionRetryTimeout: 900000,
 	capabilities: {
-        "platformName": "iOS",
-        "platformVersion": "15.0",
-        "deviceName": "iPhone 11",
-        "automationName": "XCUITest",
-		//"app": "/Users/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/"
-		"app": "ReactNativeSemaphoreNew.xcarchive/Products/Applications/ReactNativeSemaphoreNew.app"
-		//"app": "ReactNativeSemaphoreNew.app"
-		// platformName: "Android",
-		// platformVersion: "8.1",
-		// deviceName: "Android Emulator",
-		// app: "/Users/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/app-release.apk",
-		// appPackage: "com.reactnativesemaphorenew",
-		// automationName: "UiAutomator2",
-		// avd: "sdk_gphone_x86",
-		// uiautomator2ServerInstallTimeout: "4000000",
-		// newCommandTimeout: "2400",
-		// androidDeviceReadyTimeout: "2400",
-		// avdLaunchTimeout: "400000",
-		// avdReadyTimeout: "400000",
-		// androidInstallTimeout: "400000",
-		// adbExecTimeout: "400000"
+        platformName: "iOS",
+        platformVersion: "15.0",
+        deviceName: "iPhone 11",
+        automationName: "XCUITest",
+		app: "ReactNativeSemaphoreNew.xcarchive/Products/Applications/ReactNativeSemaphoreNew.app",
+		//app: "/Users/ssmathistad/oct27mpoc/mobile-pipeline-poc/ReactNativeSemaphoreNew_iosSim-iPhone11.xcarchive/Products/Applications/ReactNativeSemaphoreNew.app",
+		newCommandTimeout: "2400"
 	}
 
 };
@@ -51,9 +37,32 @@ describe('Mobile App POC Appium Tests', function () {
 		const res = await client.status();
 		assert.isObject(res.build);
 		client.setImplicitTimeout(500000);
-		
-		const current_package = await client.getCurrentPackage();
-		assert.equal(current_package, 'com.reactnativesemaphorenew');
+	});
+
+	it('should find the home page text `Step One`', async function () {
+		this.timeout(500000);
+		client.setImplicitTimeout(100000);
+
+		const element = await client.findElement('accessibility id', 'Step One');
+
+		await client.getElementAttribute(element.ELEMENT, 'visible').then((attr) => {
+			assert.equal(attr, 'true');
+		});
+	});
+
+	it('should find the toggle element and toggle it', async function () {
+		this.timeout(200000);
+		client.setImplicitTimeout(100000);
+
+		const element = await client.findElement('accessibility id', 'toggle');
+
+		await client.getElementAttribute(element.ELEMENT, 'value').then((attr) => {
+			assert.equal(attr, '0');
+		 });
+		await client.elementClick(element.ELEMENT);
+		await client.getElementAttribute(element.ELEMENT, 'value').then((attr) => {
+			assert.equal(attr, '1');
+		});
 	});
 
 });
