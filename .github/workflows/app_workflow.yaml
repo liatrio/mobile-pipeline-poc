@@ -126,7 +126,7 @@ jobs:
         with: 
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           FILE: android-artifact/app-release.aab
-          GITHUB_REPOSITORY: ${{ env.GITHUB_REPO }} 
+          REPO: ${{ env.GITHUB_REPO }} 
 
       - name: Deploy IOS binary to release assets
         uses: liatrio/github-actions/github-upload-asset@fix-github-create-release
