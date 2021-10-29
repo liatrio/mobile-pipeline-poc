@@ -11,7 +11,8 @@ const opts = {
         "deviceName": "iPhone 11",
         "automationName": "XCUITest",
 		//"app": "/Users/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/"
-		"app": "ReactNativeSemaphoreNew.xcarchive/Products/Applications/ReactNativeSemaphoreNew.app"
+		//////////"app": "ReactNativeSemaphoreNew.xcarchive/Products/Applications/ReactNativeSemaphoreNew.app"
+		"app": "ReactNativeSemaphoreNew.app"
 		// platformName: "Android",
 		// platformVersion: "8.1",
 		// deviceName: "Android Emulator",
