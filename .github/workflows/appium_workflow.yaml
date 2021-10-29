@@ -30,7 +30,8 @@ jobs:
       - name: Check appium server status        
         run: curl http://localhost:4723/wd/hub/status
 
-      - 
+      - name: List ios sdks
+        run: xcrun simctl list
 
         # xcodebuild clean test -project ios/ReactNativeSemaphoreNew.xcodeproj -scheme ReactNativeSemaphoreNew -destination "platform=iOS Simulator,name=iPhone 11 Pro"
 
