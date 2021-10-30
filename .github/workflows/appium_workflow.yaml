@@ -35,8 +35,8 @@ jobs:
 
         # xcodebuild clean test -project ios/ReactNativeSemaphoreNew.xcodeproj -scheme ReactNativeSemaphoreNew -destination "platform=iOS Simulator,name=iPhone 11 Pro"
 
-      - name: Boot iOS simulator
-        run: xcrun simctl boot "iPhone 11" &
+      # - name: Boot iOS simulator
+      #   run: xcrun simctl boot "iPhone 11" &
 
       # - name: iOS simulator Setup
       #   run: |
@@ -61,8 +61,8 @@ jobs:
 
         # -destination "platform=iOS Simulator,name=iPhone SE"
 
-      - name: Check simulator status
-        run: xcrun simctl list | grep "(Booted)"
+      # - name: Check simulator status
+      #   run: xcrun simctl list | grep "(Booted)"
         
       # run: xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew clean archive -sdk iphoneos -configuration release -UseModernBuildSystem=NO -archivePath $PWD/ReactNativeSemaphoreNew.xcarchive CODE_SIGNING_ALLOWED=NO
 
