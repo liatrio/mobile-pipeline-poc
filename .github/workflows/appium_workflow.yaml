@@ -38,7 +38,7 @@ jobs:
 
       - uses: actions/setup-python@v2
         with:
-          python-version: '3.4'
+          python-version: '3.x'
 
       #- name: Build ios app
       #  run: xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew clean archive -destination "platform=iOS Simulator,name=iPhone 11,OS=15.0" -configuration release -UseModernBuildSystem=NO -archivePath $PWD/ReactNativeSemaphoreNew.xcarchive CODE_SIGNING_ALLOWED=NO
