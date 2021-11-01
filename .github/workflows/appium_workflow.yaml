@@ -63,8 +63,8 @@ jobs:
       #   run: xcodebuild -arch i386 -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew clean archive -sdk iphonesimulator15.0 -configuration release -UseModernBuildSystem=NO -archivePath $PWD/ReactNativeSemaphoreNew1.xcarchive CODE_SIGNING_ALLOWED=NO
       # - name: Build IOS - destination
       #   run: xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew clean archive -destination "platform=iOS Simulator,name=iPhone 11,OS=15.0" -configuration release -UseModernBuildSystem=NO -archivePath $PWD/ReactNativeSemaphoreNew2.xcarchive CODE_SIGNING_ALLOWED=NO
-      - name: Build IOS - sdk
-        run: xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew clean archive -destination "platform=iOS Simulator,name=iPhone 11,OS=15.0" -configuration release -UseModernBuildSystem=NO -archivePath $PWD/ReactNativeSemaphoreNew3.xcarchive CODE_SIGNING_ALLOWED=NO
+      # - name: Build IOS - sdk
+      #   run: xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew clean archive -destination "platform=iOS Simulator,name=iPhone 11,OS=15.0" -configuration release -UseModernBuildSystem=NO -archivePath $PWD/ReactNativeSemaphoreNew3.xcarchive CODE_SIGNING_ALLOWED=NO
       
 
 
