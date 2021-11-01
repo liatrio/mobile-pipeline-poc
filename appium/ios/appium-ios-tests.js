@@ -10,11 +10,11 @@ const opts = {
         platformVersion: "15.0",
         deviceName: "iPhone 11",		
         automationName: "XCUITest",
-		app: "ReactNativeSemaphoreNew.xcarchive/Products/Applications/ReactNativeSemaphoreNew.app",
+		//app: "ReactNativeSemaphoreNew.xcarchive/Products/Applications/ReactNativeSemaphoreNew.app",
         usePrebuiltWDA: "true",
         showXcodeLog: "true",
 		//app: "/Users/ssmathistad/oct27mpoc/mobile-pipeline-poc/ReactNativeSemaphoreNew_iosSim-iPhone11.xcarchive/Products/Applications/ReactNativeSemaphoreNew.app",
-	    //app: "/Users/ssmathistad/oct27mpoc/mobile-pipeline-poc/ReactNativeSemaphoreNew2.xcarchive/Products/Applications/ReactNativeSemaphoreNew.app",
+	    app: "/Users/ssmathistad/oct27mpoc/mobile-pipeline-poc/ReactNativeSemaphoreNew1.xcarchive/Products/Applications/ReactNativeSemaphoreNew.app",
 		newCommandTimeout: "240"
 	}
 
@@ -27,7 +27,7 @@ describe('Mobile App POC Appium Tests', function () {
 		this.timeout(500000);
 		client = await wdio.remote(opts);
 		client.setImplicitTimeout(500000);
-	});
+	}); 
 
 	afterEach(async function () {
 		this.timeout(500000);
