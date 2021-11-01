@@ -38,14 +38,6 @@ jobs:
       # - name: Boot iOS simulator
       #   run: xcrun simctl boot "iPhone 11" &
 
-      # - name: iOS simulator Setup
-      #   run: |
-        # run: xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew clean archive -sdk iphoneos15.0 -configuration release -UseModernBuildSystem=NO -archivePath $PWD/ReactNativeSemaphoreNew.xcarchive CODE_SIGNING_ALLOWED=NO
-        # platform=iOS Simulator,name=iPhone 6 Plus,OS=9.1
-        # run: xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew clean archive -destination "platform=iOS Simulator,name=iPhone 11,OS=15.0" -sdk iphonesimulator15.0 -configuration release -UseModernBuildSystem=NO -archivePath $PWD/ReactNativeSemaphoreNew.xcarchive CODE_SIGNING_ALLOWED=NO
-
-
-
 
 # ---------------------------------
         # xcodebuild: error: destination implies architecture, architecture must not also be specified.
@@ -64,16 +56,14 @@ jobs:
       # - name: Build IOS - destination, sdk
       #   run: xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew clean archive -destination "platform=iOS Simulator,name=iPhone 11,OS=15.0" -sdk iphonesimulator15.0 -configuration release -UseModernBuildSystem=NO -archivePath $PWD/ReactNativeSemaphoreNew1.xcarchive CODE_SIGNING_ALLOWED=NO
 # ---------------------------------
-      - name: Build IOS - architecture, sdk
-        run: xcodebuild -arch i386 -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew clean archive -sdk iphonesimulator15.0 -configuration release -UseModernBuildSystem=NO -archivePath $PWD/ReactNativeSemaphoreNew1.xcarchive CODE_SIGNING_ALLOWED=NO
-      - name: Build IOS - destination
-        run: xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew clean archive -destination "platform=iOS Simulator,name=iPhone 11,OS=15.0" -configuration release -UseModernBuildSystem=NO -archivePath $PWD/ReactNativeSemaphoreNew2.xcarchive CODE_SIGNING_ALLOWED=NO
-      - name: Build IOS - sdk
-        run: xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew clean archive -sdk iphonesimulator15.0 -configuration release -UseModernBuildSystem=NO -archivePath $PWD/ReactNativeSemaphoreNew3.xcarchive CODE_SIGNING_ALLOWED=NO
+      # - name: Build IOS - architecture, sdk
+      #   run: xcodebuild -arch i386 -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew clean archive -sdk iphonesimulator15.0 -configuration release -UseModernBuildSystem=NO -archivePath $PWD/ReactNativeSemaphoreNew1.xcarchive CODE_SIGNING_ALLOWED=NO
+      # - name: Build IOS - destination
+      #   run: xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew clean archive -destination "platform=iOS Simulator,name=iPhone 11,OS=15.0" -configuration release -UseModernBuildSystem=NO -archivePath $PWD/ReactNativeSemaphoreNew2.xcarchive CODE_SIGNING_ALLOWED=NO
+      # - name: Build IOS - sdk
+      #   run: xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew clean archive -sdk iphonesimulator15.0 -configuration release -UseModernBuildSystem=NO -archivePath $PWD/ReactNativeSemaphoreNew3.xcarchive CODE_SIGNING_ALLOWED=NO
+      
 
-                
-
-        # -destination "platform=iOS Simulator,name=iPhone SE"
 
       # - name: Check simulator status
       #   run: xcrun simctl list | grep "(Booted)"
