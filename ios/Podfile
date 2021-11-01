@@ -21,7 +21,7 @@ target 'ReactNativeSemaphoreNew' do
     # Pods for testing
   end
 
-  pod 'DoubleConversion', :podspec => '../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
+  # pod 'DoubleConversion', :podspec => '../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
 
   # pre_install do |installer|
   #   codegen_pre_install(installer)

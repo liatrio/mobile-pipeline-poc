@@ -33,8 +33,8 @@ jobs:
       - name: List ios sdks
         run: xcrun simctl list
 
-      - name: Build ios app
-        run: xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew clean archive -destination "platform=iOS Simulator,name=iPhone 11,OS=15.0" -configuration release -UseModernBuildSystem=NO -archivePath $PWD/ReactNativeSemaphoreNew.xcarchive CODE_SIGNING_ALLOWED=NO
+      #- name: Build ios app
+      #  run: xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew clean archive -destination "platform=iOS Simulator,name=iPhone 11,OS=15.0" -configuration release -UseModernBuildSystem=NO -archivePath $PWD/ReactNativeSemaphoreNew.xcarchive CODE_SIGNING_ALLOWED=NO
 
         # xcodebuild clean test -project ios/ReactNativeSemaphoreNew.xcodeproj -scheme ReactNativeSemaphoreNew -destination "platform=iOS Simulator,name=iPhone 11 Pro"
 
