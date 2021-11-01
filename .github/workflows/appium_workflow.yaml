@@ -17,6 +17,9 @@ jobs:
       - name: Install node modules
         run: yarn install
 
+      - name: Global install of Appium
+        run: npm uninstall -g appium && npm install -g appium
+
       - run: xcode-select -p
       - name: Install Pod dependencies
         run: pod install
