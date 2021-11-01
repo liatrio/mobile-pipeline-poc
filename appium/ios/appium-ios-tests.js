@@ -14,6 +14,7 @@ const opts = {
         usePrebuiltWDA: "true",
         showXcodeLog: "true",
 		//app: "/Users/ssmathistad/oct27mpoc/mobile-pipeline-poc/ReactNativeSemaphoreNew_iosSim-iPhone11.xcarchive/Products/Applications/ReactNativeSemaphoreNew.app",
+	    //app: "/Users/ssmathistad/oct27mpoc/mobile-pipeline-poc/ReactNativeSemaphoreNew2.xcarchive/Products/Applications/ReactNativeSemaphoreNew.app",
 		newCommandTimeout: "240"
 	}
 
@@ -34,37 +35,37 @@ describe('Mobile App POC Appium Tests', function () {
 		assert.isNull(delete_session);
 	});
 
-	// it('should create and delete a session', async function () {
-	// 	this.timeout(500000);
-	// 	const res = await client.status();
-	// 	assert.isObject(res.build);
-	// 	client.setImplicitTimeout(500000);
-	// });
+	it('should create and delete a session', async function () {
+		this.timeout(500000);
+		const res = await client.status();
+		assert.isObject(res.build);
+		client.setImplicitTimeout(500000);
+	});
 
-	// it('should find the home page text `Step One`', async function () {
-	// 	this.timeout(500000);
-	// 	client.setImplicitTimeout(100000);
+	it('should find the home page text `Step One`', async function () {
+		this.timeout(500000);
+		client.setImplicitTimeout(100000);
 
-	// 	const element = await client.findElement('accessibility id', 'Step One');
+		const element = await client.findElement('accessibility id', 'Step One');
 
-	// 	await client.getElementAttribute(element.ELEMENT, 'visible').then((attr) => {
-	// 		assert.equal(attr, 'true');
-	// 	});
-	// });
+		await client.getElementAttribute(element.ELEMENT, 'visible').then((attr) => {
+			assert.equal(attr, 'true');
+		});
+	});
 
-	// it('should find the toggle element and toggle it', async function () {
-	// 	this.timeout(200000);
-	// 	client.setImplicitTimeout(100000);
+	it('should find the toggle element and toggle it', async function () {
+		this.timeout(200000);
+		client.setImplicitTimeout(100000);
 
-	// 	const element = await client.findElement('accessibility id', 'toggle');
+		const element = await client.findElement('accessibility id', 'toggle');
 
-	// 	await client.getElementAttribute(element.ELEMENT, 'value').then((attr) => {
-	// 		assert.equal(attr, '0');
-	// 	 });
-	// 	await client.elementClick(element.ELEMENT);
-	// 	await client.getElementAttribute(element.ELEMENT, 'value').then((attr) => {
-	// 		assert.equal(attr, '1');
-	// 	});
-	// });
+		await client.getElementAttribute(element.ELEMENT, 'value').then((attr) => {
+			assert.equal(attr, '0');
+		 });
+		await client.elementClick(element.ELEMENT);
+		await client.getElementAttribute(element.ELEMENT, 'value').then((attr) => {
+			assert.equal(attr, '1');
+		});
+	});
 
 });
