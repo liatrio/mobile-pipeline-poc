@@ -5,6 +5,8 @@ platform :ios, '10.0'
 
 # use_frameworks!
 
+# pod 'DoubleConversion', :podspec => './node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
+
 target 'ReactNativeSemaphoreNew' do
   config = use_native_modules!
 
@@ -18,6 +20,8 @@ target 'ReactNativeSemaphoreNew' do
     inherit! :complete
     # Pods for testing
   end
+
+  pod 'DoubleConversion', :podspec => '../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
 
   # pre_install do |installer|
   #   codegen_pre_install(installer)
