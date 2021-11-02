@@ -21,17 +21,20 @@ jobs:
         run: pod install
         working-directory: ios
 
+      - name: Install Appium Globally
+        run: yarn global add appium
+
       ## Setup appium  
-      - name: Run appium-doctor        
-        run: npm run appium-doctor
+      # - name: Run appium-doctor        
+      #   run: npm run appium-doctor
       - name: Run appium in the background        
-        run: npm run appium &
+        run: appium &
       - name: Check appium server status        
         run: curl http://localhost:4723/wd/hub/status
 
       # Used for testing to obtain a list of useable sdks
-      # - name: List ios sdks
-      #   run: xcrun simctl list
+      - name: List ios sdks
+        run: xcrun simctl list
 
       - name: Setup Python
         uses: actions/setup-python@v2
@@ -55,18 +58,13 @@ jobs:
       # - name: Check simulator status
       #   run: xcrun simctl list | grep "(Booted)"
 
-      # - name: Run the emulator in the background
-      #   run: |
-      #     /Applications/Xcode.app/Contents/Developer/Applications/Simulator.app/Contents/MacOS/Simulator -CurrentDeviceUDID ADDCA261-95B1-41D4-B911-FCBD965EDBF2 &
-
       # - name: Run appium integration Tests
       #   run: npm run mocha appium/ios
 
       - name: Setup upterm session
         uses: lhotari/action-upterm@v1 
-     
 
-        ### --- Appium - Android --- ###
+### --- Appium - Android (commented out for testing iOS exclusively) --- ###
 
   # Appium:
   #   runs-on: macos-latest
