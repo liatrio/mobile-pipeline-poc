@@ -10,6 +10,7 @@ jobs:
     env:
       ANDROID_SDK_ROOT: '/Users/runner/Library/Android/sdk'
       ANDROID_HOME: '/Users/runner/Library/Android/sdk'
+      SAUCE_LABS: 'ondemand.saucelabs.com:443/wd/hub'
     steps:
       - name: Checkout 
         uses: actions/checkout@v2
@@ -52,7 +53,26 @@ jobs:
 
       - name: Zip .app file for Sauce Labs
         run: zip -r ReactNativeSemaphoreNew.app.zip /Users/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/ReactNativeSemaphoreNew.xcarchive/Products/Applications/ReactNativeSemaphoreNew.app
-      # - run: curl -u "$SAUCE_USERNAME:$SAUCE_ACCESS_KEY" --location --request POST 'https://api.us-west-1.saucelabs.com/v1/storage/upload' --form 'payload=@"/Users/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/ReactNativeSemaphoreNew1.xcarchive/Products/Applications/ReactNativeSemaphoreNew.app"' --form 'name="ReactNativeSemaphoreNew.app"' --form 'description="Liatrio Mobile App iOS POC"'
+
+        #Upload zip artifact to be used with sauce labs
+      - name: Upload Zip artifact
+        uses: actions/upload-artifact@v2
+        with: 
+          name: ReactNativeSemaphoreNew.app.zip
+          path: /Users/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/ReactNativeSemaphoreNew.xcarchive/Products/Applications/ReactNativeSemaphoreNew.app.zip
+      
+      - name: List artifacts
+        run: |
+          curl \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/liatrio/mobile-pipeline-poc/actions/runs/${GITHUB_RUN_NUMBER}/artifacts \
+            > temp.json
+
+      - name: Grab ios artifact id
+        run: export IOS_ARTIFACT_URL=$(jq -r ".artifacts[0].url" temp.json)
+        
+        
+        # - run: curl -u "$SAUCE_USERNAME:$SAUCE_ACCESS_KEY" --location --request POST 'https://api.us-west-1.saucelabs.com/v1/storage/upload' --form 'payload=@"/Users/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/ReactNativeSemaphoreNew1.xcarchive/Products/Applications/ReactNativeSemaphoreNew.app"' --form 'name="ReactNativeSemaphoreNew.app"' --form 'description="Liatrio Mobile App iOS POC"'
 
       # Used for checking the status of an installed simulator
       # - name: Check simulator status
