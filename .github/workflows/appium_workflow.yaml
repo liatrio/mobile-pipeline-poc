@@ -97,8 +97,8 @@ jobs:
             > temp.json
 
       - name: Grab ios artifact id
-        #run: export IOS_ARTIFACT_URL=$(jq -r ".artifacts[0].url" temp.json)
-        run: echo `jq -r ".artifacts[0].url" temp.json` >> $IOS_ARTIFACT_URL
+        run: export IOS_ARTIFACT_URL=$(jq -r ".artifacts[0].url" temp.json)
+        #run: echo `jq -r ".artifacts[0].url" temp.json` >> $IOS_ARTIFACT_URL
 
 
       #   #Upload zip artifact to be used with sauce labs
