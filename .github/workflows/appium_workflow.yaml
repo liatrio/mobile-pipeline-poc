@@ -79,6 +79,7 @@ jobs:
 
   Appium_IOS_Check:
     runs-on: macos-latest
+    needs: Appium_IOS
     env:
       ANDROID_SDK_ROOT: '/Users/runner/Library/Android/sdk'
       ANDROID_HOME: '/Users/runner/Library/Android/sdk'
