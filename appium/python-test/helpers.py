@@ -5,7 +5,7 @@ from datetime import datetime
 from sauceclient import SauceClient
 
 IOS_BASE_CAPS = {
-    'app': 'ReactNativeSemaphoreNew1.xcarchive/Products/Applications/ReactNativeSemaphoreNew.app',
+    'app': '/Users/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/ReactNativeSemaphoreNew.xcarchive/Products/Applications/ReactNativeSemaphoreNew.app',
     'automationName': 'xcuitest',
     'platformName': 'iOS',
     'platformVersion': '15.0',

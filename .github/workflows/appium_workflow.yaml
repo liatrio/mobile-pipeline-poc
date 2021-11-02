@@ -10,6 +10,7 @@ jobs:
     env:
       ANDROID_SDK_ROOT: '/Users/runner/Library/Android/sdk'
       ANDROID_HOME: '/Users/runner/Library/Android/sdk'
+      # SAUCE_URL: 'https://api.us-west-1.saucelabs.com/v1/storage/upload'
     steps:
       - name: Checkout 
         uses: actions/checkout@v2
@@ -17,8 +18,9 @@ jobs:
       - name: Install node modules
         run: yarn install
 
-      - name: Global install of Appium
-        run: npm uninstall -g appium && npm install -g appium
+      # - name: Global install of Appium
+        # run: npm uninstall -g appium && npm install -g appium
+        # run: yarn remove appium && yarn global add appium
 
       - run: xcode-select -p
       - name: Install Pod dependencies
@@ -26,12 +28,12 @@ jobs:
         working-directory: ios
 
       ## Setup appium  
-      - name: Run appium-doctor        
-        run: npm run appium-doctor
-      - name: Run appium in the background        
-        run: npm run appium &
-      - name: Check appium server status        
-        run: curl http://localhost:4723/wd/hub/status
+      # - name: Run appium-doctor        
+      #   run: npm run appium-doctor
+      # - name: Run appium in the background        
+      #   run: npm run appium &
+      # - name: Check appium server status        
+      #   run: curl http://localhost:4723/wd/hub/status
 
       - name: List ios sdks
         run: xcrun simctl list
@@ -39,6 +41,14 @@ jobs:
       - uses: actions/setup-python@v2
         with:
           python-version: '3.x'
+
+      - run: yarn add @wdio/cli && yarn add @wdio/appium-service
+
+# curl -u "$SAUCE_USERNAME:$SAUCE_ACCESS_KEY" --location \
+# --request POST 'https://api.us-west-1.saucelabs.com/v1/storage/upload' \
+# --form 'payload=@"/Users/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/ReactNativeSemaphoreNew.xcarchive/Products/Applications/ReactNativeSemaphoreNew.app"' \
+# --form 'name="ReactNativeSemaphoreNew.app"' \
+# --form 'description="Liatrio Mobile App iOS POC"'
 
       #- name: Build ios app
       #  run: xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew clean archive -destination "platform=iOS Simulator,name=iPhone 11,OS=15.0" -configuration release -UseModernBuildSystem=NO -archivePath $PWD/ReactNativeSemaphoreNew.xcarchive CODE_SIGNING_ALLOWED=NO
