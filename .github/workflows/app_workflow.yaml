@@ -119,11 +119,11 @@ jobs:
       - name: Checkout 
         uses: actions/checkout@v2
       - name: Create release
-        uses: liatrio/github-actions/github-create-release@fix-github-create-release
+        uses: liatrio/github-actions/github-create-release@master
         with:
           owner: 'liatrio'
           repo: 'mobile-pipeline-poc'
-          tag_name: 'v${{ needs.Version.outputs.tag }}'
+          tag_name: 'v${{ needs.Version.outputs.VERSION }}'
           token_name: 'token'
           name: 'Release: ${{ needs.Version.outputs.VERSION }}'
           pat: ${{ secrets.GITHUB_TOKEN }}  
@@ -132,13 +132,13 @@ jobs:
         with: 
           path: /home/runner/work/mobile-pipeline-poc/mobile-pipeline-poc
       - name: Deploy android binary to release assets
-        uses: liatrio/github-actions/github-upload-asset@fix-github-create-release
+        uses: liatrio/github-actions/github-upload-asset@master
         with: 
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           FILE: android-artifact/app-release.aab
           REPO: ${{ env.REPO }} 
       - name: Deploy IOS binary to release assets
-        uses: liatrio/github-actions/github-upload-asset@fix-github-create-release
+        uses: liatrio/github-actions/github-upload-asset@master
         with: 
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           FILE: ios-artifact/ReactNativeSemaphoreNew
