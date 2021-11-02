@@ -11,55 +11,82 @@ jobs:
       ANDROID_SDK_ROOT: '/Users/runner/Library/Android/sdk'
       ANDROID_HOME: '/Users/runner/Library/Android/sdk'
       SAUCE_LABS: 'ondemand.saucelabs.com:443/wd/hub'
+      IOS_ARTIFACT_URL: ''
     steps:
       - name: Checkout 
         uses: actions/checkout@v2
 
-      - name: Install node modules
-        run: yarn install
-
-      - name: Install Pod dependencies
-        run: pod install
-        working-directory: ios
-
-      - name: Install Appium Globally
-        run: yarn global add appium
-
-      ## Setup appium  
-      # - name: Run appium-doctor        
-      #   run: npm run appium-doctor
-      - name: Run appium in the background        
-        run: appium &
-      - name: Check appium server status        
-        run: curl http://localhost:4723/wd/hub/status
-
-      # Used for testing to obtain a list of useable sdks
-      - name: List ios sdks
-        run: xcrun simctl list
-
-      - name: Setup Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.x'
-
-      - name: Install requirements
-        run: cd appium/python-test && pip3 install -r requirements.txt
-
-      # - name: Boot iOS simulator
-      #   run: xcrun simctl boot "iPhone 11" &
-
-      - name: Build IOS - architecture, sdk
-        run: xcodebuild -arch x86_64 -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew clean archive -sdk iphonesimulator15.0 -configuration release -UseModernBuildSystem=NO -archivePath $PWD/ReactNativeSemaphoreNew.xcarchive CODE_SIGNING_ALLOWED=NO
-
-      - name: Zip .app file for Sauce Labs
-        run: zip -r ReactNativeSemaphoreNew.app.zip /Users/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/ReactNativeSemaphoreNew.xcarchive/Products/Applications/ReactNativeSemaphoreNew.app
+      - name: Test output
+        run: echo "Hello" >> test.txt
 
         #Upload zip artifact to be used with sauce labs
       - name: Upload Zip artifact
         uses: actions/upload-artifact@v2
         with: 
-          name: ReactNativeSemaphoreNew.app.zip
-          path: /Users/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/ReactNativeSemaphoreNew.app.zip
+          name: test.txt
+          path: /Users/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/test.txt
+
+      - name: Test output
+        run: echo "Hello 2" >> test2.txt
+
+        #Upload zip artifact to be used with sauce labs
+      - name: Upload Zip artifact
+        uses: actions/upload-artifact@v2
+        with: 
+          name: test2.txt
+          path: /Users/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/test2.txt
+      
+
+      # - name: Install node modules
+      #   run: yarn install
+
+      # - name: Install Pod dependencies
+      #   run: pod install
+      #   working-directory: ios
+
+      # - name: Install Appium Globally
+      #   run: yarn global add appium
+
+      # ## Setup appium  
+      # # - name: Run appium-doctor        
+      # #   run: npm run appium-doctor
+      # - name: Run appium in the background        
+      #   run: appium &
+      # - name: Check appium server status        
+      #   run: curl http://localhost:4723/wd/hub/status
+
+      # # Used for testing to obtain a list of useable sdks
+      # - name: List ios sdks
+      #   run: xcrun simctl list
+
+      # - name: Setup Python
+      #   uses: actions/setup-python@v2
+      #   with:
+      #     python-version: '3.x'
+
+      # - name: Install requirements
+      #   run: cd appium/python-test && pip3 install -r requirements.txt
+
+      # # - name: Boot iOS simulator
+      # #   run: xcrun simctl boot "iPhone 11" &
+
+      # - name: Build IOS - architecture, sdk
+      #   run: xcodebuild -arch x86_64 -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew clean archive -sdk iphonesimulator15.0 -configuration release -UseModernBuildSystem=NO -archivePath $PWD/ReactNativeSemaphoreNew.xcarchive CODE_SIGNING_ALLOWED=NO
+
+      # - name: Zip .app file for Sauce Labs
+      #   run: zip -r ReactNativeSemaphoreNew.app.zip /Users/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/ReactNativeSemaphoreNew.xcarchive/Products/Applications/ReactNativeSemaphoreNew.app
+
+
+  Appium_IOS_Check:
+    runs-on: macos-latest
+    env:
+      ANDROID_SDK_ROOT: '/Users/runner/Library/Android/sdk'
+      ANDROID_HOME: '/Users/runner/Library/Android/sdk'
+      SAUCE_LABS: 'ondemand.saucelabs.com:443/wd/hub'
+      IOS_ARTIFACT_URL: ''
+    steps:
+      - name: Checkout 
+        uses: actions/checkout@v2
       
       - name: List artifacts
         run: |
@@ -69,7 +96,29 @@ jobs:
             > temp.json
 
       - name: Grab ios artifact id
-        run: export IOS_ARTIFACT_URL=$(jq -r ".artifacts[0].url" temp.json)
+        #run: export IOS_ARTIFACT_URL=$(jq -r ".artifacts[0].url" temp.json)
+        run: echo `jq -r ".artifacts[0].url" temp.json` >> $IOS_ARTIFACT_URL
+
+
+      #   #Upload zip artifact to be used with sauce labs
+      # - name: Upload Zip artifact
+      #   uses: actions/upload-artifact@v2
+      #   with: 
+      #     name: ReactNativeSemaphoreNew.app.zip
+      #     path: /Users/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/ReactNativeSemaphoreNew.app.zip
+      
+      # - name: List artifacts
+      #   run: |
+      #     curl \
+      #       -H "Accept: application/vnd.github.v3+json" \
+      #       "https://api.github.com/repos/liatrio/mobile-pipeline-poc/actions/runs/${GITHUB_RUN_NUMBER}/artifacts" \
+      #       > temp.json
+
+      # - name: Grab ios artifact id
+      #   #run: export IOS_ARTIFACT_URL=$(jq -r ".artifacts[0].url" temp.json)
+      #   run: echo `jq -r ".artifacts[0].url" temp.json` >> $IOS_ARTIFACT_URL
+
+      # "https://$SAUCE_USERNAME:$SAUCE_ACCESS_KEY
         
         
         # - run: curl -u "$SAUCE_USERNAME:$SAUCE_ACCESS_KEY" --location --request POST 'https://api.us-west-1.saucelabs.com/v1/storage/upload' --form 'payload=@"/Users/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/ReactNativeSemaphoreNew1.xcarchive/Products/Applications/ReactNativeSemaphoreNew.app"' --form 'name="ReactNativeSemaphoreNew.app"' --form 'description="Liatrio Mobile App iOS POC"'

@@ -4,8 +4,11 @@ from selenium.common.exceptions import InvalidSessionIdException
 from datetime import datetime
 from sauceclient import SauceClient
 
+app_url = os.getenv('GITHUB_REPOSITORY') + "/actions/artifacts/" + os.getenv('IOS_ARTIFACT_URL')
+
 IOS_BASE_CAPS = {
-    'app': '/Users/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/ReactNativeSemaphoreNew.xcarchive/Products/Applications/ReactNativeSemaphoreNew.app',
+    # 'app': '/Users/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/ReactNativeSemaphoreNew.xcarchive/Products/Applications/ReactNativeSemaphoreNew.app',
+    'app': app_url,
     'automationName': 'xcuitest',
     'platformName': 'iOS',
     'platformVersion': '15.0',
@@ -25,7 +28,7 @@ if os.getenv('SAUCE_LABS') and os.getenv('SAUCE_USERNAME') and os.getenv('SAUCE_
 
     IOS_BASE_CAPS['build'] = build_name
     IOS_BASE_CAPS['tags'] = ['e2e', 'appium', 'sample-code', 'ios', 'python']
-    IOS_BASE_CAPS['app'] = 'http://appium.github.io/appium/assets/TestApp9.4.app.zip'
+    # IOS_BASE_CAPS['app'] = ''
 
     EXECUTOR = 'http://{}:{}@ondemand.saucelabs.com:80/wd/hub'.format(
         os.getenv('SAUCE_USERNAME'), os.getenv('SAUCE_ACCESS_KEY'))
