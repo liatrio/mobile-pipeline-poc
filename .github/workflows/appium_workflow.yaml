@@ -59,13 +59,13 @@ jobs:
         uses: actions/upload-artifact@v2
         with: 
           name: ReactNativeSemaphoreNew.app.zip
-          path: /Users/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/ReactNativeSemaphoreNew.xcarchive/Products/Applications/ReactNativeSemaphoreNew.app.zip
+          path: /Users/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/ReactNativeSemaphoreNew.app.zip
       
       - name: List artifacts
         run: |
           curl \
             -H "Accept: application/vnd.github.v3+json" \
-            https://api.github.com/repos/liatrio/mobile-pipeline-poc/actions/runs/${GITHUB_RUN_NUMBER}/artifacts \
+            "https://api.github.com/repos/liatrio/mobile-pipeline-poc/actions/runs/${GITHUB_RUN_NUMBER}/artifacts" \
             > temp.json
 
       - name: Grab ios artifact id
