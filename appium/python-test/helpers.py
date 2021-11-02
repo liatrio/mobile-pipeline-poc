@@ -33,3 +33,12 @@ if os.getenv('SAUCE_LABS') and os.getenv('SAUCE_USERNAME') and os.getenv('SAUCE_
     sauce = SauceClient(os.getenv('SAUCE_USERNAME'), os.getenv('SAUCE_ACCESS_KEY'))
 else:
     EXECUTOR = 'http://127.0.0.1:4723/wd/hub'
+
+def ensure_dir(directory):
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+
+def report_to_sauce(session_id):
+    print("Link to your job: https://saucelabs.com/jobs/%s" % session_id)
+    passed = str(sys.exc_info() == (None, None, None))
+    sauce.jobs.update_job(session_id, passed=passed)
