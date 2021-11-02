@@ -45,7 +45,7 @@ jobs:
           python-version: '3.x'
 
       - name: Install requirements
-        run: cd appium/python && pip3 install requirements.txt
+        run: cd appium/python-test && pip3 install requirements.txt
 
       # - run: yarn add @wdio/cli && yarn add @wdio/appium-service
 
