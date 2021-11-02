@@ -17,7 +17,6 @@ jobs:
       - name: Install node modules
         run: yarn install
 
-      - run: xcode-select -p
       - name: Install Pod dependencies
         run: pod install
         working-directory: ios
@@ -30,8 +29,9 @@ jobs:
       - name: Check appium server status        
         run: curl http://localhost:4723/wd/hub/status
 
-      - name: List ios sdks
-        run: xcrun simctl list
+      # Used for testing to obtain a list of useable sdks
+      # - name: List ios sdks
+      #   run: xcrun simctl list
 
       - name: Setup Python
         uses: actions/setup-python@v2
@@ -39,7 +39,7 @@ jobs:
           python-version: '3.x'
 
       - name: Install requirements
-        run: cd appium/python-test && pip3 isntall -r requirements.txt
+        run: cd appium/python-test && pip3 install -r requirements.txt
 
       # - name: Boot iOS simulator
       #   run: xcrun simctl boot "iPhone 11" &
@@ -51,6 +51,7 @@ jobs:
         run: zip -r ReactNativeSemaphoreNew.app.zip /Users/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/ReactNativeSemaphoreNew.xcarchive/Products/Applications/ReactNativeSemaphoreNew.app
       # - run: curl -u "$SAUCE_USERNAME:$SAUCE_ACCESS_KEY" --location --request POST 'https://api.us-west-1.saucelabs.com/v1/storage/upload' --form 'payload=@"/Users/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/ReactNativeSemaphoreNew1.xcarchive/Products/Applications/ReactNativeSemaphoreNew.app"' --form 'name="ReactNativeSemaphoreNew.app"' --form 'description="Liatrio Mobile App iOS POC"'
 
+      # Used for checking the status of an installed simulator
       # - name: Check simulator status
       #   run: xcrun simctl list | grep "(Booted)"
 
