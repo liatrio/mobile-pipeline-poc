@@ -9,7 +9,6 @@ from appium import webdriver
 from helpers import report_to_sauce, IOS_BASE_CAPS, EXECUTOR
 from selenium.common.exceptions import WebDriverException
 
-
 # Run standard unittest base.
 class TestIOSCreateSession(unittest.TestCase):
     def tearDown(self):

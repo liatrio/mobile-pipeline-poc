@@ -10,7 +10,10 @@ jobs:
     env:
       ANDROID_SDK_ROOT: '/Users/runner/Library/Android/sdk'
       ANDROID_HOME: '/Users/runner/Library/Android/sdk'
-      SAUCE_LABS: 'ondemand.saucelabs.com:443/wd/hub'
+      #SAUCE_LABS: 'ondemand.saucelabs.com:443/wd/hub'
+      SAUCE_LABS: 'ondemand.us-west-1.saucelabs.com/wd/hub'
+      #SAUCE_LABS: 'ondemand.us-west-1.saucelabs.com:443/wd/hub'
+      #SAUCE_LABS: 'ondemand.us-west-1.saucelabs.com:80/wd/hub'
       IOS_ARTIFACT_URL: ''
     steps:
       - name: Checkout 
@@ -35,8 +38,8 @@ jobs:
         run: curl http://localhost:4723/wd/hub/status
 
       # Used for testing to obtain a list of useable sdks
-      - name: List ios sdks
-        run: xcrun simctl list
+      # - name: List ios sdks
+      #   run: xcrun simctl list
 
       - name: Setup Python
         uses: actions/setup-python@v2
