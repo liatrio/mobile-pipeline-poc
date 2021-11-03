@@ -10,10 +10,11 @@ jobs:
     env:
       ANDROID_SDK_ROOT: '/Users/runner/Library/Android/sdk'
       ANDROID_HOME: '/Users/runner/Library/Android/sdk'
-      #SAUCE_LABS: 'ondemand.saucelabs.com:443/wd/hub'
-      SAUCE_LABS: 'ondemand.us-west-1.saucelabs.com/wd/hub'
-      #SAUCE_LABS: 'ondemand.us-west-1.saucelabs.com:443/wd/hub'
-      #SAUCE_LABS: 'ondemand.us-west-1.saucelabs.com:80/wd/hub'
+      #SAUCE_LABS: 'ondemand.saucelabs.com:443/wd/hub'           # curl: (52) Empty reply from server
+      SAUCE_LABS: 'ondemand.saucelabs.com:80/wd/hub'             # valid response - The command you just sent (GET ) has no session ID. This is generally caused by testing frameworks trying to run commands after the conclusion of a test. For example, you may be trying to capture a screenshot or retrieve server logs after selenium.stop() or driver.quit() was called in a tearDown method.
+      #SAUCE_LABS: 'ondemand.us-west-1.saucelabs.com/wd/hub'     # valid response - {"ready":true,"message":"Sauce Labs automated testing is fully operational"}
+      #SAUCE_LABS: 'ondemand.us-west-1.saucelabs.com:443/wd/hub' # curl: (52) Empty reply from server
+      #SAUCE_LABS: 'ondemand.us-west-1.saucelabs.com:80/wd/hub'  # valid response - same as no protocol; http by default - {"ready":true,"message":"Sauce Labs automated testing is fully operational"}
       IOS_ARTIFACT_URL: ''
     steps:
       - name: Checkout 
@@ -58,31 +59,14 @@ jobs:
       - name: Zip .app file for Sauce Labs
         run: zip -r ReactNativeSemaphoreNew.app.zip /Users/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/ReactNativeSemaphoreNew.xcarchive/Products/Applications/ReactNativeSemaphoreNew.app
 
+      - name: Push to artifact branch
+        run: git add ReactNativeSemaphoreNew.app.zip && git commit -m 'push artifact' && git push -f origin appium-pipeline:sauce-labs-app-storage
 
-
-
+# https://github.com/liatrio/mobile-pipeline-poc/tree/sauce-labs-app-storage
 
 
         
-      #   #Upload zip artifact to be used with sauce labs
-      # - name: Upload Zip artifact
-      #   uses: actions/upload-artifact@v2
-      #   with: 
-      #     name: ReactNativeSemaphoreNew.app.zip
-      #     path: /Users/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/ReactNativeSemaphoreNew.app.zip
-      
-      # - name: List artifacts
-      #   run: |
-      #     curl \
-      #       -H "Accept: application/vnd.github.v3+json" \
-      #       "https://api.github.com/repos/liatrio/mobile-pipeline-poc/actions/runs/${GITHUB_RUN_NUMBER}/artifacts" \
-      #       > temp.json
 
-      # - name: Grab ios artifact id
-      #   #run: export IOS_ARTIFACT_URL=$(jq -r ".artifacts[0].url" temp.json)
-      #   run: echo `jq -r ".artifacts[0].url" temp.json` >> $IOS_ARTIFACT_URL
-
-      # "https://$SAUCE_USERNAME:$SAUCE_ACCESS_KEY
         
         
         # - run: curl -u "$SAUCE_USERNAME:$SAUCE_ACCESS_KEY" --location --request POST 'https://api.us-west-1.saucelabs.com/v1/storage/upload' --form 'payload=@"/Users/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/ReactNativeSemaphoreNew1.xcarchive/Products/Applications/ReactNativeSemaphoreNew.app"' --form 'name="ReactNativeSemaphoreNew.app"' --form 'description="Liatrio Mobile App iOS POC"'

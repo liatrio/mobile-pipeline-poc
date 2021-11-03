@@ -25,18 +25,18 @@ if os.getenv('SAUCE_LABS') and os.getenv('SAUCE_USERNAME') and os.getenv('SAUCE_
 
     IOS_BASE_CAPS['build'] = build_name
     IOS_BASE_CAPS['tags'] = ['e2e', 'appium', 'sample-code', 'ios', 'python']
-    #IOS_BASE_CAPS['app'] = 'sauce-storage: '
+    IOS_BASE_CAPS['app'] = 'http://appium.github.io/liatrio/mobile-pipeline-poc/tree/sauce-labs-app-storage/assets/ReactNativeSemaphoreNew.app.zip'
     #IOS_BASE_CAPS['app'] = 'sauce-storage: '
     #IOS_BASE_CAPS['app'] = 'sauce-storage: '
     #IOS_BASE_CAPS['app'] = 'sauce-storage: '
     #IOS_BASE_CAPS['app'] = 'sauce-storage: '
     #IOS_BASE_CAPS['app'] = 'sauce-storage: '    
 
-    # EXECUTOR = 'http://{}:{}@ondemand.saucelabs.com:80/wd/hub'.format(
-    #     os.getenv('SAUCE_USERNAME'), os.getenv('SAUCE_ACCESS_KEY'))
-
-    EXECUTOR = 'http://{}:{}@ondemand.us-west-1.saucelabs.com:80/wd/hub'.format(
+    EXECUTOR = 'http://{}:{}@ondemand.saucelabs.com:80/wd/hub'.format(
         os.getenv('SAUCE_USERNAME'), os.getenv('SAUCE_ACCESS_KEY'))
+
+    # EXECUTOR = 'http://{}:{}@ondemand.us-west-1.saucelabs.com:80/wd/hub'.format(
+    #     os.getenv('SAUCE_USERNAME'), os.getenv('SAUCE_ACCESS_KEY'))
 
     sauce = SauceClient(os.getenv('SAUCE_USERNAME'), os.getenv('SAUCE_ACCESS_KEY'))
 else:
