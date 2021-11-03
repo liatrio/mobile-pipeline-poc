@@ -113,12 +113,11 @@ jobs:
 
   create-release-and-publish-ios-android-binaries: 
     runs-on: ubuntu-latest
-    #if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main'
     needs:
       - Version 
       - Build-ios
       - Build-android
-    
     steps:
       - name: Checkout 
         uses: actions/checkout@v2
