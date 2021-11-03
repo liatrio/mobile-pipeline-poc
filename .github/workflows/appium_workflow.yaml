@@ -44,6 +44,9 @@ jobs:
           cd ~/.config/yarn/global/node_modules/appium-webdriveragent/
           xcodebuild -project WebDriverAgent.xcodeproj -scheme WebDriverAgentRunner -destination "id=$DEVICE_ID" test &
 
+      - name: Wait for webdriver to be ready
+        run: sleep 300
+
       - name: Run iOS Appium tests
         run: npm run mocha appium/ios
           
