@@ -5,130 +5,59 @@ on:
   push:
 
 jobs:
-  Appium_IOS:
+
+
+### --- Appium - Android (commented out for testing iOS exclusively) --- ###
+
+  Appium:
     runs-on: macos-latest
     env:
       ANDROID_SDK_ROOT: '/Users/runner/Library/Android/sdk'
       ANDROID_HOME: '/Users/runner/Library/Android/sdk'
-      #SAUCE_LABS: 'ondemand.saucelabs.com:443/wd/hub'           # curl: (52) Empty reply from server
-      SAUCE_LABS: 'ondemand.saucelabs.com:80/wd/hub'             # valid response - The command you just sent (GET ) has no session ID. This is generally caused by testing frameworks trying to run commands after the conclusion of a test. For example, you may be trying to capture a screenshot or retrieve server logs after selenium.stop() or driver.quit() was called in a tearDown method.
-      #SAUCE_LABS: 'ondemand.us-west-1.saucelabs.com/wd/hub'     # valid response - {"ready":true,"message":"Sauce Labs automated testing is fully operational"}
-      #SAUCE_LABS: 'ondemand.us-west-1.saucelabs.com:443/wd/hub' # curl: (52) Empty reply from server
-      #SAUCE_LABS: 'ondemand.us-west-1.saucelabs.com:80/wd/hub'  # valid response - same as no protocol; http by default - {"ready":true,"message":"Sauce Labs automated testing is fully operational"}
-      IOS_ARTIFACT_URL: ''
     steps:
       - name: Checkout 
         uses: actions/checkout@v2
 
+      - name: Set up JDK 8
+        uses: actions/setup-java@v1
+        with:
+          java-version: '8'
+
       - name: Install node modules
         run: yarn install
-
-      - name: Install Pod dependencies
-        run: pod install
-        working-directory: ios
 
       - name: Install Appium Globally
         run: yarn global add appium
 
       ## Setup appium  
-      # - name: Run appium-doctor        
-      #   run: npm run appium-doctor
+      - name: Run appium-doctor        
+        run: npm run appium-doctor
       - name: Run appium in the background        
-        run: appium &
+        run: npm run appium &
       - name: Check appium server status        
         run: curl http://localhost:4723/wd/hub/status
 
-      # Used for testing to obtain a list of useable sdks
-      # - name: List ios sdks
-      #   run: xcrun simctl list
+      ## Android sdk
+      - name: Setup android SDK
+        uses: android-actions/setup-android@v2
+      - name: Platform tools installation
+        run: sdkmanager "platform-tools" "platforms;android-27"
 
-      - name: Setup Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.x'
+      ## Android emulator creation
+      - name: Install SDK
+        run: sdkmanager --install "system-images;android-27;google_apis;x86"
+      - name: Create AVD
+        run: echo "no" | avdmanager create avd -n sdk_gphone_x86 -k "system-images;android-27;google_apis;x86"
 
-      - name: Install requirements
-        run: cd appium/python-test && pip3 install -r requirements.txt
+      ## Android abd server
+      - name: Start adb server
+        run: sudo adb start-server &
 
-      # - name: Boot iOS simulator
-      #   run: xcrun simctl boot "iPhone 11" &
+      ## Setup android emulator
+      - name: Run emulator
+        run: cd /Users/runner/Library/Android/sdk/emulator && ./emulator -avd sdk_gphone_x86 -no-audio -no-window -gpu swiftshader_indirect &
+      - name: Wait for device to be operational
+        run: adb wait-for-device shell 'while [[ -z $(getprop sys.boot_completed) ]]; do sleep 1; done; input keyevent 82'
 
-      - name: Build IOS - architecture, sdk
-        run: xcodebuild -arch x86_64 -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew clean archive -sdk iphonesimulator15.0 -configuration release -UseModernBuildSystem=NO -archivePath $PWD/ReactNativeSemaphoreNew.xcarchive CODE_SIGNING_ALLOWED=NO
-
-      - name: Zip .app file for Sauce Labs
-        run: zip -r ReactNativeSemaphoreNew.app.zip /Users/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/ReactNativeSemaphoreNew.xcarchive/Products/Applications/ReactNativeSemaphoreNew.app
-
-      - name: Push to artifact branch
-        run: git add ReactNativeSemaphoreNew.app.zip && git commit -m 'push artifact' && git push -f origin appium-pipeline:sauce-labs-app-storage
-
-# https://github.com/liatrio/mobile-pipeline-poc/tree/sauce-labs-app-storage
-
-
-        
-
-        
-        
-        # - run: curl -u "$SAUCE_USERNAME:$SAUCE_ACCESS_KEY" --location --request POST 'https://api.us-west-1.saucelabs.com/v1/storage/upload' --form 'payload=@"/Users/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/ReactNativeSemaphoreNew1.xcarchive/Products/Applications/ReactNativeSemaphoreNew.app"' --form 'name="ReactNativeSemaphoreNew.app"' --form 'description="Liatrio Mobile App iOS POC"'
-
-      # Used for checking the status of an installed simulator
-      # - name: Check simulator status
-      #   run: xcrun simctl list | grep "(Booted)"
-
-      # - name: Run appium integration Tests
-      #   run: npm run mocha appium/ios
-
-      - name: Setup upterm session
-        uses: lhotari/action-upterm@v1 
-
-### --- Appium - Android (commented out for testing iOS exclusively) --- ###
-
-  # Appium:
-  #   runs-on: macos-latest
-  #   env:
-  #     ANDROID_SDK_ROOT: '/Users/runner/Library/Android/sdk'
-  #     ANDROID_HOME: '/Users/runner/Library/Android/sdk'
-  #   steps:
-  #     - name: Checkout 
-  #       uses: actions/checkout@v2
-
-  #     - name: Set up JDK 8
-  #       uses: actions/setup-java@v1
-  #       with:
-  #         java-version: '8'
-
-  #     - name: Install node modules
-  #       run: yarn install
-
-  #     ## Setup appium  
-  #     - name: Run appium-doctor        
-  #       run: npm run appium-doctor
-  #     - name: Run appium in the background        
-  #       run: npm run appium &
-  #     - name: Check appium server status        
-  #       run: curl http://localhost:4723/wd/hub/status
-
-  #     ## Android sdk
-  #     - name: Setup android SDK
-  #       uses: android-actions/setup-android@v2
-  #     - name: Platform tools installation
-  #       run: sdkmanager "platform-tools" "platforms;android-27"
-
-  #     ## Android emulator creation
-  #     - name: Install SDK
-  #       run: sdkmanager --install "system-images;android-27;google_apis;x86"
-  #     - name: Create AVD
-  #       run: echo "no" | avdmanager create avd -n sdk_gphone_x86 -k "system-images;android-27;google_apis;x86"
-
-  #     ## Android abd server
-  #     - name: Start adb server
-  #       run: sudo adb start-server &
-
-  #     ## Setup android emulator
-  #     - name: Run emulator
-  #       run: cd /Users/runner/Library/Android/sdk/emulator && ./emulator -avd sdk_gphone_x86 -no-audio -no-window -gpu swiftshader_indirect &
-  #     - name: Wait for device to be operational
-  #       run: adb wait-for-device shell 'while [[ -z $(getprop sys.boot_completed) ]]; do sleep 1; done; input keyevent 82'
-
-  #     - name: Run appium integration Tests
-  #       run: npm run mocha appium/android
+      - name: Run appium integration Tests
+        run: npm run mocha appium/android
