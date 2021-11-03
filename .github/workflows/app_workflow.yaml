@@ -113,7 +113,7 @@ jobs:
 
   create-release-and-publish-ios-android-binaries: 
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
+    #if: github.ref == 'refs/heads/main'
     needs: 
     - Build-ios
     - Build-android
@@ -125,9 +125,9 @@ jobs:
         with:
           owner: 'liatrio'
           repo: 'mobile-pipeline-poc'
-          tag_name: 'v${{ needs.Version.outputs.VERSION }}'
+          tag_name: "v${{ needs.Version.outputs.VERSION }}"
           token_name: 'token'
-          name: 'Release: ${{ needs.Version.outputs.VERSION }}'
+          name: "Release: ${{ needs.Version.outputs.VERSION }}"
           pat: ${{ secrets.GITHUB_TOKEN }}  
       - name: Download IOS/Android artifact
         uses: actions/download-artifact@v2
