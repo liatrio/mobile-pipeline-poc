@@ -45,7 +45,7 @@ jobs:
           xcodebuild -project WebDriverAgent.xcodeproj -scheme WebDriverAgentRunner -destination "id=$DEVICE_ID" test &
 
       - name: Wait for webdriver to be ready
-        run: sleep 300
+        run: sleep 600
 
       - name: Run iOS Appium tests
         run: npm run mocha appium/ios
