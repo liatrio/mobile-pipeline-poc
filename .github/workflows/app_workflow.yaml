@@ -121,8 +121,6 @@ jobs:
     steps:
       - name: Checkout 
         uses: actions/checkout@v2
-      - name: echo version
-        run: echo "${{ needs.Version.outputs.version }}"
       - name: Create release
         uses: liatrio/github-actions/github-create-release@master
         with:
