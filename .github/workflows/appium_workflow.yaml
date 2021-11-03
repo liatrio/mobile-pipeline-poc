@@ -8,7 +8,8 @@ jobs:
 
   Appium-IOS:
     runs-on: macos-latest
-    # env:
+    env:
+      DEVICE_ID: 'FC41B203-8F38-458B-9F64-23ADB1A969B4'
     steps:
       - name: Checkout 
         uses: actions/checkout@v2
@@ -18,7 +19,7 @@ jobs:
         run: yarn install
 
       - name: Install Appium Globally
-        run: yarn global add appium
+        run: yarn global add appium && yarn add webdriverio --dev
 
       ## Setup appium  
       - name: Run appium-doctor        
@@ -36,10 +37,18 @@ jobs:
       #   run: xcodebuild -arch x86_64 -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew clean archive -sdk iphonesimulator15.0 -configuration release -UseModernBuildSystem=NO -archivePath $PWD/ReactNativeSemaphoreNew.xcarchive CODE_SIGNING_ALLOWED=NO
 
       - name: Unzip .app file
-        run: unzip ReactNativeSemaphoreNew.zip -d ReactNativeSemaphoreNew.app
+        run: unzip ReactNativeSemaphoreNew.zip
 
-      - name: Setup upterm session
-        uses: lhotari/action-upterm@v1 
+      - name: Start webdriverio
+        run: |
+          cd ~/.config/yarn/global/node_modules/appium-webdriveragent/
+          xcodebuild -project WebDriverAgent.xcodeproj -scheme WebDriverAgentRunner  -destination "$DEVICE_ID" test &
+
+      - name: Run iOS Appium tests
+        run: npm run mocha appium/ios
+          
+      # - name: Setup upterm session
+      #   uses: lhotari/action-upterm@v1 
 
 
 ### --- Appium - Android (commented out for testing iOS exclusively) --- ###
