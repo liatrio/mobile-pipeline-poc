@@ -39,10 +39,10 @@ jobs:
       - name: Unzip .app file
         run: unzip ReactNativeSemaphoreNew.zip
 
-      - name: Start webdriverio
+      - name: Start webdriver agent
         run: |
           cd ~/.config/yarn/global/node_modules/appium-webdriveragent/
-          xcodebuild -project WebDriverAgent.xcodeproj -scheme WebDriverAgentRunner  -destination "$DEVICE_ID" test &
+          xcodebuild -project WebDriverAgent.xcodeproj -scheme WebDriverAgentRunner -destination "id=$DEVICE_ID" test &
 
       - name: Run iOS Appium tests
         run: npm run mocha appium/ios
