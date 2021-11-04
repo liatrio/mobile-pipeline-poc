@@ -44,19 +44,19 @@ jobs:
           cache: yarn
       - name: Install node modules
         run: yarn install
-      - name: Generate Sonarqube reports
-        run: yarn test
-      - name: SonarQube Scan
-        uses: docker://sonarsource/sonar-scanner-cli:4.6
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_SHAREDSVC_TOKEN }}
-          SONAR_HOST_URL: ${{ env.SONAR_HOST }}
-      - name: SonarQube Quality Gate check
-        uses: sonarsource/sonarqube-quality-gate-action@master
-        # Force to fail step after specific time
-        timeout-minutes: 5
-        env:
-         SONAR_TOKEN: ${{ secrets.SONAR_SHAREDSVC_TOKEN }}
+      # - name: Generate Sonarqube reports
+      #   run: yarn test
+      # - name: SonarQube Scan
+      #   uses: docker://sonarsource/sonar-scanner-cli:4.6
+      #   env:
+      #     SONAR_TOKEN: ${{ secrets.SONAR_SHAREDSVC_TOKEN }}
+      #     SONAR_HOST_URL: ${{ env.SONAR_HOST }}
+      # - name: SonarQube Quality Gate check
+      #   uses: sonarsource/sonarqube-quality-gate-action@master
+      #   # Force to fail step after specific time
+      #   timeout-minutes: 5
+      #   env:
+      #    SONAR_TOKEN: ${{ secrets.SONAR_SHAREDSVC_TOKEN }}
 
   # Build-ios:
   #   runs-on: macos-latest
@@ -153,6 +153,7 @@ jobs:
     #if: github.ref == 'refs/heads/main'
     needs:
       - Version 
+      - Initial-check
       #- Build-ios
       #- Build-android
     steps:
