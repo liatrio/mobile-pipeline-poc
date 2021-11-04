@@ -21,7 +21,6 @@ const opts = {
 		androidInstallTimeout: "400000",
 		adbExecTimeout: "400000"
 	}
-
 };
 
 describe('Mobile App POC Appium Tests', function () {
