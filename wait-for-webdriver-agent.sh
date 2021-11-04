@@ -1,14 +1,12 @@
 !#/bin/bash
 while [ 1 ]
 do
-    pid=`ps -ef | grep "WebDriverAgentRunner-Runner"`
+    pid=`ps -e | grep -i WebDriverAgentRunner-Runner | grep -v ttys`
     echo $pid
-    if [ "$pid"="" ]
+    if [ "$pid"!="" ]
     then
-            echo "Process has ended lets get this show on the road..."
-            exit
-    else
-            echo "Process has not ended yet"
+        echo "Process has started."
+        exit
     fi
-    sleep 6
+    sleep 5
 done
