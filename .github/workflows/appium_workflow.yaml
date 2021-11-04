@@ -14,14 +14,12 @@ jobs:
       - name: Checkout 
         uses: actions/checkout@v2
 
-      - name: Install appium Globally
-        uses: yarn global add appium
-
+      - name: Install node modules
+        run: yarn global add appium
       - name: Start webdriver agent
         run: |
           cd ~/.config/yarn/global/node_modules/appium-webdriveragent/
           xcodebuild -project WebDriverAgent.xcodeproj -scheme WebDriverAgentRunner -destination "id=$DEVICE_ID" test &
-
       - name: Install node modules
         run: yarn install
 
