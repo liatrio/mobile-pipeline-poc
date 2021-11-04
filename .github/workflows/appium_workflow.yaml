@@ -21,9 +21,9 @@ jobs:
           cd ~/.config/yarn/global/node_modules/appium-webdriveragent/
           xcodebuild -project WebDriverAgent.xcodeproj -scheme WebDriverAgentRunner -destination "id=$DEVICE_ID" test &
 
-      - name: Wait for webdriver to be ready
-        #run: ./wait-for-webdriver-agent.sh   
-        run: i=$(curl http://localhost:8100/status | grep -v success); while [ "$i" = "" ]; do i=$(curl http://localhost:8100/status | grep -v success); done
+      # - name: Wait for webdriver to be ready
+      #   #run: ./wait-for-webdriver-agent.sh   
+      #   run: i=$(curl http://localhost:8100/status | grep -v success); while [ "$i" = "" ]; do i=$(curl http://localhost:8100/status | grep -v success); done
 
       - name: Install node modules
         run: yarn install
