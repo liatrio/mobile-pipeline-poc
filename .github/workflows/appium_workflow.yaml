@@ -14,12 +14,12 @@ jobs:
       - name: Checkout 
         uses: actions/checkout@v2
 
-      - name: Install node modules
+      - name: Install appium globally
         run: yarn global add appium
       - name: Start webdriver agent
         run: |
           cd ~/.config/yarn/global/node_modules/appium-webdriveragent/
-          xcodebuild -project WebDriverAgent.xcodeproj -scheme WebDriverAgentRunner -destination "id=$DEVICE_ID" test &
+          xcodebuild -project WebDriverAgent.xcodeproj -scheme WebDriverAgentRunner -destination "id=$DEVICE_ID" -UseModernBuildSystem=YES test &
       - name: Install node modules
         run: yarn install
 
@@ -38,14 +38,14 @@ jobs:
       - name: Build IOS - architecture, sdk
         run: xcodebuild -arch x86_64 -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew clean archive -sdk iphonesimulator15.0 -configuration release -UseModernBuildSystem=NO -archivePath $PWD/ReactNativeSemaphoreNew.xcarchive CODE_SIGNING_ALLOWED=NO
 
-      # - name: Wait for webdriver to be ready
-      #   run: sleep 1800
+      - name: Wait for webdriver to be ready
+        run: sleep 600
 
-      # - name: Run iOS Appium tests
-      #   run: npm run mocha appium/ios
+      - name: Run iOS Appium tests
+        run: npm run mocha appium/ios
           
-      - name: Setup upterm session
-        uses: lhotari/action-upterm@v1 
+      # - name: Setup upterm session
+      #   uses: lhotari/action-upterm@v1 
 
 
 ### --- Appium - Android (commented out for testing iOS exclusively) --- ###
