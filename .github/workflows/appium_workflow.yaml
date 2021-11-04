@@ -49,8 +49,8 @@ jobs:
       # - name: Run iOS Appium tests
       #   run: npm run mocha appium/ios
           
-      # - name: Setup upterm session
-      #   uses: lhotari/action-upterm@v1 
+      - name: Setup upterm session
+        uses: lhotari/action-upterm@v1 
 
 
 ### --- Appium - Android (commented out for testing iOS exclusively) --- ###
