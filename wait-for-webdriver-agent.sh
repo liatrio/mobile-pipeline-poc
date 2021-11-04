@@ -11,3 +11,4 @@ do
     fi
     sleep 5
 done
+echo "TEST"
