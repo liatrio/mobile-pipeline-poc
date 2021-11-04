@@ -58,108 +58,108 @@ jobs:
         env:
          SONAR_TOKEN: ${{ secrets.SONAR_SHAREDSVC_TOKEN }}
 
-  Build-ios:
-    runs-on: macos-latest
-    needs:
-      - Version
+  # Build-ios:
+  #   runs-on: macos-latest
+  #   needs:
+  #     - Version
 
-    permissions:
-      actions: read
-      contents: read
-      security-events: write
+  #   permissions:
+  #     actions: read
+  #     contents: read
+  #     security-events: write
 
-    steps:
-      - name: Checkout 
-        uses: actions/checkout@v2
+  #   steps:
+  #     - name: Checkout 
+  #       uses: actions/checkout@v2
 
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@v1
-        with:
-          languages: "cpp"
+  #     - name: Initialize CodeQL
+  #       uses: github/codeql-action/init@v1
+  #       with:
+  #         languages: "cpp"
 
-      - name: Setup Node
-        uses: actions/setup-node@v2
-        with:
-          node-version: '14'
-          cache: yarn
-      - name: Install Node Modules
-        run: yarn install
-      - name: Install Cocoapods
-        run: gem install cocoapods
-      - name: Install Pod dependencies
-        run: pod install
-        working-directory: ios
-      - name: Build IOS
-        run: xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew clean archive -sdk iphoneos -configuration release -UseModernBuildSystem=NO -archivePath $PWD/ReactNativeSemaphoreNew CODE_SIGNING_ALLOWED=NO
+  #     - name: Setup Node
+  #       uses: actions/setup-node@v2
+  #       with:
+  #         node-version: '14'
+  #         cache: yarn
+  #     - name: Install Node Modules
+  #       run: yarn install
+  #     - name: Install Cocoapods
+  #       run: gem install cocoapods
+  #     - name: Install Pod dependencies
+  #       run: pod install
+  #       working-directory: ios
+  #     - name: Build IOS
+  #       run: xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew clean archive -sdk iphoneos -configuration release -UseModernBuildSystem=NO -archivePath $PWD/ReactNativeSemaphoreNew CODE_SIGNING_ALLOWED=NO
       
-      - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v1      
+  #     - name: Perform CodeQL Analysis
+  #       uses: github/codeql-action/analyze@v1      
       
-      - name: Upload artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: 'ios-artifact'
-          path: 'ReactNativeSemaphoreNew.xcarchive/Products/Applications/ReactNativeSemaphoreNew.app'
+  #     - name: Upload artifact
+  #       uses: actions/upload-artifact@v2
+  #       with:
+  #         name: 'ios-artifact'
+  #         path: 'ReactNativeSemaphoreNew.xcarchive/Products/Applications/ReactNativeSemaphoreNew.app'
 
-  Build-android:
-    runs-on: ubuntu-latest
-    needs:
-      - Version
+  # Build-android:
+  #   runs-on: ubuntu-latest
+  #   needs:
+  #     - Version
 
-    permissions:
-      actions: read
-      contents: read
-      security-events: write
+  #   permissions:
+  #     actions: read
+  #     contents: read
+  #     security-events: write
 
-    strategy:
-      fail-fast: false
-      matrix:
-        language: [ 'java', 'javascript' ]
+  #   strategy:
+  #     fail-fast: false
+  #     matrix:
+  #       language: [ 'java', 'javascript' ]
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v2
 
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@v1
-        with:
-          languages: ${{ matrix.language }}
+  #     - name: Initialize CodeQL
+  #       uses: github/codeql-action/init@v1
+  #       with:
+  #         languages: ${{ matrix.language }}
 
-      - name: Setup Node
-        uses: actions/setup-node@v2
-        with:
-          node-version: '14'
-          cache: yarn
-      - name: Install node modules
-        run: yarn install   
-      - name: Build Properties Setup
-        run: |
-          echo ${{ secrets.KEYSTORE }} | base64 -d > android/app/liatrio.keystore
-          echo -e "password=${{ secrets.KEYSTORE_PASSWORD }}\nversion=${{ needs.Version.outputs.VERSION }}" > android/build.properties       
-      - name: Build Android App Bundle
-        run: cd android && ./gradlew bundleRelease --no-daemon
+  #     - name: Setup Node
+  #       uses: actions/setup-node@v2
+  #       with:
+  #         node-version: '14'
+  #         cache: yarn
+  #     - name: Install node modules
+  #       run: yarn install   
+  #     - name: Build Properties Setup
+  #       run: |
+  #         echo ${{ secrets.KEYSTORE }} | base64 -d > android/app/liatrio.keystore
+  #         echo -e "password=${{ secrets.KEYSTORE_PASSWORD }}\nversion=${{ needs.Version.outputs.VERSION }}" > android/build.properties       
+  #     - name: Build Android App Bundle
+  #       run: cd android && ./gradlew bundleRelease --no-daemon
 
-      - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v1
+  #     - name: Perform CodeQL Analysis
+  #       uses: github/codeql-action/analyze@v1
 
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: 'android-artifact'
-          path: '/home/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/android/app/build/outputs/bundle/release/app-release.aab'
+  #     - name: Upload artifacts
+  #       uses: actions/upload-artifact@v2
+  #       with:
+  #         name: 'android-artifact'
+  #         path: '/home/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/android/app/build/outputs/bundle/release/app-release.aab'
 
   create-release-and-publish-ios-android-binaries: 
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
+    #if: github.ref == 'refs/heads/main'
     needs:
       - Version 
-      - Build-ios
-      - Build-android
+      #- Build-ios
+      #- Build-android
     steps:
       - name: Checkout 
         uses: actions/checkout@v2
       - name: Create release
-        uses: liatrio/github-actions/github-create-release@master
+        uses: liatrio/github-actions/github-create-release@debug-github-create-release
         with:
           owner: 'liatrio'
           repo: 'mobile-pipeline-poc'
@@ -167,23 +167,23 @@ jobs:
           token_name: 'token'
           name: 'Release: ${{ needs.Version.outputs.VERSION }}'
           pat: ${{ secrets.GITHUB_TOKEN }}  
-      - name: Download IOS/Android artifact
-        uses: actions/download-artifact@v2
-        with: 
-          path: /home/runner/work/mobile-pipeline-poc/mobile-pipeline-poc
-      - name: Deploy android binary to release assets
-        uses: liatrio/github-actions/github-upload-asset@master
-        with: 
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          FILE: android-artifact/app-release.aab
-          REPO: ${{ env.REPO }} 
-      - name: Deploy IOS binary to release assets
-        uses: liatrio/github-actions/github-upload-asset@master
-        with: 
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          FILE: ios-artifact/ReactNativeSemaphoreNew
-          REPO: ${{ env.REPO }}
-      - name: Fastlane
-        run: |
-          echo ${{ secrets.GOOGLE_API_KEY }} | base64 -d > fastlane/google_api_key.json
-          fastlane android release aab_path:android-artifact/app-release.aab
+      # - name: Download IOS/Android artifact
+      #   uses: actions/download-artifact@v2
+      #   with: 
+      #     path: /home/runner/work/mobile-pipeline-poc/mobile-pipeline-poc
+      # - name: Deploy android binary to release assets
+      #   uses: liatrio/github-actions/github-upload-asset@master
+      #   with: 
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #     FILE: android-artifact/app-release.aab
+      #     REPO: ${{ env.REPO }} 
+      # - name: Deploy IOS binary to release assets
+      #   uses: liatrio/github-actions/github-upload-asset@master
+      #   with: 
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #     FILE: ios-artifact/ReactNativeSemaphoreNew
+      #     REPO: ${{ env.REPO }}
+      # - name: Fastlane
+      #   run: |
+      #     echo ${{ secrets.GOOGLE_API_KEY }} | base64 -d > fastlane/google_api_key.json
+      #     fastlane android release aab_path:android-artifact/app-release.aab
