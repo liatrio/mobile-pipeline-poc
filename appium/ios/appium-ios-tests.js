@@ -12,7 +12,7 @@ const opts = {
         automationName: "XCUITest",
 		app: "/Users/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/ReactNativeSemaphoreNew.xcarchive/Products/Applications/ReactNativeSemaphoreNew.app",
         showXcodeLog: "true",
-		newCommandTimeout: "600"
+		newCommandTimeout: "60"
 	}
 };
 
