@@ -238,5 +238,3 @@ describe('Mobile App POC Appium Tests', function () {
 	});
 
 });
-
-
