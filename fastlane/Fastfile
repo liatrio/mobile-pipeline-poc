@@ -58,10 +58,13 @@ platform :ios do
       key_filepath: options[:key_filepath]
     )
     cert(
-      api_key: api_key
+      api_key: api_key,
+      keychain_path: options[:keychain_path],
+      keychain_password: options[:keychain_password]
     )
     sigh(
-      api_key: api_key
+      api_key: api_key,
+      readonly: 'true'
     )
   end
   lane :release do |options|
