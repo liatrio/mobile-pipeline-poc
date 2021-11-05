@@ -63,8 +63,8 @@ describe('Mobile App POC Appium Tests', function () {
 		this.timeout(500000);
 		client.setImplicitTimeout(100000);
 
+		// Find the home page text 'Step One'
 		const element = await client.findElement('xpath', '//android.view.ViewGroup/android.view.ViewGroup[2]/android.widget.TextView[1]');
-
 		await client.getElementAttribute(element.ELEMENT, 'text').then((attr) => {
 			assert.equal(attr, 'Step One');
 		});
@@ -89,16 +89,41 @@ describe('Mobile App POC Appium Tests', function () {
 		this.timeout(500000);
 		client.setImplicitTimeout(100000);
 
+		// Click the search button
 		const element = await client.findElement('xpath', '//android.view.ViewGroup/android.view.ViewGroup[2]/android.view.ViewGroup');
 		await client.elementClick(element.ELEMENT);
 		client.setImplicitTimeout(30000);
 
+		// Find the text 'Search Countries'
 		const search_screen_element = await client.findElement('xpath', '//android.view.ViewGroup/android.view.ViewGroup[2]/android.view.ViewGroup/android.widget.EditText');
 		await client.getElementAttribute(search_screen_element.ELEMENT, 'text').then((attr) => {
 			assert.equal(attr, 'Search Countries');
 		});
 	});
 
-	
+	it('should find the search button, click it, and return to the home page', async function () {
+		this.timeout(500000);
+		client.setImplicitTimeout(100000);
+
+		// Click the search button
+		const element = await client.findElement('xpath', '//android.view.ViewGroup/android.view.ViewGroup[2]/android.view.ViewGroup');
+		await client.elementClick(element.ELEMENT);
+		client.setImplicitTimeout(30000);
+
+		// Click on the back arrow
+		const search_screen_element = await client.findElement('class name', 'android.widget.ImageView');
+		await client.elementClick(search_screen_element.ELEMENT);
+		client.setImplicitTimeout(30000);
+
+		// Find the home page toggle
+		const element_on_return = await client.findElement('class name', 'android.widget.Switch');
+		await client.getElementAttribute(element_on_return.ELEMENT, 'text').then((attr) => {
+			assert.equal(attr, 'OFF');
+		});
+	});
+
+
+
+
 
 });

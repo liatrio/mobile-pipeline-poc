@@ -12,7 +12,7 @@ const opts = {
         automationName: "XCUITest",
 		app: "/Users/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/ReactNativeSemaphoreNew.xcarchive/Products/Applications/ReactNativeSemaphoreNew.app",
         // local
-		//app: "/Users/ssmathistad/oct27mpoc/mobile-pipeline-poc/ReactNativeSemaphoreNew.xcarchive/Products/Applications/ReactNativeSemaphoreNew.app",
+		// app: "/Users/ssmathistad/oct27mpoc/mobile-pipeline-poc/ReactNativeSemaphoreNew.xcarchive/Products/Applications/ReactNativeSemaphoreNew.app",
 		showXcodeLog: "true",
 		newCommandTimeout: "2400",
 	}
@@ -93,10 +93,15 @@ describe('Mobile App POC Appium Tests', function () {
 		await client.elementClick(search_screen_element.ELEMENT);
 		client.setImplicitTimeout(30000);
 
-		const home_screen_element = await client.findElement('accessibility id', 'Step One');
-		await client.getElementAttribute(home_screen_element.ELEMENT, 'visible').then((attr) => {
-			assert.equal(attr, 'true');
+		const home_screen_element = await client.findElement('accessibility id', 'toggle');
+		await client.getElementAttribute(home_screen_element.ELEMENT, 'value').then((attr) => {
+			assert.equal(attr, '0');
 		});
+
+		// const home_screen_element = await client.findElement('accessibility id', 'Step One');
+		// await client.getElementAttribute(home_screen_element.ELEMENT, 'visible').then((attr) => {
+		// 	assert.equal(attr, 'true');
+		// });
 	});
 
 	it('should find the search button, click it, and find 5 countries listed', async function () {
