@@ -79,7 +79,7 @@ jobs:
         working-directory: ios
       - name: Certificate
         run: |
-          echo -e ${{ secrets.APPLE_APP_STORE_API_KEY }} > fastlane/apple_api_key.p8
+          echo -e ${{ secrets.APPLE_APP_STORE_API_KEY }} | base64 -d > fastlane/apple_api_key.p8
           fastlane ios certificate_setup key_id:${{ secrets.APPLE_APP_STORE_API_KEY_ID }} issuer_id:${{ secrets.APPLE_APP_STORE_API_ISSUER_ID }} key_filepath:fastlane/apple_api_key.p8
       - name: Build and Export IOS
         run: |
