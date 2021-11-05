@@ -52,9 +52,6 @@ jobs:
       # - name: Setup upterm session
       #   uses: lhotari/action-upterm@v1 
 
-
-### --- Appium - Android (commented out for testing iOS exclusively) --- ###
-
   Appium-Android:
     runs-on: macos-latest
     env:

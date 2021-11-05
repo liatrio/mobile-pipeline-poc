@@ -10,9 +10,9 @@ const opts = {
         platformVersion: "15.0",
         deviceName: "iPhone 11",		
         automationName: "XCUITest",
-		// app: "/Users/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/ReactNativeSemaphoreNew.xcarchive/Products/Applications/ReactNativeSemaphoreNew.app",
+		app: "/Users/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/ReactNativeSemaphoreNew.xcarchive/Products/Applications/ReactNativeSemaphoreNew.app",
         // local
-		app: "/Users/ssmathistad/oct27mpoc/mobile-pipeline-poc/ReactNativeSemaphoreNew.xcarchive/Products/Applications/ReactNativeSemaphoreNew.app",
+		//app: "/Users/ssmathistad/oct27mpoc/mobile-pipeline-poc/ReactNativeSemaphoreNew.xcarchive/Products/Applications/ReactNativeSemaphoreNew.app",
 		showXcodeLog: "true",
 		newCommandTimeout: "2400",
 	}
@@ -73,7 +73,7 @@ describe('Mobile App POC Appium Tests', function () {
 
 		const element = await client.findElement('accessibility id', 'searchButton');
 		await client.elementClick(element.ELEMENT);
-		client.setImplicitTimeout(10000);
+		client.setImplicitTimeout(30000);
 
 		const search_screen_element = await client.findElement('accessibility id', 'Select Country');
 		await client.getElementAttribute(search_screen_element.ELEMENT, 'visible').then((attr) => {
@@ -87,11 +87,11 @@ describe('Mobile App POC Appium Tests', function () {
 
 		const element = await client.findElement('accessibility id', 'searchButton');
 		await client.elementClick(element.ELEMENT);
-	    client.setImplicitTimeout(10000);
+	    client.setImplicitTimeout(30000);
 
 		const search_screen_element = await client.findElement('accessibility id', 'header-back');
 		await client.elementClick(search_screen_element.ELEMENT);
-		client.setImplicitTimeout(10000);
+		client.setImplicitTimeout(30000);
 
 		const home_screen_element = await client.findElement('accessibility id', 'Step One');
 		await client.getElementAttribute(home_screen_element.ELEMENT, 'visible').then((attr) => {
@@ -105,7 +105,7 @@ describe('Mobile App POC Appium Tests', function () {
 
 		const element = await client.findElement('accessibility id', 'searchButton');
 		await client.elementClick(element.ELEMENT);
-	    client.setImplicitTimeout(10000);
+	    client.setImplicitTimeout(30000);
 
 		const list_Item_Afghanistan = await client.findElement('accessibility id', 'listItem-Afghanistan');
 		await client.getElementAttribute(list_Item_Afghanistan.ELEMENT, 'visible').then((attr) => {
@@ -139,12 +139,12 @@ describe('Mobile App POC Appium Tests', function () {
 
 		const element = await client.findElement('accessibility id', 'searchButton');
 		await client.elementClick(element.ELEMENT);
-		client.setImplicitTimeout(10000);
+		client.setImplicitTimeout(30000);
 
 		const search_screen_element = await client.findElement('accessibility id', 'countriesAutocompleteInput');
 		await client.elementClick(search_screen_element.ELEMENT);
 		await client.elementSendKeys(search_screen_element.ELEMENT, 'United States');
-		client.setImplicitTimeout(10000);
+		client.setImplicitTimeout(30000);
 		await client.getElementAttribute(search_screen_element.ELEMENT, 'value').then((attr) => {
 			assert.equal(attr, 'United States');
 		});
@@ -161,12 +161,12 @@ describe('Mobile App POC Appium Tests', function () {
 
 		const element = await client.findElement('accessibility id', 'searchButton');
 		await client.elementClick(element.ELEMENT);
-		client.setImplicitTimeout(10000);
+		client.setImplicitTimeout(30000);
 
 		const search_screen_element = await client.findElement('accessibility id', 'countriesAutocompleteInput');
 		await client.elementClick(search_screen_element.ELEMENT);
 		await client.elementSendKeys(search_screen_element.ELEMENT, 'United States');
-		client.setImplicitTimeout(10000);
+		client.setImplicitTimeout(30000);
 		await client.getElementAttribute(search_screen_element.ELEMENT, 'value').then((attr) => {
 			assert.equal(attr, 'United States');
 		});
@@ -180,11 +180,11 @@ describe('Mobile App POC Appium Tests', function () {
 
 		const back_button_element = await client.findElement('accessibility id', 'header-back');
 		await client.elementClick(back_button_element.ELEMENT);
-		client.setImplicitTimeout(10000);
+		client.setImplicitTimeout(30000);
 
 		const search_buttom_element = await client.findElement('accessibility id', 'searchButton');
 		await client.elementClick(search_buttom_element.ELEMENT);
-	    client.setImplicitTimeout(10000);
+	    client.setImplicitTimeout(30000);
 		
 		const search_screen_on_return_element = await client.findElement('accessibility id', 'countriesAutocompleteInput');
 		await client.getElementAttribute(search_screen_on_return_element.ELEMENT, 'visible').then((attr) => {
@@ -199,12 +199,12 @@ describe('Mobile App POC Appium Tests', function () {
 
 		const element = await client.findElement('accessibility id', 'searchButton');
 		await client.elementClick(element.ELEMENT);
-		client.setImplicitTimeout(10000);
+		client.setImplicitTimeout(30000);
 
 		const search_screen_element = await client.findElement('accessibility id', 'countriesAutocompleteInput');
 		await client.elementClick(search_screen_element.ELEMENT);
 		await client.elementSendKeys(search_screen_element.ELEMENT, 'United States');
-		client.setImplicitTimeout(10000);
+		client.setImplicitTimeout(30000);
 		await client.getElementAttribute(search_screen_element.ELEMENT, 'value').then((attr) => {
 			assert.equal(attr, 'United States');
 		});
@@ -217,24 +217,45 @@ describe('Mobile App POC Appium Tests', function () {
 		// Extension
 
 		await client.elementClick(list_Item_United_States.ELEMENT);
-		client.setImplicitTimeout(10000);
+		client.setImplicitTimeout(30000);
 
 		const back_button_element = await client.findElement('accessibility id', 'header-back');
 		await client.elementClick(back_button_element.ELEMENT);
-		client.setImplicitTimeout(10000);
+		client.setImplicitTimeout(30000);
 
 		const search_buttom_element = await client.findElement('accessibility id', 'searchButton');
 		await client.elementClick(search_buttom_element.ELEMENT);
-	    client.setImplicitTimeout(10000);
-
-		isPresent = "false"
+	    client.setImplicitTimeout(30000);
+		isPresent = false;
 
 		try {
 			await client.findElement('accessibility id', 'countriesAutocompleteInput');
-			assert.equal(isPresent, "true");
+			assert.equal(isPresent, true);
 		} catch(error) {
-			assert.equal(isPresent, "false");
+			assert.equal(isPresent, false);
 		}
+	});
+
+	it ('shouldn\'t find the home page text `Networking How to use the Fetch API in React Native.`', async function () {
+		this.timeout(500000);
+		client.setImplicitTimeout(100000);
+
+		const element = await client.findElement('accessibility id', 'Networking How to use the Fetch API in React Native.');
+		await client.getElementAttribute(element.ELEMENT, 'visible').then((attr) => {
+			assert.equal(attr, 'false');
+		});
+	});
+
+	it ('should find the home page text `Networking How to use the Fetch API in React Native.` if scrolled to bottom', async function () {
+		this.timeout(500000);
+		client.setImplicitTimeout(100000);
+
+		const element = await client.findElement('accessibility id', 'Networking How to use the Fetch API in React Native.');
+
+		await client.execute("mobile: scroll", {direction: 'down'});
+		await client.getElementAttribute(element.ELEMENT, 'visible').then((attr) => {
+			assert.equal(attr, 'true');
+		});
 	});
 
 });
