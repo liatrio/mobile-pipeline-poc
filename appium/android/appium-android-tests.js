@@ -40,9 +40,10 @@ describe('Mobile App POC Appium Tests', function () {
 
 	it('should create and delete a session', async function () {
 		this.timeout(500000);
+		client.setImplicitTimeout(100000);
+
 		const res = await client.status();
 		assert.isObject(res.build);
-		//client.setImplicitTimeout(500000);
 		
 		const current_package = await client.getCurrentPackage();
 		assert.equal(current_package, 'com.reactnativesemaphorenew');
@@ -50,7 +51,7 @@ describe('Mobile App POC Appium Tests', function () {
 
 	it('should find the home page text `Welcome to React Native`', async function () {
 		this.timeout(500000);
-		//client.setImplicitTimeout(100000);
+		client.setImplicitTimeout(100000);
 
 		const element = await client.findElement('xpath', '//android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup[1]/android.widget.TextView[2]');
 
@@ -61,7 +62,7 @@ describe('Mobile App POC Appium Tests', function () {
 
 	it('should find the toggle element and toggle it', async function () {
 		this.timeout(500000);
-		//client.setImplicitTimeout(100000);
+		client.setImplicitTimeout(100000);
 
 		const element = await client.findElement('class name', 'android.widget.Switch');
 

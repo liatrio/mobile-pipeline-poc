@@ -6,39 +6,39 @@ on:
 
 jobs:
 
-  # Appium-IOS:
-  #   runs-on: macos-latest
-  #   env:
-  #     DEVICE_ID: 'FC41B203-8F38-458B-9F64-23ADB1A969B4'
-  #   steps:
-  #     - name: Checkout 
-  #       uses: actions/checkout@v2
+  Appium-IOS:
+    runs-on: macos-latest
+    env:
+      DEVICE_ID: 'FC41B203-8F38-458B-9F64-23ADB1A969B4'
+    steps:
+      - name: Checkout 
+        uses: actions/checkout@v2
 
-  #     - name: Install appium globally
-  #       run: yarn global add appium
-  #     - name: Start webdriver agent
-  #       run: |
-  #         cd ~/.config/yarn/global/node_modules/appium-webdriveragent/
-  #         xcodebuild -project WebDriverAgent.xcodeproj -scheme WebDriverAgentRunner -destination "id=$DEVICE_ID" test &
+      - name: Install appium globally
+        run: yarn global add appium
+      - name: Start webdriver agent
+        run: |
+          cd ~/.config/yarn/global/node_modules/appium-webdriveragent/
+          xcodebuild -project WebDriverAgent.xcodeproj -scheme WebDriverAgentRunner -destination "id=$DEVICE_ID" test &
 
   #     # - name: Wait for webdriver to be ready
   #     #   #run: ./wait-for-webdriver-agent.sh   
   #     #   run: i=$(curl http://localhost:8100/status | grep -v success); while [ "$i" = "" ]; do i=$(curl http://localhost:8100/status | grep -v success); done
 
-  #     - name: Install node modules
-  #       run: yarn install
+      - name: Install node modules
+        run: yarn install
 
-  #     # Setup appium  
-  #     - name: Run appium-doctor        
-  #       run: npm run appium-doctor --ios
-  #     - name: Run appium in the background        
-  #       run: npm run appium &
-  #     - name: Check appium server status        
-  #       run: curl http://localhost:4723/wd/hub/status
+      # Setup appium  
+      - name: Run appium-doctor        
+        run: npm run appium-doctor --ios
+      - name: Run appium in the background        
+        run: npm run appium &
+      - name: Check appium server status        
+        run: curl http://localhost:4723/wd/hub/status
 
-  #     - name: Install Pod dependencies
-  #       run: pod install
-  #       working-directory: ios
+      - name: Install Pod dependencies
+        run: pod install
+        working-directory: ios
 
   #     - name: Build IOS - architecture, sdk
   #       run: xcodebuild -arch x86_64 -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew clean archive -sdk iphonesimulator15.0 -configuration release -UseModernBuildSystem=NO -archivePath $PWD/ReactNativeSemaphoreNew.xcarchive CODE_SIGNING_ALLOWED=NO
