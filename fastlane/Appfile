@@ -1,6 +1,6 @@
 # IOS
 app_identifier("com.liatrio.mobile-pipeline-poc") # The bundle identifier of your app
-apple_id("calvinw@liatrio.com") # Your Apple email address
+# apple_id("calvinw@liatrio.com") # Your Apple email address
 
 # ANDROID
 # path is relative to where fastlane is ran. 
