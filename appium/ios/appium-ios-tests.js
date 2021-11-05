@@ -87,11 +87,11 @@ describe('Mobile App POC Appium Tests', function () {
 
 		const element = await client.findElement('accessibility id', 'searchButton');
 		await client.elementClick(element.ELEMENT);
-	    client.setImplicitTimeout(30000);
+	    client.setImplicitTimeout(300000);
 
 		const search_screen_element = await client.findElement('accessibility id', 'header-back');
 		await client.elementClick(search_screen_element.ELEMENT);
-		client.setImplicitTimeout(30000);
+		client.setImplicitTimeout(300000);
 
 		const home_screen_element = await client.findElement('accessibility id', 'toggle');
 		await client.getElementAttribute(home_screen_element.ELEMENT, 'value').then((attr) => {

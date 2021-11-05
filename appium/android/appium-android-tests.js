@@ -108,12 +108,12 @@ describe('Mobile App POC Appium Tests', function () {
 		// Click the search button
 		const element = await client.findElement('xpath', '//android.view.ViewGroup/android.view.ViewGroup[2]/android.view.ViewGroup');
 		await client.elementClick(element.ELEMENT);
-		client.setImplicitTimeout(30000);
+		client.setImplicitTimeout(300000);
 
 		// Click on the back arrow
 		const search_screen_element = await client.findElement('class name', 'android.widget.ImageView');
 		await client.elementClick(search_screen_element.ELEMENT);
-		client.setImplicitTimeout(30000);
+		client.setImplicitTimeout(300000);
 
 		// Find the home page toggle
 		const element_on_return = await client.findElement('class name', 'android.widget.Switch');
@@ -122,7 +122,40 @@ describe('Mobile App POC Appium Tests', function () {
 		});
 	});
 
+	it('should find the search button, click it, and find 5 countries listed', async function () {
+		this.timeout(500000);
+		client.setImplicitTimeout(100000);
 
+		// Click the search button
+		const element = await client.findElement('xpath', '//android.view.ViewGroup/android.view.ViewGroup[2]/android.view.ViewGroup');
+		await client.elementClick(element.ELEMENT);
+		client.setImplicitTimeout(30000);
+
+		const list_Item_Afghanistan = await client.findElement('xpath', '//android.view.ViewGroup/android.view.ViewGroup[2]/android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup[1]/android.view.ViewGroup/android.widget.TextView[2]');
+		await client.getElementAttribute(list_Item_Afghanistan.ELEMENT, 'text').then((attr) => {
+			assert.equal(attr, '(93) Afghanistan');
+		});
+
+		const list_Item_Albania = await client.findElement('xpath', '//android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup[2]/android.view.ViewGroup/android.widget.TextView[2]');
+		await client.getElementAttribute(list_Item_Albania.ELEMENT, 'text').then((attr) => {
+			assert.equal(attr, '(355) Albania');
+		});
+
+		const list_Item_Algeria = await client.findElement('xpath', '//android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup[3]/android.view.ViewGroup/android.widget.TextView[2]');
+		await client.getElementAttribute(list_Item_Algeria.ELEMENT, 'text').then((attr) => {
+			assert.equal(attr, '(213) Algeria');
+		});
+
+		const list_Item_American_Samoa = await client.findElement('xpath', '//android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup[4]/android.view.ViewGroup/android.widget.TextView[2]');
+		await client.getElementAttribute(list_Item_American_Samoa.ELEMENT, 'text').then((attr) => {
+			assert.equal(attr, '(1684) American Samoa');
+		});
+
+		const list_Item_Andorra = await client.findElement('xpath', '//android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup[5]/android.view.ViewGroup/android.widget.TextView[2]');
+		await client.getElementAttribute(list_Item_Andorra.ELEMENT, 'text').then((attr) => {
+			assert.equal(attr, '(376) Andorra');
+		});
+	});
 
 
 
