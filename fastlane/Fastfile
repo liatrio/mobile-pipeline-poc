@@ -15,36 +15,22 @@
 
 default_platform(:ios)
 
-platform :ios do
-  before_all do
-    # installed via the semaphore plugin with `fastlane add_plugin semaphore`
-    setup_semaphore
-  end
-
-  desc "Build"
-  desc "Build without code sign. Just to see if the build is working"
-  lane :build do |options|
-    build_app(
-      workspace: "./ios/ReactNativeSemaphoreNew.xcworkspace",
-      scheme: "ReactNativeSemaphoreNew",
-      skip_package_ipa: true,
-      skip_archive: true,
-      skip_codesigning: true,
-      xcargs: "ONLY_ACTIVE_ARCH=YES", # since for this demo we skip_codesigning, the build will be done for a simulator, and since XCode 12, this means arm64, thus build failing. Semaphore is running on x86 chips.
-      silent: true,
-      clean: true
-    )
-  end
-end
-
-platform :android do
-  desc "Build"
-  desc "Build without code sign. Just to see if the build is working"
-  lane :build do |options|
-    gradle(task: "assembleRelease", project_dir: 'android/')
-  end
-end
-
+# platform :ios do
+#   desc "Build"
+#   desc "Build without code sign. Just to see if the build is working"
+#   lane :build do |options|
+#     build_app(
+#       workspace: "./ios/ReactNativeSemaphoreNew.xcworkspace",
+#       scheme: "ReactNativeSemaphoreNew",
+#       skip_package_ipa: true,
+#       skip_archive: true,
+#       skip_codesigning: true,
+#       xcargs: "ONLY_ACTIVE_ARCH=YES", # since for this demo we skip_codesigning, the build will be done for a simulator, and since XCode 12, this means arm64, thus build failing. Semaphore is running on x86 chips.
+#       silent: true,
+#       clean: true
+#     )
+#   end
+# end
 
 # This file contains the fastlane.tools configuration
 # You can find the documentation at https://docs.fastlane.tools
@@ -66,12 +52,30 @@ default_platform(:ios)
 platform :ios do
   desc "Release to iOS Store"
   lane :release do |options|
-    sync_code_signing(
-      type: "appstore"
+    # cert                          #generate code signing identities
+    # sigh(force: true)             #will make sure to re-generate the provisioning profile on each run. This will result in sigh always using the correct signing certificate, which is installed on the local machine.
+    # upload_to_app_store
+    # api_key = app_store_connect_api_key(
+      #   key_id: "VQKUY7M43V",
+      #   issuer_id: "24ecc95e-9305-4164-a012-722e9ef0e0e1",
+      #   key_filepath: "./AuthKey_VQKUY7M43V.p8",
+      # )
+    cert
+    sigh
+
+    api_key = app_store_connect_api_key(
+      key_id: options[:key],
+      issuer_id: options[:issuer],
+      key_filepath: [:api_key_path]
     )
-    upload_to_app_store
+
+    upload_to_testflight(
+      ipa: 'ios/ReactNativeSemaphoreNewIPA/ReactNativeSemaphoreNew.ipa',
+      api_key: api_key
+    )
   end
 end
+
 
 platform :android do
   desc "Release to Google Play Store"

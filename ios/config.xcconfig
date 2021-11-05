@@ -1,0 +1,6 @@
+CODE_SIGN_IDENTITY                  =   Apple Distribution: Liatrio, Inc
+CODE_SIGN_STYLE                     =   Manual
+DEVELOPMENT_TEAM                    =   RPJWBWRGNS
+PRODUCT_BUNDLE_IDENTIFIER           =   com.liatrio.mobile-pipeline-poc
+PROVISIONING_PROFILE_SPECIFIER      =   com.liatrio.mobile-pipeline-poc AppStore
+

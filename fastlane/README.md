@@ -16,27 +16,23 @@ or alternatively using `brew install fastlane`
 
 # Available Actions
 ## iOS
-### ios build
+### ios release
 ```
-fastlane ios build
+fastlane ios release
 ```
-Build
-
-Build without code sign. Just to see if the build is working
+Release to iOS Store
 
 ----
 
 ## Android
-### android build
+### android release
 ```
-fastlane android build
+fastlane android release
 ```
-Build
-
-Build without code sign. Just to see if the build is working
+Release to Google Play Store
 
 ----
 
-This README.md is auto-generated and will be re-generated every time [fastlane](https://fastlane.tools) is run.
+This README.md is auto-generated and will be re-generated every time [_fastlane_](https://fastlane.tools) is run.
 More information about fastlane can be found on [fastlane.tools](https://fastlane.tools).
 The documentation of fastlane can be found on [docs.fastlane.tools](https://docs.fastlane.tools).
