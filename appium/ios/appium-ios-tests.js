@@ -192,7 +192,6 @@ describe('Mobile App POC Appium Tests', function () {
 		});
 	});
 
-
 	it('shouldn\'t find the search bar after attempting to search again after clicking on a result', async function () {
 		this.timeout(500000);
 		client.setImplicitTimeout(100000);

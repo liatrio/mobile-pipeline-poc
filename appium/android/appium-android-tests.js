@@ -7,12 +7,22 @@ const opts = {
 	connectionRetryTimeout: 900000,
 	capabilities: {
 		platformName: "Android",
+		
 		platformVersion: "8.1",
+		// local
+		//platformVersion: "10",
+		
 		deviceName: "Android Emulator",
+		
 		app: "/Users/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/app-release.apk",
+		// local
+		//app: "/Users/ssmathistad/oct27mpoc/mobile-pipeline-poc/app-release.apk",
+		
 		appPackage: "com.reactnativesemaphorenew",
 		automationName: "UiAutomator2",
+		
 		avd: "sdk_gphone_x86",
+		
 		uiautomator2ServerInstallTimeout: "4000000",
 		newCommandTimeout: "2400",
 		androidDeviceReadyTimeout: "2400",
@@ -49,14 +59,14 @@ describe('Mobile App POC Appium Tests', function () {
 		assert.equal(current_package, 'com.reactnativesemaphorenew');
 	});
 
-	it('should find the home page text `Welcome to React Native`', async function () {
+	it('should find the home page text `Step One`', async function () {
 		this.timeout(500000);
 		client.setImplicitTimeout(100000);
 
-		const element = await client.findElement('xpath', '//android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup[1]/android.widget.TextView[2]');
+		const element = await client.findElement('xpath', '//android.view.ViewGroup/android.view.ViewGroup[2]/android.widget.TextView[1]');
 
 		await client.getElementAttribute(element.ELEMENT, 'text').then((attr) => {
-			assert.equal(attr, 'Welcome to\nReact Native');
+			assert.equal(attr, 'Step One');
 		});
 	});
 
@@ -72,6 +82,20 @@ describe('Mobile App POC Appium Tests', function () {
 		await client.elementClick(element.ELEMENT);
 		await client.getElementAttribute(element.ELEMENT, 'text').then((attr) => {
 		  assert.equal(attr, 'ON');
+		});
+	});
+
+	it('should find the search button, click it, and verify the search text `Select Country`', async function () {
+		this.timeout(500000);
+		client.setImplicitTimeout(100000);
+
+		const element = await client.findElement('xpath', '//android.view.ViewGroup/android.view.ViewGroup[2]/android.view.ViewGroup');
+		await client.elementClick(element.ELEMENT);
+		client.setImplicitTimeout(30000);
+
+		const search_screen_element = await client.findElement('xpath', '//android.view.ViewGroup/android.view.ViewGroup[2]/android.view.ViewGroup/android.widget.EditText');
+		await client.getElementAttribute(search_screen_element.ELEMENT, 'text').then((attr) => {
+			assert.equal(attr, 'Search Countries');
 		});
 	});
 
