@@ -46,8 +46,8 @@ jobs:
       - name: Wait for webdriver to be ready
         run: sleep 300
 
-      # - name: Run iOS Appium tests
-      #   run: npm run mocha appium/ios
+      - name: Run iOS Appium tests
+        run: npm run mocha appium/ios
           
       # - name: Setup upterm session
       #   uses: lhotari/action-upterm@v1 
