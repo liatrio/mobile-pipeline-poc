@@ -62,7 +62,6 @@ jobs:
     runs-on: macos-latest
     needs:
       - Version
-
     steps:
       - name: Checkout 
         uses: actions/checkout@v2
@@ -78,6 +77,10 @@ jobs:
       - name: Install Pod dependencies
         run: pod install
         working-directory: ios
+      - name: Certificate
+        run: |
+          echo -e ${{ secrets.APPLE_APP_STORE_API_KEY }} > fastlane/apple_api_key.p8
+          fastlane ios certificate_setup key_id:${{ secrets.APPLE_APP_STORE_API_KEY_ID }} issuer_id:${{ secrets.APPLE_APP_STORE_API_ISSUER_ID }} key_filepath:fastlane/apple_api_key.p8
       - name: Build and Export IOS
         run: |
           xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew -sdk iphoneos -configuration release archive -archivePath $PWD/ios/ReactNativeSemaphoreNew.xcarchive -xcconfig ios/config.xcconfig
@@ -150,10 +153,12 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           FILE: ios-artifact/ReactNativeSemaphoreNew
           GITHUB_REPOSITORY: ${{ env.GITHUB_REPO }}
+
       - name: Fastlane iOS
         run: |
           echo ${{ secrets.APPLE_APP_STORE_API_KEY }} > fastlane/apple_api_key.p8
-          fastlane IOS release key_id:${{ secrets.APPLE_APP_STORE_API_KEY_ID }} issuer_id:${{ secrets.APPLE_APP_STORE_API_ISSUER_ID }} key_filepath:fastlane/<api_key>
+          fastlane IOS release key_id:${{ secrets.APPLE_APP_STORE_API_KEY_ID }} issuer_id:${{ secrets.APPLE_APP_STORE_API_ISSUER_ID }} key_filepath:fastlane/apple_api_key.p8
+     
       - name: Fastlane Android
         run: |
           echo ${{ secrets.GOOGLE_API_KEY }} | base64 -d > fastlane/google_api_key.json
