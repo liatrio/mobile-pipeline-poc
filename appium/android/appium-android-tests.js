@@ -138,6 +138,12 @@ describe('Mobile App POC Appium Tests', function () {
 		this.timeout(500000);
 		client.setImplicitTimeout(100000);
 
+		// Find the home page text 'Step One'
+		const text_element = await client.findElement('xpath', '//android.view.ViewGroup/android.view.ViewGroup[2]/android.widget.TextView[1]');
+		await client.getElementAttribute(text_element.ELEMENT, 'text').then((attr) => {
+			assert.equal(attr, 'Step One');
+		});
+
 		// Click the search button
 		const element = await client.findElement('xpath', '//android.view.ViewGroup/android.view.ViewGroup[2]/android.view.ViewGroup');
 		client.setImplicitTimeout(300000);
@@ -173,6 +179,12 @@ describe('Mobile App POC Appium Tests', function () {
 	it('should find the search button, click it, enter `United States`, and verify the search box value as `United States`', async function () {
 		this.timeout(500000);
 		client.setImplicitTimeout(100000);
+
+		// Find the home page text 'Step One'
+		const text_element = await client.findElement('xpath', '//android.view.ViewGroup/android.view.ViewGroup[2]/android.widget.TextView[1]');
+		await client.getElementAttribute(text_element.ELEMENT, 'text').then((attr) => {
+			assert.equal(attr, 'Step One');
+		});
 
 		// Click the search button
 		const element = await client.findElement('xpath', '//android.view.ViewGroup/android.view.ViewGroup[2]/android.view.ViewGroup');
