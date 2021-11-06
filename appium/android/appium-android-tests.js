@@ -10,7 +10,7 @@ const opts = {
 		
 		platformVersion: "8.1",
 		// local
-		//platformVersion: "10",
+		///platformVersion: "10",
 		
 		deviceName: "Android Emulator",
 		
@@ -20,6 +20,8 @@ const opts = {
 		
 		appPackage: "com.reactnativesemaphorenew",
 		automationName: "UiAutomator2",
+
+		//systemPort: "8210",
 		
 		avd: "sdk_gphone_x86",
 		
@@ -48,16 +50,16 @@ describe('Mobile App POC Appium Tests', function () {
 		assert.isNull(delete_session);
 	});
 
-	// it('should create and delete a session', async function () {
-	// 	this.timeout(500000);
-	// 	client.setImplicitTimeout(100000);
+	it('should create and delete a session', async function () {
+		this.timeout(500000);
+		client.setImplicitTimeout(100000);
 
-	// 	const res = await client.status();
-	// 	assert.isObject(res.build);
+		const res = await client.status();
+		assert.isObject(res.build);
 		
-	// 	const current_package = await client.getCurrentPackage();
-	// 	assert.equal(current_package, 'com.reactnativesemaphorenew');
-	// });
+		const current_package = await client.getCurrentPackage();
+		assert.equal(current_package, 'com.reactnativesemaphorenew');
+	});
 
 	// it('should find the home page text `Step One`', async function () {
 	// 	this.timeout(500000);
@@ -105,18 +107,28 @@ describe('Mobile App POC Appium Tests', function () {
 		this.timeout(500000);
 		client.setImplicitTimeout(100000);
 
+		// Find the home page text 'Step One'
+		const text_element = await client.findElement('xpath', '//android.view.ViewGroup/android.view.ViewGroup[2]/android.widget.TextView[1]');
+		await client.getElementAttribute(text_element.ELEMENT, 'text').then((attr) => {
+			assert.equal(attr, 'Step One');
+		});
+
 		// Click the search button
-		const element = await client.findElement('xpath', '//android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup[2]/android.view.ViewGroup');
+		const element = await client.findElement('xpath', '//android.widget.FrameLayout/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup[2]/android.view.ViewGroup');
+		client.setImplicitTimeout(300000);
 		await client.elementClick(element.ELEMENT);
 		client.setImplicitTimeout(300000);
 
 		// Click on the back arrow
-		const search_screen_element = await client.findElement('class name', 'android.widget.ImageView');
+		//const search_screen_element = await client.findElement('class name', 'android.widget.ImageView');
+		const search_screen_element = await client.findElement('xpath', '//android.widget.Button[@content-desc="Home, back"]/android.widget.ImageView');
+		client.setImplicitTimeout(300000);
 		await client.elementClick(search_screen_element.ELEMENT);
 		client.setImplicitTimeout(300000);
 
-		// Find the home page toggle
+		// // Find the home page toggle
 		const element_on_return = await client.findElement('class name', 'android.widget.Switch');
+		// const element_on_return = await client.findElement('xpath', '//android.view.ViewGroup/android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup[2]/android.widget.Switch');
 		await client.getElementAttribute(element_on_return.ELEMENT, 'text').then((attr) => {
 			assert.equal(attr, 'OFF');
 		});
