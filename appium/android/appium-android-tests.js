@@ -267,7 +267,7 @@ describe('Mobile App POC Appium Tests', function () {
 		// Verfify the text box exists
 		const search_box_element = await client.findElement('class name', 'android.widget.EditText');
 		await client.getElementAttribute(search_box_element.ELEMENT, 'text').then((attr) => {
-			assert.equal(attr, '(1) United States');
+			assert.equal(attr, 'Search Countries');
 		});
 	// 	const search_screen_on_return_element = await client.findElement('accessibility id', 'countriesAutocompleteInput');
 	// 	await client.getElementAttribute(search_screen_on_return_element.ELEMENT, 'visible').then((attr) => {
