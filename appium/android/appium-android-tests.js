@@ -165,6 +165,8 @@ describe('Mobile App POC Appium Tests', function () {
 			assert.equal(attr, '(213) Algeria');
 		});
 
+		client.setImplicitTimeout(300000);
+
 		const list_Item_American_Samoa = await client.findElement('xpath', '//android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup[4]/android.view.ViewGroup/android.widget.TextView[2]');
 		await client.getElementAttribute(list_Item_American_Samoa.ELEMENT, 'text').then((attr) => {
 			assert.equal(attr, '(1684) American Samoa');
@@ -202,6 +204,7 @@ describe('Mobile App POC Appium Tests', function () {
 		await client.getElementAttribute(search_screen_element.ELEMENT, 'text').then((attr) => {
 			assert.equal(attr, 'United States');
 		});
+		client.setImplicitTimeout(300000);
 
 		// Verify the search result `United States`
 		const list_Item_United_States = await client.findElement('xpath', 'android.view.ViewGroup[2]/android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.widget.TextView[2]');
@@ -209,5 +212,54 @@ describe('Mobile App POC Appium Tests', function () {
 			assert.equal(attr, '(1) United States');
 		});
 	});
+
+	// it('should find the search bar after attempting to search again', async function () {
+	// 	this.timeout(500000);
+	// 	client.setImplicitTimeout(100000);
+
+	// 	// Find the home page text 'Step One'
+	// 	const text_element = await client.findElement('xpath', '//android.view.ViewGroup/android.view.ViewGroup[2]/android.widget.TextView[1]');
+	// 	await client.getElementAttribute(text_element.ELEMENT, 'text').then((attr) => {
+	// 		assert.equal(attr, 'Step One');
+	// 	});
+
+	// 	// Click the search button
+	// 	const element = await client.findElement('xpath', '//android.view.ViewGroup/android.view.ViewGroup[2]/android.view.ViewGroup');
+	// 	client.setImplicitTimeout(300000);
+	// 	await client.elementClick(element.ELEMENT);
+	// 	client.setImplicitTimeout(300000);
+
+	// 	// Enter text into the search box
+	// 	const search_screen_element = await client.findElement('class name', 'android.widget.EditText');
+	// 	client.setImplicitTimeout(300000);
+	// 	await client.elementClick(search_screen_element.ELEMENT);
+	// 	client.setImplicitTimeout(300000);
+	// 	await client.elementSendKeys(search_screen_element.ELEMENT, 'United States');
+	// 	client.setImplicitTimeout(300000);
+	// 	await client.getElementAttribute(search_screen_element.ELEMENT, 'text').then((attr) => {
+	// 		assert.equal(attr, 'United States');
+	// 	});
+
+	// 	// Verify the search result `United States`
+	// 	const list_Item_United_States = await client.findElement('xpath', 'android.view.ViewGroup[2]/android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.widget.TextView[2]');
+	// 	await client.getElementAttribute(list_Item_United_States.ELEMENT, 'text').then((attr) => {
+	// 		assert.equal(attr, '(1) United States');
+	// 	});
+
+	// 	// Extension
+
+	// 	const back_button_element = await client.findElement('accessibility id', 'header-back');
+	// 	await client.elementClick(back_button_element.ELEMENT);
+	// 	client.setImplicitTimeout(30000);
+
+	// 	const search_buttom_element = await client.findElement('accessibility id', 'searchButton');
+	// 	await client.elementClick(search_buttom_element.ELEMENT);
+	//     client.setImplicitTimeout(30000);
+		
+	// 	const search_screen_on_return_element = await client.findElement('accessibility id', 'countriesAutocompleteInput');
+	// 	await client.getElementAttribute(search_screen_on_return_element.ELEMENT, 'visible').then((attr) => {
+	// 		assert.equal(attr, 'true');
+	// 	});
+	// });
 
 });
