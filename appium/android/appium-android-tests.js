@@ -167,7 +167,7 @@ describe('Mobile App POC Appium Tests', function () {
 
 		client.setImplicitTimeout(300000);
 
-		const list_Item_American_Samoa = await client.findElement('xpath', '//android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup[4]/android.view.ViewGroup/android.widget.TextView[2]');
+		const list_Item_American_Samoa = await client.findElement('xpath', '//android.view.ViewGroup/android.view.ViewGroup[2]/android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup[4]/android.view.ViewGroup/android.widget.TextView[2]');
 		await client.getElementAttribute(list_Item_American_Samoa.ELEMENT, 'text').then((attr) => {
 			assert.equal(attr, '(1684) American Samoa');
 		});
@@ -180,6 +180,7 @@ describe('Mobile App POC Appium Tests', function () {
 
 	it('should find the search button, click it, enter `United States`, and verify the search box value as `United States`', async function () {
 		this.timeout(500000);
+		this.retries(3)
 		client.setImplicitTimeout(100000);
 
 		// Find the home page text 'Step One'
@@ -207,7 +208,7 @@ describe('Mobile App POC Appium Tests', function () {
 		client.setImplicitTimeout(300000);
 
 		// Verify the search result `United States`
-		const list_Item_United_States = await client.findElement('xpath', 'android.view.ViewGroup[2]/android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.widget.TextView[2]');
+		const list_Item_United_States = await client.findElement('xpath', '//android.view.ViewGroup[2]/android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.widget.TextView[2]');
 		await client.getElementAttribute(list_Item_United_States.ELEMENT, 'text').then((attr) => {
 			assert.equal(attr, '(1) United States');
 		});
