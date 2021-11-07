@@ -265,7 +265,8 @@ describe('Mobile App POC Appium Tests', function () {
 		client.setImplicitTimeout(300000);
 
 		// Verfify the text box exists
-		const search_box_element = await client.findElement('class name', 'android.widget.EditText');
+		//const search_box_element = await client.findElement('class name', 'android.widget.EditText');
+		const search_box_element = await client.findElement('xpath', '//android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup[2]/android.view.ViewGroup/android.widget.EditText');
 		await client.getElementAttribute(search_box_element.ELEMENT, 'text').then((attr) => {
 			assert.equal(attr, 'Search Countries');
 		});
