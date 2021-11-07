@@ -126,16 +126,6 @@ describe('Mobile App POC Appium Tests', function () {
 		await client.getElementAttribute(list_Item_Algeria.ELEMENT, 'visible').then((attr) => {
 			assert.equal(attr, 'true');
 		});
-
-		// const list_Item_American_Samoa = await client.findElement('accessibility id', 'listItem-American Samoa');
-		// await client.getElementAttribute(list_Item_American_Samoa.ELEMENT, 'visible').then((attr) => {
-		// 	assert.equal(attr, 'true');
-		// });
-
-		// const list_Item_Andorra = await client.findElement('accessibility id', 'listItem-Andorra');
-		// await client.getElementAttribute(list_Item_Andorra.ELEMENT, 'visible').then((attr) => {
-		// 	assert.equal(attr, 'true');
-		// });
 	});
 
 	it('should find the search button, click it, enter `United States`, and verify the search box value as `United States`', async function () {

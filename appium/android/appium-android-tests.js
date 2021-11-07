@@ -10,7 +10,7 @@ const opts = {
 		
 		platformVersion: "8.1",
 		// local
-		///platformVersion: "10",
+		//platformVersion: "10",
 		
 		deviceName: "Android Emulator",
 		
@@ -20,8 +20,6 @@ const opts = {
 		
 		appPackage: "com.reactnativesemaphorenew",
 		automationName: "UiAutomator2",
-
-		//systemPort: "8210",
 		
 		avd: "sdk_gphone_x86",
 		
@@ -120,7 +118,6 @@ describe('Mobile App POC Appium Tests', function () {
 		client.setImplicitTimeout(300000);
 
 		// Click on the back arrow
-		//const search_screen_element = await client.findElement('class name', 'android.widget.ImageView');
 		const search_screen_element = await client.findElement('xpath', '//android.widget.Button[@content-desc="Home, back"]/android.widget.ImageView');
 		client.setImplicitTimeout(300000);
 		await client.elementClick(search_screen_element.ELEMENT);
@@ -128,7 +125,6 @@ describe('Mobile App POC Appium Tests', function () {
 
 		// // Find the home page toggle
 		const element_on_return = await client.findElement('class name', 'android.widget.Switch');
-		// const element_on_return = await client.findElement('xpath', '//android.view.ViewGroup/android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup[2]/android.widget.Switch');
 		await client.getElementAttribute(element_on_return.ELEMENT, 'text').then((attr) => {
 			assert.equal(attr, 'OFF');
 		});
@@ -167,16 +163,6 @@ describe('Mobile App POC Appium Tests', function () {
 		});
 
 		client.setImplicitTimeout(300000);
-
-		// const list_Item_American_Samoa = await client.findElement('xpath', '//android.view.ViewGroup/android.view.ViewGroup[2]/android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup[4]/android.view.ViewGroup/android.widget.TextView[2]');
-		// await client.getElementAttribute(list_Item_American_Samoa.ELEMENT, 'text').then((attr) => {
-		// 	assert.equal(attr, '(1684) American Samoa');
-		// });
-
-		// const list_Item_Andorra = await client.findElement('xpath', '//android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup[5]/android.view.ViewGroup/android.widget.TextView[2]');
-		// await client.getElementAttribute(list_Item_Andorra.ELEMENT, 'text').then((attr) => {
-		// 	assert.equal(attr, '(376) Andorra');
-		// });
 	});
 
 	it('should find the search button, click it, enter `United States`, and verify the search box value as `United States`', async function () {
@@ -213,68 +199,6 @@ describe('Mobile App POC Appium Tests', function () {
 		await client.getElementAttribute(list_Item_United_States.ELEMENT, 'text').then((attr) => {
 			assert.equal(attr, '(1) United States');
 		});
-	});
-
-	it('should find the search bar after attempting to search again', async function () {
-		this.timeout(500000);
-		this.retries(3)
-		client.setImplicitTimeout(100000);
-
-		// Find the home page text 'Step One'
-		const text_element = await client.findElement('xpath', '//android.view.ViewGroup/android.view.ViewGroup[2]/android.widget.TextView[1]');
-		await client.getElementAttribute(text_element.ELEMENT, 'text').then((attr) => {
-			assert.equal(attr, 'Step One');
-		});
-
-		// Click the search button
-		const element = await client.findElement('xpath', '//android.view.ViewGroup/android.view.ViewGroup[2]/android.view.ViewGroup');
-		client.setImplicitTimeout(300000);
-		await client.elementClick(element.ELEMENT);
-		client.setImplicitTimeout(300000);
-
-		// Enter text into the search box
-		const search_screen_element = await client.findElement('class name', 'android.widget.EditText');
-		client.setImplicitTimeout(300000);
-		await client.elementClick(search_screen_element.ELEMENT);
-		client.setImplicitTimeout(300000);
-		await client.elementSendKeys(search_screen_element.ELEMENT, 'United States');
-		client.setImplicitTimeout(300000);
-		await client.getElementAttribute(search_screen_element.ELEMENT, 'text').then((attr) => {
-			assert.equal(attr, 'United States');
-		});
-		client.setImplicitTimeout(300000);
-
-		// Verify the search result `United States`
-		const list_Item_United_States = await client.findElement('xpath', '//android.view.ViewGroup[2]/android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.widget.TextView[2]');
-		await client.getElementAttribute(list_Item_United_States.ELEMENT, 'text').then((attr) => {
-			assert.equal(attr, '(1) United States');
-		});
-
-		// Extension
-
-		// Click on the back arrow
-		//const search_screen_element = await client.findElement('class name', 'android.widget.ImageView');
-		const back_arrow_element = await client.findElement('xpath', '//android.widget.Button[@content-desc="Home, back"]/android.widget.ImageView');
-		client.setImplicitTimeout(300000);
-		await client.elementClick(back_arrow_element.ELEMENT);
-		client.setImplicitTimeout(300000);
-
-		// Click the search button
-		const search_button_element = await client.findElement('xpath', '//android.view.ViewGroup/android.view.ViewGroup[2]/android.view.ViewGroup');
-		client.setImplicitTimeout(300000);
-		await client.elementClick(search_button_element.ELEMENT);
-		client.setImplicitTimeout(300000);
-
-		// Verfify the text box exists
-		//const search_box_element = await client.findElement('class name', 'android.widget.EditText');
-		const search_box_element = await client.findElement('xpath', '//android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup[2]/android.view.ViewGroup/android.widget.EditText');
-		await client.getElementAttribute(search_box_element.ELEMENT, 'text').then((attr) => {
-			assert.equal(attr, 'Search Countries');
-		});
-	// 	const search_screen_on_return_element = await client.findElement('accessibility id', 'countriesAutocompleteInput');
-	// 	await client.getElementAttribute(search_screen_on_return_element.ELEMENT, 'visible').then((attr) => {
-	// 		assert.equal(attr, 'true');
-	// 	});
 	});
 
 });
