@@ -168,15 +168,15 @@ describe('Mobile App POC Appium Tests', function () {
 
 		client.setImplicitTimeout(300000);
 
-		const list_Item_American_Samoa = await client.findElement('xpath', '//android.view.ViewGroup/android.view.ViewGroup[2]/android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup[4]/android.view.ViewGroup/android.widget.TextView[2]');
-		await client.getElementAttribute(list_Item_American_Samoa.ELEMENT, 'text').then((attr) => {
-			assert.equal(attr, '(1684) American Samoa');
-		});
+		// const list_Item_American_Samoa = await client.findElement('xpath', '//android.view.ViewGroup/android.view.ViewGroup[2]/android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup[4]/android.view.ViewGroup/android.widget.TextView[2]');
+		// await client.getElementAttribute(list_Item_American_Samoa.ELEMENT, 'text').then((attr) => {
+		// 	assert.equal(attr, '(1684) American Samoa');
+		// });
 
-		const list_Item_Andorra = await client.findElement('xpath', '//android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup[5]/android.view.ViewGroup/android.widget.TextView[2]');
-		await client.getElementAttribute(list_Item_Andorra.ELEMENT, 'text').then((attr) => {
-			assert.equal(attr, '(376) Andorra');
-		});
+		// const list_Item_Andorra = await client.findElement('xpath', '//android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup[5]/android.view.ViewGroup/android.widget.TextView[2]');
+		// await client.getElementAttribute(list_Item_Andorra.ELEMENT, 'text').then((attr) => {
+		// 	assert.equal(attr, '(376) Andorra');
+		// });
 	});
 
 	it('should find the search button, click it, enter `United States`, and verify the search box value as `United States`', async function () {
