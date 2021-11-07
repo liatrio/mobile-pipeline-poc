@@ -242,6 +242,7 @@ describe('Mobile App POC Appium Tests', function () {
 		await client.getElementAttribute(search_screen_element.ELEMENT, 'text').then((attr) => {
 			assert.equal(attr, 'United States');
 		});
+		client.setImplicitTimeout(300000);
 
 		// Verify the search result `United States`
 		const list_Item_United_States = await client.findElement('xpath', '//android.view.ViewGroup[2]/android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.widget.TextView[2]');
