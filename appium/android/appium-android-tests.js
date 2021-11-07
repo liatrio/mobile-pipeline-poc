@@ -134,7 +134,7 @@ describe('Mobile App POC Appium Tests', function () {
 		});
 	});
 
-	it('should find the search button, click it, and find 5 countries listed', async function () {
+	it('should find the search button, click it, and find the first 3 countries listed', async function () {
 		this.timeout(500000);
 		this.retries(3)
 		client.setImplicitTimeout(100000);
