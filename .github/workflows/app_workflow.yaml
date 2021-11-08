@@ -243,7 +243,15 @@ jobs:
         run: cd android && ./gradlew bundleRelease --no-daemon
 
       - name: Generate apk from aab
-        run: bundletool build-apks --bundle=/home/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/android/app/build/outputs/bundle/release/app-release.aab --output=/Users/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/app-release.apk --mode=universal --ks=android/app/liatrio.keystore
+        run: curl https://github.com/google/bundletool/releases/download/1.8.2/bundletool-all-1.8.2.jar
+
+      - name: Set up JDK 8
+        uses: actions/setup-java@v1
+        with:
+          java-version: '8'
+
+      - name: Generate apk from aab
+        run: java -jar bundletool-all-1.8.2.jar build-apks --bundle=/home/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/android/app/build/outputs/bundle/release/app-release.aab --output=/Users/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/app-release.apk --mode=universal --ks=android/app/liatrio.keystore
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v1
