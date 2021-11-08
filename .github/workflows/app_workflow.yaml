@@ -137,6 +137,9 @@ jobs:
           name: android-apk-artifact
           path: /Users/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/app-release.apk
 
+      - name: Create build properties file
+        run: echo -e "password=${{ secrets.KEYSTORE_PASSWORD }}\nversion=${{ needs.Version.outputs.VERSION }}" > android/build.properties
+
       ## Android sdk
       - name: Setup android SDK
         uses: android-actions/setup-android@v2
