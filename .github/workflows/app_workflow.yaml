@@ -250,11 +250,12 @@ jobs:
       #   with:
       #     java-version: '8'
 
-      - name: Generate apk from aab
-        run: java -jar bundletool-all-1.8.2.jar build-apks --bundle=/home/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/android/app/build/outputs/bundle/release/app-release.aab --output=/Users/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/app-release.apk --mode=universal --ks=android/app/liatrio.keystore
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v1
+
+      - name: Generate apk from aab
+        run: java -jar bundletool-all-1.8.2.jar build-apks --bundle=/home/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/android/app/build/outputs/bundle/release/app-release.aab --output=/Users/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/app-release.apk --mode=universal --ks=android/app/liatrio.keystore
 
       - name: Upload apk artifact for appium
         uses: actions/upload-artifact@v2
