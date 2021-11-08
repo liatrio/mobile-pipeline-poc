@@ -129,6 +129,12 @@ jobs:
       - name: Check appium server status        
         run: curl http://localhost:4723/wd/hub/status
 
+      - name: Download apk artifact
+        uses: actions/download-artifact@v2
+        with: 
+          name: android-apk-artifact
+          path: /home/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/app-release.apk
+
       # - name: Setup upterm session
       #   uses: lhotari/action-upterm@v1
 
@@ -235,9 +241,9 @@ jobs:
         run: |
           echo ${{ secrets.KEYSTORE }} | base64 -d > android/app/liatrio.keystore
           echo -e "password=${{ secrets.KEYSTORE_PASSWORD }}\nversion=${{ needs.Version.outputs.VERSION }}" > android/build.properties       
-      - name: Build Android App Bundle
+      - name: Build Android App Release Bundle
         run: cd android && ./gradlew bundleRelease --no-daemon
-      - name: Build Android App Bundle
+      - name: Build Android apk for Appium
         run: cd android && ./gradlew assembleRelease --no-daemon
 
       - name: Perform CodeQL Analysis
@@ -256,7 +262,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: 'android-apk-artifact'
-          path: '/home/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/android/app/build/outputs/bundle/release/app-release.apk'
+          path: '/home/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/android/app/build/outputs/apk/release/app-release.apk'
 
   create-release-and-publish-ios-android-binaries: 
     runs-on: ubuntu-latest
