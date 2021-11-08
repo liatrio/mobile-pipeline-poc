@@ -99,6 +99,7 @@ jobs:
 
       - name: Run iOS Appium tests
         run: npm run mocha appium/ios
+        
   Appium-Android:
     runs-on: macos-latest
     needs:
@@ -134,7 +135,7 @@ jobs:
         uses: actions/download-artifact@v2
         with: 
           name: android-apk-artifact
-          path: /home/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/app-release.apk
+          path: /Users/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/app-release.apk
 
       ## Android sdk
       - name: Setup android SDK

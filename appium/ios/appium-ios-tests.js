@@ -95,11 +95,6 @@ describe('Mobile App POC Appium Tests', function () {
 		await client.getElementAttribute(home_screen_element.ELEMENT, 'value').then((attr) => {
 			assert.equal(attr, '0');
 		});
-
-		// const home_screen_element = await client.findElement('accessibility id', 'Step One');
-		// await client.getElementAttribute(home_screen_element.ELEMENT, 'visible').then((attr) => {
-		// 	assert.equal(attr, 'true');
-		// });
 	});
 
 	it('should find the search button, click it, and find the first 3 countries listed', async function () {
