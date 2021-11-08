@@ -133,8 +133,8 @@ jobs:
       - name: Android artifact
         uses: actions/download-artifact@v2
         with: 
-          name: 'android-artifact'
-          path: '/Users/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/app-release.aab'
+          name: 'android-apk-artifact'
+          path: '/Users/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/app-release.apk'
 
       ## Android sdk
       - name: Setup android SDK
@@ -242,10 +242,19 @@ jobs:
       - name: Build Android App Bundle
         run: cd android && ./gradlew bundleRelease --no-daemon
 
+      - name: Generate apk from aab
+        run: bundletool build-apks --bundle=/home/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/android/app/build/outputs/bundle/release/app-release.aab --output=/Users/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/app-release.apk --mode=universal --ks=android/app/liatrio.keystore
+
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v1
 
-      - name: Upload artifacts
+      - name: Upload apk artifact for appium
+        uses: actions/upload-artifact@v2
+        with:
+          name: 'android-apk-artifact'
+          path: '/home/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/app-release.apk'
+
+      - name: Upload release artifacts
         uses: actions/upload-artifact@v2
         with:
           name: 'android-artifact'
