@@ -13,17 +13,17 @@
 		<key>com.liatrio.mobile-pipeline-poc</key>
 		<string>com.liatrio.mobile-pipeline-poc AppStore</string>
 	</dict>
-	<!-- <key>signingCertificate</key> 
+	<key>signingCertificate</key> 
 	<string>Apple Distribution</string>
 	<key>signingStyle</key>
 	<string>manual</string>
 	<key>stripSwiftSymbols</key>
 	<true/>
-	<key>teamID</key>
-	<string>RPJWBWRGNS</string> 
+	<!-- <key>teamID</key>
+	<string>RPJWBWRGNS</string>  -->
 	<key>uploadBitcode</key>
 	<true/>
 	<key>uploadSymbols</key>
-	<true/> -->
+	<true/>
 </dict>
 </plist>
