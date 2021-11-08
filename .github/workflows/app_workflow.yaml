@@ -61,6 +61,8 @@ jobs:
 
   Appium-IOS:
     runs-on: macos-latest
+    needs:
+      - Version 
     env:
       DEVICE_ID: 'FC41B203-8F38-458B-9F64-23ADB1A969B4'
     steps:
@@ -99,6 +101,8 @@ jobs:
         run: npm run mocha appium/ios
   Appium-Android:
     runs-on: macos-latest
+    needs:
+      - Version 
     env:
       ANDROID_SDK_ROOT: '/Users/runner/Library/Android/sdk'
       ANDROID_HOME: '/Users/runner/Library/Android/sdk'
