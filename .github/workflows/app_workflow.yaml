@@ -92,8 +92,9 @@ jobs:
           echo -e ${{ secrets.APPLE_APP_STORE_API_KEY }} | base64 -d --output $APPLE_API_KEY_PATH
           echo -e ${{ secrets.APPLE_DISTRIBUTION_KEY }} | base64 -d --output $CERTIFICATE_KEY_PATH
           echo -e ${{ secrets.APPLE_DISTRIBUTION_CERTIFICATE}} | base64 -d --output $CERTIFICATE_PATH
-        
+      
           security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+          security default-keychain -s $KEYCHAIN_PATH
           security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
           security unlock-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
 
