@@ -129,11 +129,8 @@ jobs:
       - name: Check appium server status        
         run: curl http://localhost:4723/wd/hub/status
 
-      - name: Build Android App Bundle
-        run: cd android && ./gradlew assembleRelease --no-daemon
-
-      - name: Setup upterm session
-        uses: lhotari/action-upterm@v1
+      # - name: Setup upterm session
+      #   uses: lhotari/action-upterm@v1
 
       ## Android sdk
       - name: Setup android SDK
@@ -240,6 +237,8 @@ jobs:
           echo -e "password=${{ secrets.KEYSTORE_PASSWORD }}\nversion=${{ needs.Version.outputs.VERSION }}" > android/build.properties       
       - name: Build Android App Bundle
         run: cd android && ./gradlew bundleRelease --no-daemon
+      - name: Build Android App Bundle
+        run: cd android && ./gradlew assembleRelease --no-daemon
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v1
@@ -249,6 +248,15 @@ jobs:
         with:
           name: 'android-artifact'
           path: '/home/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/android/app/build/outputs/bundle/release/app-release.aab'
+
+      - name: Setup upterm session
+        uses: lhotari/action-upterm@v1
+
+      - name: Upload apk artifact for appium
+        uses: actions/upload-artifact@v2
+        with:
+          name: 'android-apk-artifact'
+          path: '/home/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/android/app/build/outputs/bundle/release/app-release.apk'
 
   create-release-and-publish-ios-android-binaries: 
     runs-on: ubuntu-latest
