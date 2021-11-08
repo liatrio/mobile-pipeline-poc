@@ -103,6 +103,7 @@ jobs:
     runs-on: macos-latest
     needs:
       - Version
+      - Build-android
     env:
       ANDROID_SDK_ROOT: '/Users/runner/Library/Android/sdk'
       ANDROID_HOME: '/Users/runner/Library/Android/sdk'
