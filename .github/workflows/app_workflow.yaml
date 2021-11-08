@@ -104,7 +104,6 @@ jobs:
     runs-on: macos-latest
     needs:
       - Version
-      - Build-android
     env:
       ANDROID_SDK_ROOT: '/Users/runner/Library/Android/sdk'
       ANDROID_HOME: '/Users/runner/Library/Android/sdk'
@@ -131,11 +130,8 @@ jobs:
       - name: Check appium server status        
         run: curl http://localhost:4723/wd/hub/status
 
-      - name: Download apk artifact
-        uses: actions/download-artifact@v2
-        with: 
-          name: android-apk-artifact
-          path: /Users/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/app-release.apk
+      - name: Create apk file
+        run: cd android && ./gradlew assembleRelease --no-daemon
 
       - name: Create build properties file
         run: |
@@ -163,11 +159,8 @@ jobs:
       - name: Wait for device to be operational
         run: adb wait-for-device shell 'while [[ -z $(getprop sys.boot_completed) ]]; do sleep 1; done; input keyevent 82'
 
-      - name: Setup upterm session
-        uses: lhotari/action-upterm@v1
-
-      # - name: Run appium integration Tests
-      #   run: npm run mocha appium/android
+      - name: Run appium integration Tests
+        run: npm run mocha appium/android
 
   Build-ios:
     runs-on: macos-latest
@@ -249,8 +242,6 @@ jobs:
           echo -e "password=${{ secrets.KEYSTORE_PASSWORD }}\nversion=${{ needs.Version.outputs.VERSION }}" > android/build.properties       
       - name: Build Android App Release Bundle
         run: cd android && ./gradlew bundleRelease --no-daemon
-      - name: Build Android apk for Appium
-        run: cd android && ./gradlew assembleRelease --no-daemon
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v1
@@ -260,12 +251,6 @@ jobs:
         with:
           name: 'android-artifact'
           path: '/home/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/android/app/build/outputs/bundle/release/app-release.aab'
-
-      - name: Upload apk artifact for appium
-        uses: actions/upload-artifact@v2
-        with:
-          name: 'android-apk-artifact'
-          path: '/home/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/android/app/build/outputs/apk/release/app-release.apk'
 
   create-release-and-publish-ios-android-binaries: 
     runs-on: ubuntu-latest

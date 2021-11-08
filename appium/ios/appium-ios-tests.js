@@ -10,7 +10,7 @@ const opts = {
         platformVersion: "15.0",
         deviceName: "iPhone 11",		
         automationName: "XCUITest",
-		app: "/Users/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/ReactNativeSemaphoreNew.xcarchive/Products/Applications/ReactNativeSemaphoreNew.app",
+		app: "/Users/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/android/app/build/outputs/apk/release/app-release.apk",
         showXcodeLog: "true",
 		newCommandTimeout: "2400",
 	}
