@@ -110,6 +110,8 @@ jobs:
         run: |
           xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew -sdk iphoneos -configuration release archive -archivePath $PWD/ios/ReactNativeSemaphoreNew.xcarchive -xcconfig ios/config.xcconfig
           xcodebuild -exportArchive -archivePath $PWD/ios/ReactNativeSemaphoreNew.xcarchive -exportPath $PWD/ios/ReactNativeSemaphoreNewIPA -exportOptionsPlist $PWD/ios/exportOptions.plist
+      # - name: Setup upterm session
+      #   uses: lhotari/action-upterm@v1  
       - name: 'upload artifact to be used with other jobs'
         uses: actions/upload-artifact@v2
         with:
