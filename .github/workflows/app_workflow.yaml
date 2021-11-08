@@ -1,7 +1,7 @@
 name: "Build Release ios/android"
 
 on:
-  pull_request: 
+  # pull_request: 
   push:
 
 env:
@@ -59,7 +59,6 @@ jobs:
          SONAR_TOKEN: ${{ secrets.SONAR_SHAREDSVC_TOKEN }}
   Appium-IOS:
     runs-on: macos-latest
-    needs: Initial-check
     env:
       DEVICE_ID: 'FC41B203-8F38-458B-9F64-23ADB1A969B4'
     steps:
@@ -98,7 +97,6 @@ jobs:
         run: npm run mocha appium/ios
   Appium-Android:
     runs-on: macos-latest
-    needs: Initial-check
     env:
       ANDROID_SDK_ROOT: '/Users/runner/Library/Android/sdk'
       ANDROID_HOME: '/Users/runner/Library/Android/sdk'
