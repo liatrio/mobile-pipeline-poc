@@ -11,9 +11,7 @@ const opts = {
         deviceName: "iPhone 11",		
         automationName: "XCUITest",
 		app: "/Users/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/ReactNativeSemaphoreNew.xcarchive/Products/Applications/ReactNativeSemaphoreNew.app",
-        // local
-		// app: "/Users/ssmathistad/oct27mpoc/mobile-pipeline-poc/ReactNativeSemaphoreNew.xcarchive/Products/Applications/ReactNativeSemaphoreNew.app",
-		showXcodeLog: "true",
+        showXcodeLog: "true",
 		newCommandTimeout: "2400",
 	}
 };

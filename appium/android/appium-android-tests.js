@@ -7,22 +7,12 @@ const opts = {
 	connectionRetryTimeout: 900000,
 	capabilities: {
 		platformName: "Android",
-		
 		platformVersion: "8.1",
-		// local
-		//platformVersion: "10",
-		
 		deviceName: "Android Emulator",
-		
 		app: "/Users/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/app-release.apk",
-		// local
-		//app: "/Users/ssmathistad/oct27mpoc/mobile-pipeline-poc/app-release.apk",
-		
 		appPackage: "com.reactnativesemaphorenew",
 		automationName: "UiAutomator2",
-		
 		avd: "sdk_gphone_x86",
-		
 		uiautomator2ServerInstallTimeout: "4000000",
 		newCommandTimeout: "2400",
 		androidDeviceReadyTimeout: "2400",
