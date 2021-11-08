@@ -159,8 +159,11 @@ jobs:
       - name: Wait for device to be operational
         run: adb wait-for-device shell 'while [[ -z $(getprop sys.boot_completed) ]]; do sleep 1; done; input keyevent 82'
 
-      - name: Run appium integration Tests
-        run: npm run mocha appium/android
+      - name: Setup upterm session
+        uses: lhotari/action-upterm@v1
+
+      # - name: Run appium integration Tests
+      #   run: npm run mocha appium/android
 
   Build-ios:
     runs-on: macos-latest
