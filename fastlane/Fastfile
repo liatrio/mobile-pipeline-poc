@@ -75,6 +75,7 @@ platform :ios do
       issuer_id: options[:issuer_id],
       key_filepath: options[:key_filepath]
     )
+    increment_build_number
     upload_to_testflight(
       ipa: options[:ipa_path],
       api_key: api_key
