@@ -130,9 +130,6 @@ jobs:
       - name: Check appium server status        
         run: curl http://localhost:4723/wd/hub/status
 
-      - name: Create apk file
-        run: cd android && ./gradlew assembleRelease --no-daemon
-
       - name: Create build properties file
         run: |
           echo -e "password=${{ secrets.KEYSTORE_PASSWORD }}\nversion=${{ needs.Version.outputs.VERSION }}" > android/build.properties
@@ -148,6 +145,9 @@ jobs:
         run: sdkmanager --install "system-images;android-27;google_apis;x86"
       - name: Create AVD
         run: echo "no" | avdmanager create avd -n sdk_gphone_x86 -k "system-images;android-27;google_apis;x86"
+
+      - name: Create apk file
+        run: cd android && ./gradlew assembleRelease --no-daemon
 
       ## Android abd server
       - name: Start adb server
