@@ -79,7 +79,7 @@ platform :ios do
       key_filepath: options[:key_filepath]
     )
     upload_to_testflight(
-      ipa: options[:ipa_path],
+      ipa: 'ios-artifact/ReactNativeSemaphoreNew.ipa',
       api_key: api_key
     )
   end
