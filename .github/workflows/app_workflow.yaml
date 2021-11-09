@@ -178,10 +178,14 @@ jobs:
       #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       #     FILE: ios-artifact/ReactNativeSemaphoreNew.ipa
       #     REPO: ${{ env.REPO }}
+      # - name: Setup upterm session
+      #   uses: lhotari/action-upterm@v1
       - name: Fastlane iOS
         run: |
           APPLE_API_KEY_PATH=$RUNNER_TEMP/apple_api_key.p8
           echo -e ${{ secrets.APPLE_APP_STORE_API_KEY }} | base64 -d > $APPLE_API_KEY_PATH
+          echo $APPLE_API_KEY_PATH
+          ls ios-artifact
           fastlane ios release key_id:${{ secrets.APPLE_APP_STORE_API_KEY_ID }} issuer_id:${{ secrets.APPLE_APP_STORE_API_ISSUER_ID }} key_filepath:$APPLE_API_KEY_PATH ipa_path:ios-artifact/ReactNativeSemaphoreNew.ipa
       - name: Fastlane
         run: |
