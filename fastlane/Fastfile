@@ -82,7 +82,6 @@ platform :ios do
   end
 end
 
-
 platform :android do
   desc "Release to Google Play Store"
   lane :release do |options|
