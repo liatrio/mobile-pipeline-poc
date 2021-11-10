@@ -31,7 +31,7 @@ describe('Mobile App POC Appium Tests', function () {
 	let client;
 	webDriverReady = false;
 
-	while (!webDriverReady) {
+	while (webDriverReady == false) {
 		try {
 			beforeEach(async function () {
 				this.timeout(500000);
