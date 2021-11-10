@@ -12,7 +12,8 @@ const opts = {
         automationName: "XCUITest",
 		app: "/Users/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/ReactNativeSemaphoreNew.xcarchive/Products/Applications/ReactNativeSemaphoreNew.app",
         showXcodeLog: "true",
-		newCommandTimeout: "2400",
+		newCommandTimeout: "2400"
+		//webDriverAgentUrl: "127.0.0.1:8100"
 	}
 };
 
