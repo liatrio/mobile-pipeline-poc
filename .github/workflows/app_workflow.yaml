@@ -61,8 +61,8 @@ jobs:
 
   Appium-IOS:
     runs-on: macos-latest
-    needs:
-      - Initial-check
+    #needs:
+      #- Initial-check
     #env:
       #DEVICE_ID: 'FC41B203-8F38-458B-9F64-23ADB1A969B4'
       #DEVICE_ID: '424812ED-A78C-47F5-88A3-AD5901E2453F'
