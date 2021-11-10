@@ -50,13 +50,20 @@ default_platform(:ios)
 default_platform(:ios)
 
 platform :ios do
-  desc "Set up certificates"
-  lane :certificate_setup do |options|
+  before_each do |lane, options|
     api_key = app_store_connect_api_key(
       key_id: options[:key_id],
       issuer_id: options[:issuer_id],
       key_filepath: options[:key_filepath]
     )
+  end
+  desc "Set up certificates"
+  lane :certificate_setup do |options|
+    # api_key = app_store_connect_api_key(
+    #   key_id: options[:key_id],
+    #   issuer_id: options[:issuer_id],
+    #   key_filepath: options[:key_filepath]
+    # )
     cert(
       api_key: api_key,
       keychain_path: options[:keychain_path],
@@ -70,12 +77,11 @@ platform :ios do
   desc "Release to iOS Store"
   lane :release do |options|
     # upload_to_app_store
-    api_key = app_store_connect_api_key(
-      key_id: options[:key_id],
-      issuer_id: options[:issuer_id],
-      key_filepath: options[:key_filepath]
-    )
-    increment_build_number
+    # api_key = app_store_connect_api_key(
+    #   key_id: options[:key_id],
+    #   issuer_id: options[:issuer_id],
+    #   key_filepath: options[:key_filepath]
+    # )
     upload_to_testflight(
       ipa: options[:ipa_path],
       api_key: api_key
