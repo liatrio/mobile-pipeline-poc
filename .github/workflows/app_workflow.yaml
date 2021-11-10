@@ -77,7 +77,7 @@ jobs:
       - name: Start webdriver agent
         run: |
           cd ~/.config/yarn/global/node_modules/appium-webdriveragent/
-          xcodebuild -project WebDriverAgent.xcodeproj -scheme WebDriverAgentRunner -destination "id=$DEVICE_ID" test &
+          xcodebuild -project WebDriverAgent.xcodeproj -scheme WebDriverAgentRunner -destination "id=${{ env.DEVICE_ID }}" test &
 
       - name: Install node modules
         run: yarn install
