@@ -72,8 +72,8 @@ jobs:
 
       # - name: Obtain device id
       #   run: 
-      - name: Tests
-        run: echo "${{ env.DEVICE_ID }}"
+      # - name: Tests
+      #   run: echo "${{ env.DEVICE_ID }}"
 
       - name: Install appium globally
         run: yarn global add appium
@@ -81,8 +81,8 @@ jobs:
       - name: Start webdriver agent
         run: |
           cd ~/.config/yarn/global/node_modules/appium-webdriveragent/
-          DEVICE_ID=$(echo `xcrun simctl list | grep -v "unavailable, runtime profile not found" | grep "iPhone 11 (" | grep -v "CoreSimulator" | awk '{print $3}' |  tr -d '()'`)
-          xcodebuild -project WebDriverAgent.xcodeproj -scheme WebDriverAgentRunner -destination "id=$DEVICE_ID" test &
+          xcodebuild -project WebDriverAgent.xcodeproj -scheme WebDriverAgentRunner -destination "id=424812ED-A78C-47F5-88A3-AD5901E2453F" test &
+      #DEVICE_ID=$(echo `xcrun simctl list | grep -v "unavailable, runtime profile not found" | grep "iPhone 11 (" | grep -v "CoreSimulator" | awk '{print $3}' |  tr -d '()'`)
 
       - name: Install node modules
         run: yarn install
