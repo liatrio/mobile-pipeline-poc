@@ -98,14 +98,15 @@ jobs:
       - name: Start webdriver agent
         run: |
           cd ~/.config/yarn/global/node_modules/appium-webdriveragent/
-          xcodebuild -project WebDriverAgent.xcodeproj -scheme WebDriverAgentRunner -destination 'id=424812ED-A78C-47F5-88A3-AD5901E2453F' WebDriverAgent
+          xcodebuild build-for-testing test-without-building -project WebDriverAgent.xcodeproj -scheme WebDriverAgentRunner -destination id=424812ED-A78C-47F5-88A3-AD5901E2453F IPHONEOS_DEPLOYMENT_TARGET=15.0
+        # ^^^ https://github.com/appium/appium/issues/13699
+        
+        # unknown build action: xcodebuild -project WebDriverAgent.xcodeproj -scheme WebDriverAgentRunner -destination 'id=424812ED-A78C-47F5-88A3-AD5901E2453F' WebDriverAgent
         # ^^^ https://discuss.appium.io/t/unable-to-launch-webdriveragent-because-of-xcodebuild-failure-xcodebuild-failed-with-code-65/19332/2
 
         # xcodebuild -project WebDriverAgent.xcodeproj -scheme WebDriverAgentRunner -sdk iphonesimulator15.0 -destination 'platform=iOS Simulator,name=iPhone 11,OS=15.0' test &
 
         # xcodebuild -project WebDriverAgent.xcodeproj -scheme WebDriverAgentRunner -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 11,OS=15.0' test &
-
-
           
         ## --- Original ---
         # xcodebuild -project WebDriverAgent.xcodeproj -scheme WebDriverAgentRunner -destination "id=424812ED-A78C-47F5-88A3-AD5901E2453F" test &
