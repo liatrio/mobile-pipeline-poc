@@ -78,6 +78,10 @@ jobs:
       - name: Install node modules
         run: yarn install
 
+      - name: Install Pod dependencies
+        run: pod install
+        working-directory: ios
+
       - name: Install appium globally
         run: yarn global add appium
 
@@ -98,7 +102,7 @@ jobs:
       - name: Start webdriver agent
         run: |
           cd ~/.config/yarn/global/node_modules/appium-webdriveragent/
-          xcodebuild build-for-testing test-without-building -project WebDriverAgent.xcodeproj -scheme WebDriverAgentRunner -destination "platform=iOS Simulator,id=424812ED-A78C-47F5-88A3-AD5901E2453F,OS=15.0" &
+          xcodebuild -project WebDriverAgent.xcodeproj -scheme WebDriverAgentRunner -destination 'id=424812ED-A78C-47F5-88A3-AD5901E2453F' IPHONEOS_DEPLOYMENT_TARGET=15.0 &
         # xcodebuild build-for-testing test-without-building -project WebDriverAgent.xcodeproj -scheme WebDriverAgentRunner -destination "platform=iOS Simulator,id=424812ED-A78C-47F5-88A3-AD5901E2453F,OS=15.0" &
         # ^^^ https://github.com/appium/appium/issues/13699
         
@@ -114,9 +118,7 @@ jobs:
         # xcodebuild -project WebDriverAgent.xcodeproj -scheme WebDriverAgentRunner -destination "id=424812ED-A78C-47F5-88A3-AD5901E2453F" test &
         # DEVICE_ID=$(echo `xcrun simctl list | grep -v "unavailable, runtime profile not found" | grep "iPhone 11 (" | grep -v "CoreSimulator" | awk '{print $3}' |  tr -d '()'`)
 
-      - name: Install Pod dependencies
-        run: pod install
-        working-directory: ios
+
 
       - name: Build IOS - architecture, sdk
         run: xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew clean archive -destination "platform=iOS Simulator,id=424812ED-A78C-47F5-88A3-AD5901E2453F,OS=15.0" -configuration release -UseModernBuildSystem=NO -archivePath $PWD/ReactNativeSemaphoreNew.xcarchive CODE_SIGNING_ALLOWED=NO
