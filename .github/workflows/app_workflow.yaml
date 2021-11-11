@@ -102,7 +102,7 @@ jobs:
       - name: Start webdriver agent
         run: |
           cd ~/.config/yarn/global/node_modules/appium-webdriveragent/
-          xcodebuild -project WebDriverAgent.xcodeproj -scheme WebDriverAgentRunner -destination 'id=424812ED-A78C-47F5-88A3-AD5901E2453F' IPHONEOS_DEPLOYMENT_TARGET=15.0 &
+          xcodebuild -project WebDriverAgent.xcodeproj -scheme WebDriverAgentRunner -destination 'platform=iOS Simulator,name=iPhone 11,OS=15.0,id=424812ED-A78C-47F5-88A3-AD5901E2453F' test &
         # xcodebuild build-for-testing test-without-building -project WebDriverAgent.xcodeproj -scheme WebDriverAgentRunner -destination "platform=iOS Simulator,id=424812ED-A78C-47F5-88A3-AD5901E2453F,OS=15.0" &
         # ^^^ https://github.com/appium/appium/issues/13699
         
