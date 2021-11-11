@@ -110,9 +110,11 @@ jobs:
         working-directory: ios
 
 
-        #### With destination id
+        
 
-      - name: Build IOS - architecture, sdk
+      # - name: Build IOS - architecture, sdk
+        #### --- With destination id ---
+
         # Does not support sim arch
         # run: xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew clean archive -destination "id=424812ED-A78C-47F5-88A3-AD5901E2453F" -configuration release -UseModernBuildSystem=NO -archivePath $PWD/ReactNativeSemaphoreNew.xcarchive CODE_SIGNING_ALLOWED=NO
         
@@ -126,15 +128,20 @@ jobs:
         # run: xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew clean archive -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 11,OS=15.0' -configuration release -UseModernBuildSystem=NO -archivePath $PWD/ReactNativeSemaphoreNew.xcarchive CODE_SIGNING_ALLOWED=NO
 
 
-        #### With destination for device, ios, sdk
+        #### --- With destination for device, ios, sdk ---
+
+        ## The following build commands failed:
+        ## CompileSwift normal armv7 /Users/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/ios/ReactNativeSemaphoreNew/SwiftFile.swift
+        ## CompileSwiftSources normal armv7 com.apple.xcode.tools.swift.compiler
         # Fails after ~11 seconds
         # run: xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew clean archive -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 11,OS=15.0' -configuration release -UseModernBuildSystem=NO -archivePath $PWD/ReactNativeSemaphoreNew.xcarchive CODE_SIGNING_ALLOWED=NO        
 
+        ## Same error as above, forcing arm arch on a simulator
         # run: xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew clean archive -sdk iphonesimulator15.0 -destination 'platform=iOS Simulator,name=iPhone 11,OS=15.0' -configuration release -UseModernBuildSystem=NO -archivePath $PWD/ReactNativeSemaphoreNew.xcarchive CODE_SIGNING_ALLOWED=NO
 
 
 
-        #### Misc
+        #### Original
 
         #run: xcodebuild -arch x86_64 -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew clean archive -sdk iphonesimulator15.0 -configuration release -UseModernBuildSystem=NO -archivePath $PWD/ReactNativeSemaphoreNew.xcarchive CODE_SIGNING_ALLOWED=NO
          #-destination "id=424812ED-A78C-47F5-88A3-AD5901E2453F"
