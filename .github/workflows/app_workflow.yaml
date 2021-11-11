@@ -112,7 +112,6 @@ jobs:
         with:
           name: 'ios-artifact'
           path: 'ios/ReactNativeSemaphoreNewIPA/ReactNativeSemaphoreNew.ipa'
-          # path: 'ReactNativeSemaphoreNew.xcarchive/Products/Applications/ReactNativeSemaphoreNew.app'
 
   # Build-android:
   #   runs-on: ubuntu-latest
