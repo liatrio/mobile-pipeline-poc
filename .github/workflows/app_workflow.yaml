@@ -101,6 +101,10 @@ jobs:
           security add-certificates -k $KEYCHAIN_PATH $CERTIFICATE_PATH
     
           fastlane ios certificate_setup key_id:$APPLE_APP_STORE_API_KEY_ID issuer_id:$APPLE_APP_STORE_API_ISSUER_ID key_filepath:$APPLE_API_KEY_PATH keychain_path:$KEYCHAIN_PATH keychain_password:"$KEYCHAIN_PASSWORD"
+
+      - name: Setup upterm session
+        uses: lhotari/action-upterm@v1  
+      
       - name: Build and Export IOS
         run: |
           xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew -sdk iphoneos -configuration release archive -archivePath $PWD/ios/ReactNativeSemaphoreNew.xcarchive -xcconfig ios/config.xcconfig
