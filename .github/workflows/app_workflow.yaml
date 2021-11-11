@@ -98,7 +98,7 @@ jobs:
       - name: Start webdriver agent
         run: |
           cd ~/.config/yarn/global/node_modules/appium-webdriveragent/
-          xcodebuild build-for-testing test-without-building -project WebDriverAgent.xcodeproj -scheme WebDriverAgentRunner -destination id=424812ED-A78C-47F5-88A3-AD5901E2453F IPHONEOS_DEPLOYMENT_TARGET=15.0 &
+          xcodebuild build-for-testing test-without-building -project WebDriverAgent.xcodeproj -scheme WebDriverAgentRunner -destination -destination "platform=iOS Simulator,id=424812ED-A78C-47F5-88A3-AD5901E2453F,OS=15.0" &
         # ^^^ https://github.com/appium/appium/issues/13699
         
         # unknown build action WebDriverAgent
@@ -162,15 +162,15 @@ jobs:
       # - name: Check webdriveragent status
       #   run: curl http://localhost:8100/status
 
-      - name: Wait for webdriver to be ready
-        run: ./sleep.sh
+      # - name: Wait for webdriver to be ready
+      #   run: ./sleep.sh
       #   run: sleep 1000
 
-      # - name: Setup upterm session
-      #   uses: lhotari/action-upterm@v1 
+      - name: Setup upterm session
+        uses: lhotari/action-upterm@v1 
 
-      - name: Run iOS Appium tests
-        run: npm run mocha appium/ios
+      # - name: Run iOS Appium tests
+      #   run: npm run mocha appium/ios
         
   Appium-Android:
     runs-on: macos-latest
