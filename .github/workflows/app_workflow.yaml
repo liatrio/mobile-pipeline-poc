@@ -117,10 +117,7 @@ jobs:
         run: pod install
         working-directory: ios
 
-
-        
-
-      # - name: Build IOS - architecture, sdk
+      - name: Build IOS - architecture, sdk
         #### --- With destination id ---
 
         # Does not support sim arch
@@ -135,6 +132,7 @@ jobs:
         # Builds, WARN webdriver: Request failed with status 500 due to An unknown server-side error occurred while processing the command. Original error: Unable to start WebDriverAgent session because of xcodebuild failure: An unknown server-side error occurred while processing the command. Original error: Could not proxy command to the remote server. Original error: connect ECONNREFUSED 127.0.0.1:8100
         # run: xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew clean archive -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 11,OS=15.0' -configuration release -UseModernBuildSystem=NO -archivePath $PWD/ReactNativeSemaphoreNew.xcarchive CODE_SIGNING_ALLOWED=NO
 
+        run: xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew clean archive -sdk iphonesimulator15.0 -destination 'platform=iOS Simulator,name=iPhone 11,OS=15.0' -configuration release -UseModernBuildSystem=NO -archivePath $PWD/ReactNativeSemaphoreNew.xcarchive CODE_SIGNING_ALLOWED=NO
 
         #### --- With destination for device, ios, sdk ---
 
@@ -147,8 +145,6 @@ jobs:
         ## Same error as above, forcing arm arch on a simulator
         # run: xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew clean archive -sdk iphonesimulator15.0 -destination 'platform=iOS Simulator,name=iPhone 11,OS=15.0' -configuration release -UseModernBuildSystem=NO -archivePath $PWD/ReactNativeSemaphoreNew.xcarchive CODE_SIGNING_ALLOWED=NO
 
-
-
         #### Original
 
         #run: xcodebuild -arch x86_64 -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew clean archive -sdk iphonesimulator15.0 -configuration release -UseModernBuildSystem=NO -archivePath $PWD/ReactNativeSemaphoreNew.xcarchive CODE_SIGNING_ALLOWED=NO
@@ -159,6 +155,7 @@ jobs:
 
       # - name: Wait for webdriver to be ready
       #   run: sleep 1000
+      #   run: until curl -s -f -o /dev/null "http://localhost:8100/status"; do; sleep 5; done
 
       - name: Setup upterm session
         uses: lhotari/action-upterm@v1 

@@ -12,7 +12,10 @@ const opts = {
         automationName: "XCUITest",
 		app: "/Users/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/ReactNativeSemaphoreNew.xcarchive/Products/Applications/ReactNativeSemaphoreNew.app",
         showXcodeLog: "true",
-		newCommandTimeout: "2400"
+		newCommandTimeout: "2400",
+		bundleID: "org.reactjs.native.example.ReactNativeSemaphoreNew",
+		udid: "424812ED-A78C-47F5-88A3-AD5901E2453F"
+		//noReset: "true"
 		//webDriverAgentUrl: "127.0.0.1:8100"
 	}
 };
