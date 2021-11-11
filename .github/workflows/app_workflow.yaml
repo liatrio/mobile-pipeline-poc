@@ -75,11 +75,11 @@ jobs:
       # - name: Tests
       #   run: echo "${{ env.DEVICE_ID }}"
 
-      - name: Install appium globally
-        run: yarn global add appium
-
       - name: Install node modules
         run: yarn install
+
+      - name: Install appium globally
+        run: yarn global add appium
 
       # Setup appium  
       - name: Run appium-doctor        
@@ -89,11 +89,19 @@ jobs:
       - name: Check appium server status        
         run: curl http://localhost:4723/wd/hub/status
 
+      - name: List devices
+        run: xcrun simctl list
+
+      - name: List sdks
+        run: xcodebuild -showsdks
+
       - name: Start webdriver agent
         run: |
           cd ~/.config/yarn/global/node_modules/appium-webdriveragent/
-          xcodebuild -project WebDriverAgent.xcodeproj -scheme WebDriverAgentRunner -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 11,OS=15.0' test &
-        
+          xcodebuild -project WebDriverAgent.xcodeproj -scheme WebDriverAgentRunner -sdk iphonesimulator15.0 -destination 'platform=iOS Simulator,name=iPhone 11,OS=15.0' test &
+        # xcodebuild -project WebDriverAgent.xcodeproj -scheme WebDriverAgentRunner -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 11,OS=15.0' test &
+          
+
         # xcodebuild -project WebDriverAgent.xcodeproj -scheme WebDriverAgentRunner -destination "id=424812ED-A78C-47F5-88A3-AD5901E2453F" test &
         # DEVICE_ID=$(echo `xcrun simctl list | grep -v "unavailable, runtime profile not found" | grep "iPhone 11 (" | grep -v "CoreSimulator" | awk '{print $3}' |  tr -d '()'`)
 
@@ -101,6 +109,8 @@ jobs:
         run: pod install
         working-directory: ios
 
+
+        #### With destination id
 
       - name: Build IOS - architecture, sdk
         # Does not support sim arch
@@ -112,19 +122,19 @@ jobs:
         # Request failed with status 500 due to An unknown server-side error occurred while processing the command. Original error: Simulator architecture is unsupported by the '/Users/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/ReactNativeSemaphoreNew.xcarchive/Products/Applications/ReactNativeSemaphoreNew.app' application. Make sure the correct deployment target has been selected for its compilation in Xcode.
         # run: xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew clean archive -destination 'platform=iOS Simulator,name=iPhone 11,OS=15.0' -configuration release -UseModernBuildSystem=NO -archivePath $PWD/ReactNativeSemaphoreNew.xcarchive CODE_SIGNING_ALLOWED=NO
 
-        # WARN webdriver: Request failed with status 500 due to An unknown server-side error occurred while processing the command. Original error: Unable to start WebDriverAgent session because of xcodebuild failure: An unknown server-side error occurred while processing the command. Original error: Could not proxy command to the remote server. Original error: connect ECONNREFUSED 127.0.0.1:8100
-        run: xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew clean archive -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 11,OS=15.0' -configuration release -UseModernBuildSystem=NO -archivePath $PWD/ReactNativeSemaphoreNew.xcarchive CODE_SIGNING_ALLOWED=NO
+        # Builds, WARN webdriver: Request failed with status 500 due to An unknown server-side error occurred while processing the command. Original error: Unable to start WebDriverAgent session because of xcodebuild failure: An unknown server-side error occurred while processing the command. Original error: Could not proxy command to the remote server. Original error: connect ECONNREFUSED 127.0.0.1:8100
+        # run: xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew clean archive -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 11,OS=15.0' -configuration release -UseModernBuildSystem=NO -archivePath $PWD/ReactNativeSemaphoreNew.xcarchive CODE_SIGNING_ALLOWED=NO
 
 
+        #### With destination for device, ios, sdk
+        run: xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew clean archive -sdk iphonesimulator15.0 -destination 'platform=iOS Simulator,name=iPhone 11,OS=15.0' -configuration release -UseModernBuildSystem=NO -archivePath $PWD/ReactNativeSemaphoreNew.xcarchive CODE_SIGNING_ALLOWED=NO
+
+
+
+        #### Misc
 
         #run: xcodebuild -arch x86_64 -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew clean archive -sdk iphonesimulator15.0 -configuration release -UseModernBuildSystem=NO -archivePath $PWD/ReactNativeSemaphoreNew.xcarchive CODE_SIGNING_ALLOWED=NO
          #-destination "id=424812ED-A78C-47F5-88A3-AD5901E2453F"
-
-      - name: List devices
-        run: xcrun simctl list
-
-      - name: List sdks
-        run: xcodebuild -showsdks
 
       - name: Check webdriveragent status
         run: curl http://localhost:8100/status
