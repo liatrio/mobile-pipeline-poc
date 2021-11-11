@@ -100,8 +100,8 @@ jobs:
           cd ~/.config/yarn/global/node_modules/appium-webdriveragent/
           xcodebuild -project WebDriverAgent.xcodeproj -scheme WebDriverAgentRunner -sdk iphonesimulator15.0 -destination 'platform=iOS Simulator,name=iPhone 11,OS=15.0' test &
         # xcodebuild -project WebDriverAgent.xcodeproj -scheme WebDriverAgentRunner -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 11,OS=15.0' test &
-          
 
+        ## --- Original ---
         # xcodebuild -project WebDriverAgent.xcodeproj -scheme WebDriverAgentRunner -destination "id=424812ED-A78C-47F5-88A3-AD5901E2453F" test &
         # DEVICE_ID=$(echo `xcrun simctl list | grep -v "unavailable, runtime profile not found" | grep "iPhone 11 (" | grep -v "CoreSimulator" | awk '{print $3}' |  tr -d '()'`)
 
@@ -146,8 +146,8 @@ jobs:
         #run: xcodebuild -arch x86_64 -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew clean archive -sdk iphonesimulator15.0 -configuration release -UseModernBuildSystem=NO -archivePath $PWD/ReactNativeSemaphoreNew.xcarchive CODE_SIGNING_ALLOWED=NO
          #-destination "id=424812ED-A78C-47F5-88A3-AD5901E2453F"
 
-      - name: Check webdriveragent status
-        run: curl http://localhost:8100/status
+      # - name: Check webdriveragent status
+      #   run: curl http://localhost:8100/status
 
       # - name: Wait for webdriver to be ready
       #   run: sleep 1000
