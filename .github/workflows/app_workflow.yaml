@@ -162,9 +162,9 @@ jobs:
       # - name: Check webdriveragent status
       #   run: curl http://localhost:8100/status
 
-      # - name: Wait for webdriver to be ready
+      - name: Wait for webdriver to be ready
+        run: ./sleep.sh
       #   run: sleep 1000
-      #   run: ./sleep.sh
 
       # - name: Setup upterm session
       #   uses: lhotari/action-upterm@v1 
