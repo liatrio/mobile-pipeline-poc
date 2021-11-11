@@ -100,13 +100,11 @@ jobs:
           security import $CERTIFICATE_KEY_PATH -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
           security add-certificates -k $KEYCHAIN_PATH $CERTIFICATE_PATH
     
-          fastlane ios certificate_setup key_id:$APPLE_APP_STORE_API_KEY_ID issuer_id:$APPLE_APP_STORE_API_ISSUER_ID key_filepath:$APPLE_API_KEY_PATH keychain_path:$KEYCHAIN_PATH keychain_password:"$KEYCHAIN_PASSWORD"
-
-      - name: Setup upterm session
-        uses: lhotari/action-upterm@v1  
-      
+          fastlane ios certificate_setup key_id:$APPLE_APP_STORE_API_KEY_ID issuer_id:$APPLE_APP_STORE_API_ISSUER_ID key_filepath:$APPLE_API_KEY_PATH keychain_path:$KEYCHAIN_PATH keychain_password:"$KEYCHAIN_PASSWORD"      
       - name: Build and Export IOS
         run: |
+          echo -e "\nCURRENT_PROJECT_VERSION = ${{ needs.Version.outputs.VERSION }}" >> ios/config.xcconfig
+          cat ios/config.xcconfig
           xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew -sdk iphoneos -configuration release archive -archivePath $PWD/ios/ReactNativeSemaphoreNew.xcarchive -xcconfig ios/config.xcconfig
           xcodebuild -exportArchive -archivePath $PWD/ios/ReactNativeSemaphoreNew.xcarchive -exportPath $PWD/ios/ReactNativeSemaphoreNewIPA -exportOptionsPlist $PWD/ios/exportOptions.plist
       - name: 'upload artifact to be used with other jobs'

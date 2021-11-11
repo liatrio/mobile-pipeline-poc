@@ -14,7 +14,7 @@ platform :ios do
       keychain_password: options[:keychain_password]
     )
     sigh(
-      api_key: @api_key,
+      api_key: api_key,
       readonly: 'true'
     )
   end
