@@ -5,7 +5,7 @@ on:
   push:
 
 env:
-  GIHUB_REPO: liatrio/mobile-pipeline-poc
+  REPO: mobile-pipeline-poc
   SONAR_HOST: 'https://sonarqube.services.liatr.io'
   KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
   APPLE_DISTRIBUTION_KEY: ${{ secrets.APPLE_DISTRIBUTION_KEY }}
