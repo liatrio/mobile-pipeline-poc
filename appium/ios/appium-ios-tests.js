@@ -8,7 +8,7 @@ const opts = {
 	wdaLaunchTimeout: 900000,
 	capabilities: {
         platformName: "iOS",
-        platformVersion: "15.0",
+        platformVersion: "14.4",
         deviceName: "iPhone 11",		
         automationName: "XCUITest",
 		app: "/Users/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/ReactNativeSemaphoreNew.xcarchive/Products/Applications/ReactNativeSemaphoreNew.app",
