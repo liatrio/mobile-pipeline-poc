@@ -5,6 +5,7 @@ const opts = {
 	path: '/wd/hub',
 	port: 4723,
 	connectionRetryTimeout: 900000,
+	wdaLaunchTimeout: 900000,
 	capabilities: {
         platformName: "iOS",
         platformVersion: "15.0",
