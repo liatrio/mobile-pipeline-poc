@@ -4,8 +4,8 @@ const assert = require('chai').assert;
 const opts = {
 	path: '/wd/hub',
 	port: 4723,
-	//connectionRetryTimeout: 900000,
-	//wdaLaunchTimeout: 900000,
+	connectionRetryTimeout: 900000,
+	wdaLaunchTimeout: 900000,
 	capabilities: {
         platformName: "iOS",
         platformVersion: "14.4",
