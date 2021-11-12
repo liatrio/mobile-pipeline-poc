@@ -27,57 +27,31 @@ function sleep (time) {
 
 describe('Mobile App POC Appium Tests', function () {
 	let client;
-	/*
-	webDriverReady = false;
-	  while (!webDriverReady) {
-		try {
-	*/
+
 			beforeEach(async function () {
-				//this.timeout(500000);
+				this.timeout(500000);
 				client = await wdio.remote(opts);
-				//client.setImplicitTimeout(500000);
+				client.setImplicitTimeout(500000);
 			});
 		
 			afterEach(async function () {
-				//this.timeout(500000);
+				this.timeout(500000);
 				const delete_session = await client.deleteSession();
 				assert.isNull(delete_session);
 			});
-	/*
-			webDriverReady = true;
-
-		} catch (error) {
-			sleep(60);
-		}		
-	}
-	*/
-
-	/*
-	beforeEach(async function () {
-		this.timeout(500000);
-		client = await wdio.remote(opts);
-		client.setImplicitTimeout(500000);
-	}); 
-
-	afterEach(async function () {
-		this.timeout(500000);
-		const delete_session = await client.deleteSession();
-		assert.isNull(delete_session);
-	});
-	*/
 
 	it('should create and delete a session', async function () {
 		console.log("START");
-		//this.timeout(500000);
-		//client.setImplicitTimeout(100000);
+		this.timeout(500000);
+		client.setImplicitTimeout(100000);
 
 		const res = await client.status();
 		assert.isObject(res.build);
 	});
 
 	it('should find the home page text `Step One`', async function () {
-		//this.timeout(500000);
-		//client.setImplicitTimeout(100000);
+		this.timeout(500000);
+		client.setImplicitTimeout(100000);
 
 		const element = await client.findElement('accessibility id', 'Step One');
 
@@ -87,8 +61,8 @@ describe('Mobile App POC Appium Tests', function () {
 	});
 
 	it('should find the toggle element and toggle it', async function () {
-		//this.timeout(500000);
-		//client.setImplicitTimeout(100000);
+		this.timeout(500000);
+		client.setImplicitTimeout(100000);
 
 		const element = await client.findElement('accessibility id', 'toggle');
 
@@ -102,8 +76,8 @@ describe('Mobile App POC Appium Tests', function () {
 	});
 
 	it('should find the search button, click it, and verify the search text `Select Country`', async function () {
-		//this.timeout(500000);
-		//client.setImplicitTimeout(100000);
+		this.timeout(500000);
+		client.setImplicitTimeout(100000);
 
 		const element = await client.findElement('accessibility id', 'searchButton');
 		await client.elementClick(element.ELEMENT);
@@ -116,8 +90,8 @@ describe('Mobile App POC Appium Tests', function () {
 	});
 
 	it('should find the search button, click it, and return to the home page', async function () {
-		//this.timeout(500000);
-		//client.setImplicitTimeout(100000);
+		this.timeout(500000);
+		client.setImplicitTimeout(100000);
 
 		const element = await client.findElement('accessibility id', 'searchButton');
 		await client.elementClick(element.ELEMENT);
@@ -134,8 +108,8 @@ describe('Mobile App POC Appium Tests', function () {
 	});
 
 	it('should find the search button, click it, and find the first 3 countries listed', async function () {
-		//this.timeout(500000);
-		//client.setImplicitTimeout(100000);
+		this.timeout(500000);
+		client.setImplicitTimeout(100000);
 
 		const element = await client.findElement('accessibility id', 'searchButton');
 		await client.elementClick(element.ELEMENT);
@@ -158,8 +132,8 @@ describe('Mobile App POC Appium Tests', function () {
 	});
 
 	it('should find the search button, click it, enter `United States`, and verify the search box value as `United States`', async function () {
-		//this.timeout(500000);
-		//client.setImplicitTimeout(100000);
+		this.timeout(500000);
+		client.setImplicitTimeout(100000);
 
 		const element = await client.findElement('accessibility id', 'searchButton');
 		await client.elementClick(element.ELEMENT);
@@ -180,8 +154,8 @@ describe('Mobile App POC Appium Tests', function () {
 	});
 
 	it('should find the search bar after attempting to search again', async function () {
-		//this.timeout(500000);
-		//client.setImplicitTimeout(100000);
+		this.timeout(500000);
+		client.setImplicitTimeout(100000);
 
 		const element = await client.findElement('accessibility id', 'searchButton');
 		await client.elementClick(element.ELEMENT);
@@ -217,8 +191,8 @@ describe('Mobile App POC Appium Tests', function () {
 	});
 
 	it('shouldn\'t find the search bar after attempting to search again after clicking on a result', async function () {
-		//this.timeout(500000);
-		//client.setImplicitTimeout(100000);
+		this.timeout(500000);
+		client.setImplicitTimeout(100000);
 
 		const element = await client.findElement('accessibility id', 'searchButton');
 		await client.elementClick(element.ELEMENT);
@@ -260,8 +234,8 @@ describe('Mobile App POC Appium Tests', function () {
 	});
 
 	it ('shouldn\'t find the home page text `Networking How to use the Fetch API in React Native.`', async function () {
-		//this.timeout(500000);
-		//client.setImplicitTimeout(100000);
+		this.timeout(500000);
+		client.setImplicitTimeout(100000);
 
 		const element = await client.findElement('accessibility id', 'Networking How to use the Fetch API in React Native.');
 		await client.getElementAttribute(element.ELEMENT, 'visible').then((attr) => {
@@ -270,8 +244,8 @@ describe('Mobile App POC Appium Tests', function () {
 	});
 
 	it ('should find the home page text `Networking How to use the Fetch API in React Native.` if scrolled to bottom', async function () {
-		//this.timeout(500000);
-		//client.setImplicitTimeout(100000);
+		this.timeout(500000);
+		client.setImplicitTimeout(100000);
 
 		const element = await client.findElement('accessibility id', 'Networking How to use the Fetch API in React Native.');
 
