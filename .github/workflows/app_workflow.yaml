@@ -219,8 +219,8 @@ jobs:
   Build-android:
     runs-on: ubuntu-latest
     needs:
+      - Version
       # - Appium-Android
-      - Initial-check
 
     permissions:
       actions: read
