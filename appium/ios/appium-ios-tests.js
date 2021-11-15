@@ -8,37 +8,31 @@ const opts = {
 	wdaLaunchTimeout: 900000,
 	capabilities: {
         platformName: "iOS",
-        platformVersion: "14.4",
+        platformVersion: "15.0",
         deviceName: "iPhone 11",		
         automationName: "XCUITest",
 		app: "/Users/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/ReactNativeSemaphoreNew.xcarchive/Products/Applications/ReactNativeSemaphoreNew.app",
         showXcodeLog: "true",
 		newCommandTimeout: "2400",
-		bundleID: "org.reactjs.native.example.ReactNativeSemaphoreNew"
-		//udid: "424812ED-A78C-47F5-88A3-AD5901E2453F"
-		//noReset: "true"
-		//webDriverAgentUrl: "127.0.0.1:8100"
+		bundleID: "org.reactjs.native.example.ReactNativeSemaphoreNew",
+		isHeadless: "true"
 	}
 };
-
-function sleep (time) {
-	return new Promise((resolve) => setTimeout(resolve, time * 1000));
-}
 
 describe('Mobile App POC Appium Tests', function () {
 	let client;
 
-			beforeEach(async function () {
-				this.timeout(500000);
-				client = await wdio.remote(opts);
-				client.setImplicitTimeout(500000);
-			});
-		
-			afterEach(async function () {
-				this.timeout(500000);
-				const delete_session = await client.deleteSession();
-				assert.isNull(delete_session);
-			});
+	beforeEach(async function () {
+		this.timeout(500000);
+		client = await wdio.remote(opts);
+		client.setImplicitTimeout(500000);
+	});
+
+	afterEach(async function () {
+		this.timeout(500000);
+		const delete_session = await client.deleteSession();
+		assert.isNull(delete_session);
+	});
 
 	it('should create and delete a session', async function () {
 		console.log("START");
