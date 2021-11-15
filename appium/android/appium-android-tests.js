@@ -23,10 +23,6 @@ const opts = {
 	}
 };
 
-function sleep (time) {
-	return new Promise((resolve) => setTimeout(resolve, time * 1000));
-}
-
 describe('Mobile App POC Appium Tests', function () {
 	let client;
 
