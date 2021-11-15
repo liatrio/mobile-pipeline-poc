@@ -59,7 +59,7 @@ jobs:
         env:
          SONAR_TOKEN: ${{ secrets.SONAR_SHAREDSVC_TOKEN }}
 
-  Appium-IOS:
+  Appium-ios:
     runs-on: macos-latest
     needs:
       - Version
@@ -177,7 +177,7 @@ jobs:
   Build-ios:
     runs-on: macos-latest
     needs:
-      - Appium-IOS
+      - Appium-ios
 
     permissions:
       actions: read
@@ -276,8 +276,6 @@ jobs:
       - Version 
       - Build-ios
       - Build-android
-      - Appium-IOS
-      - Appium-Android
     steps:
       - name: Checkout 
         uses: actions/checkout@v2
