@@ -1,7 +1,7 @@
 name: "Build Release ios/android"
 
 on:
-  # pull_request: 
+  pull_request: 
   push:
 
 env:
@@ -59,21 +59,13 @@ jobs:
         env:
          SONAR_TOKEN: ${{ secrets.SONAR_SHAREDSVC_TOKEN }}
 
-  Appium-IOS:
+  Appium-ios:
     runs-on: macos-latest
     needs:
-      - Initial-check
-    #env:
-      #DEVICE_ID: 'FC41B203-8F38-458B-9F64-23ADB1A969B4'
-      #DEVICE_ID: '424812ED-A78C-47F5-88A3-AD5901E2453F'
+      - Version
     steps:
       - name: Checkout 
         uses: actions/checkout@v2
-
-      # - name: Obtain device id
-      #   run: 
-      # - name: Tests
-      #   run: echo "${{ env.DEVICE_ID }}"
 
       - name: Install node modules
         run: yarn install
@@ -101,280 +93,218 @@ jobs:
 
       - name: Select XCode version
         run: |
-          sudo xcode-select --switch /Applications/Xcode_12.4.app
+          sudo xcode-select --switch /Applications/Xcode_13.0.app
           xcodebuild -version
 
       - name: Start webdriver agent
         run: |
           cd ~/.config/yarn/global/node_modules/appium-webdriveragent/
-          DEVICE_ID=$(echo `xcrun simctl list | grep -v "unavailable, runtime profile not found" | grep "iPhone 11 (" | grep -v "CoreSimulator" | awk '{print $3}' |  tr -d '()'`)
-          xcodebuild -project WebDriverAgent.xcodeproj -scheme WebDriverAgentRunner -destination "id=$DEVICE_ID" test IPHONEOS_DEPLOYMENT_TARGET=14.4 &
-       
-        # xcodebuild build-for-testing test-without-building -project WebDriverAgent.xcodeproj -scheme WebDriverAgentRunner -destination "platform=iOS Simulator,id=424812ED-A78C-47F5-88A3-AD5901E2453F,OS=15.0" &
-        # ^^^ https://github.com/appium/appium/issues/13699
-        
-        # unknown build action WebDriverAgent
-        # xcodebuild -project WebDriverAgent.xcodeproj -scheme WebDriverAgentRunner -destination 'id=424812ED-A78C-47F5-88A3-AD5901E2453F' WebDriverAgent
-        # ^^^ https://discuss.appium.io/t/unable-to-launch-webdriveragent-because-of-xcodebuild-failure-xcodebuild-failed-with-code-65/19332/2
+          DEVICE_ID=$(echo `xcrun simctl list | grep -v "unavailable, runtime profile not found" | grep "iPhone 11 (" \
+            | grep -v "CoreSimulator" | awk '{print $3}' |  tr -d '()'`)
+          xcodebuild -project WebDriverAgent.xcodeproj -scheme WebDriverAgentRunner -destination "id=$DEVICE_ID" test \
+            IPHONEOS_DEPLOYMENT_TARGET=15.0 &
 
-        # xcodebuild -project WebDriverAgent.xcodeproj -scheme WebDriverAgentRunner -sdk iphonesimulator15.0 -destination 'platform=iOS Simulator,name=iPhone 11,OS=15.0' test &
-
-        # xcodebuild -project WebDriverAgent.xcodeproj -scheme WebDriverAgentRunner -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 11,OS=15.0' test &
-          
-        ## --- Original ---
-        # xcodebuild -project WebDriverAgent.xcodeproj -scheme WebDriverAgentRunner -destination "id=424812ED-A78C-47F5-88A3-AD5901E2453F" test &
-        # DEVICE_ID=$(echo `xcrun simctl list | grep -v "unavailable, runtime profile not found" | grep "iPhone 11 (" | grep -v "CoreSimulator" | awk '{print $3}' |  tr -d '()'`)
-
-
-
-      - name: Build IOS - architecture, sdk
-        run: xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew clean archive -destination 'generic/platform=iOS Simulator,name=iPhone 11,OS=14.4' -archivePath $PWD/ReactNativeSemaphoreNew.xcarchive CODE_SIGNING_ALLOWED=NO IPHONEOS_DEPLOYMENT_TARGET=14.4
-
-        #run:  xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew clean archive -destination "platform=iOS Simulator,name=iPhone 11" -configuration release -UseModernBuildSystem=NO -archivePath $PWD/ReactNativeSemaphoreNew.xcarchive CODE_SIGNING_ALLOWED=NO
-        #run: xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew clean archive -destination "platform=iOS Simulator,id=424812ED-A78C-47F5-88A3-AD5901E2453F,OS=15.0" -configuration release -UseModernBuildSystem=NO -archivePath $PWD/ReactNativeSemaphoreNew.xcarchive CODE_SIGNING_ALLOWED=NO
-        # run: xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew clean archive -destination "platform=iOS Simulator,name=iPhone 11,id=424812ED-A78C-47F5-88A3-AD5901E2453F,OS=15.0" -configuration release -UseModernBuildSystem=NO -archivePath $PWD/ReactNativeSemaphoreNew.xcarchive CODE_SIGNING_ALLOWED=NO
-        # no build match, don't use arch - run: xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew clean archive -destination "platform=iOS Simulator,name=iPhone 11,arch=x86_64,OS=15.0" -configuration release -UseModernBuildSystem=NO -archivePath $PWD/ReactNativeSemaphoreNew.xcarchive CODE_SIGNING_ALLOWED=NO
-        # causes reduncdancy - run: xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew clean archive -sdk iphonesimulator15.0 -destination "platform=iOS Simulator,name=iPhone 11,arch=x86_64" -configuration release -UseModernBuildSystem=NO -archivePath $PWD/ReactNativeSemaphoreNew.xcarchive CODE_SIGNING_ALLOWED=NO
-        
-        # Same as below run: xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew clean archive -sdk iphonesimulator15.0 -arch x86_64 -destination "name=iPhone 11" -configuration release -UseModernBuildSystem=NO -archivePath $PWD/ReactNativeSemaphoreNew.xcarchive CODE_SIGNING_ALLOWED=NO
-        #### --- With destination id ---
-
-        # Does not support sim arch
-        # run: xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew clean archive -destination "id=424812ED-A78C-47F5-88A3-AD5901E2453F" -configuration release -UseModernBuildSystem=NO -archivePath $PWD/ReactNativeSemaphoreNew.xcarchive CODE_SIGNING_ALLOWED=NO
-        
-        # xcodebuild: error: SDK "com.apple.CoreSimulator.SimDeviceType.iPhone-11" cannot be located.
-        # run: xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew clean archive -sdk "com.apple.CoreSimulator.SimDeviceType.iPhone-11" -configuration release -UseModernBuildSystem=NO -archivePath $PWD/ReactNativeSemaphoreNew.xcarchive CODE_SIGNING_ALLOWED=NO
-
-        # Request failed with status 500 due to An unknown server-side error occurred while processing the command. Original error: Simulator architecture is unsupported by the '/Users/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/ReactNativeSemaphoreNew.xcarchive/Products/Applications/ReactNativeSemaphoreNew.app' application. Make sure the correct deployment target has been selected for its compilation in Xcode.
-        # run: xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew clean archive -destination 'platform=iOS Simulator,name=iPhone 11,OS=15.0' -configuration release -UseModernBuildSystem=NO -archivePath $PWD/ReactNativeSemaphoreNew.xcarchive CODE_SIGNING_ALLOWED=NO
-
-        # Builds, WARN webdriver: Request failed with status 500 due to An unknown server-side error occurred while processing the command. Original error: Unable to start WebDriverAgent session because of xcodebuild failure: An unknown server-side error occurred while processing the command. Original error: Could not proxy command to the remote server. Original error: connect ECONNREFUSED 127.0.0.1:8100
-        # run: xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew clean archive -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 11,OS=15.0' -configuration release -UseModernBuildSystem=NO -archivePath $PWD/ReactNativeSemaphoreNew.xcarchive CODE_SIGNING_ALLOWED=NO
-
-        # run: xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew clean archive -sdk iphonesimulator15.0 -destination 'platform=iOS Simulator,name=iPhone 11,OS=15.0' -configuration release -UseModernBuildSystem=NO -archivePath $PWD/ReactNativeSemaphoreNew.xcarchive CODE_SIGNING_ALLOWED=NO
-
-        # Breaks, but also works... --- run: xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew clean archive -sdk iphonesimulator15.0 -destination 'platform=iOS Simulator,name=iPhone 11' -configuration release -UseModernBuildSystem=NO -archivePath $PWD/ReactNativeSemaphoreNew.xcarchive CODE_SIGNING_ALLOWED=NO
-
-          
-
-        #### --- With destination for device, ios, sdk ---
-
-        ## The following build commands failed:
-        ## CompileSwift normal armv7 /Users/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/ios/ReactNativeSemaphoreNew/SwiftFile.swift
-        ## CompileSwiftSources normal armv7 com.apple.xcode.tools.swift.compiler
-        # Fails after ~11 seconds
-        # run: xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew clean archive -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 11,OS=15.0' -configuration release -UseModernBuildSystem=NO -archivePath $PWD/ReactNativeSemaphoreNew.xcarchive CODE_SIGNING_ALLOWED=NO        
-
-        ## Same error as above, forcing arm arch on a simulator
-        # run: xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew clean archive -sdk iphonesimulator15.0 -destination 'platform=iOS Simulator,name=iPhone 11,OS=15.0' -configuration release -UseModernBuildSystem=NO -archivePath $PWD/ReactNativeSemaphoreNew.xcarchive CODE_SIGNING_ALLOWED=NO
-
-        #### Original
-        #run: xcodebuild -arch x86_64 -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew clean archive -sdk iphonesimulator15.0 -configuration release -UseModernBuildSystem=NO -archivePath $PWD/ReactNativeSemaphoreNew.xcarchive CODE_SIGNING_ALLOWED=NO
-         #-destination "id=424812ED-A78C-47F5-88A3-AD5901E2453F"
-
-      # - name: Check webdriveragent status
-      #   run: curl http://localhost:8100/status
-
-      # - name: Wait for webdriver to be ready
-      #   run: ./sleep.sh
-      #   run: sleep 1000
-
-      # - name: Setup upterm session
-      #   uses: lhotari/action-upterm@v1 
+      - name: Build IOS
+        run: xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew clean archive -destination 'generic/platform=iOS Simulator,name=iPhone 11,OS=15.0' -archivePath $PWD/ReactNativeSemaphoreNew.xcarchive CODE_SIGNING_ALLOWED=NO IPHONEOS_DEPLOYMENT_TARGET=15.0
 
       - name: Run iOS Appium tests
         run: npm run mocha appium/ios
         
-  # Appium-Android:
-  #   runs-on: macos-latest
-  #   needs:
-  #     - Initial-check
-  #   env:
-  #     ANDROID_SDK_ROOT: '/Users/runner/Library/Android/sdk'
-  #     ANDROID_HOME: '/Users/runner/Library/Android/sdk'
-  #   steps:
-  #     - name: Checkout 
-  #       uses: actions/checkout@v2
+  Appium-Android:
+    runs-on: macos-latest
+    needs:
+      - Version
+    env:
+      ANDROID_SDK_ROOT: '/Users/runner/Library/Android/sdk'
+      ANDROID_HOME: '/Users/runner/Library/Android/sdk'
+    steps:
+      - name: Checkout 
+        uses: actions/checkout@v2
 
-  #     - name: Set up JDK 8
-  #       uses: actions/setup-java@v1
-  #       with:
-  #         java-version: '8'
+      - name: Set up JDK 8
+        uses: actions/setup-java@v1
+        with:
+          java-version: '8'
 
-  #     - name: Install node modules
-  #       run: yarn install && yarn add webdriverio --dev
+      - name: Install node modules
+        run: yarn install && yarn add webdriverio --dev
 
-  #     - name: Install Appium Globally
-  #       run: yarn global add appium
+      - name: Install Appium Globally
+        run: yarn global add appium
 
-  #     ## Setup appium  
-  #     - name: Run appium-doctor        
-  #       run: npm run appium-doctor --android
-  #     - name: Run appium in the background        
-  #       run: npm run appium &
-  #     - name: Check appium server status        
-  #       run: curl http://localhost:4723/wd/hub/status
+      ## Setup appium  
+      - name: Run appium-doctor        
+        run: npm run appium-doctor --android
+      - name: Run appium in the background        
+        run: npm run appium &
+      - name: Check appium server status        
+        run: curl http://localhost:4723/wd/hub/status
 
-  #     - name: Create build properties file
-  #       run: |
-  #         echo -e "password=${{ secrets.KEYSTORE_PASSWORD }}\nversion=${{ needs.Version.outputs.VERSION }}" > android/build.properties
-  #         echo ${{ secrets.KEYSTORE }} | base64 -d > android/app/liatrio.keystore
-  #     ## Android sdk
-  #     - name: Setup android SDK
-  #       uses: android-actions/setup-android@v2
-  #     - name: Platform tools installation
-  #       run: sdkmanager "platform-tools" "platforms;android-27"
+      - name: Create build properties file
+        run: |
+          echo -e "password=${{ secrets.KEYSTORE_PASSWORD }}\nversion=${{ needs.Version.outputs.VERSION }}" > android/build.properties
+          echo ${{ secrets.KEYSTORE }} | base64 -d > android/app/liatrio.keystore
+      ## Android sdk
+      - name: Setup android SDK
+        uses: android-actions/setup-android@v2
+      - name: Platform tools installation
+        run: sdkmanager "platform-tools" "platforms;android-27"
 
-  #     ## Android emulator creation
-  #     - name: Install SDK
-  #       run: sdkmanager --install "system-images;android-27;google_apis;x86"
-  #     - name: Create AVD
-  #       run: echo "no" | avdmanager create avd -n sdk_gphone_x86 -k "system-images;android-27;google_apis;x86"
+      ## Android emulator creation
+      - name: Install SDK
+        run: sdkmanager --install "system-images;android-27;google_apis;x86"
+      - name: Create AVD
+        run: echo "no" | avdmanager create avd -n sdk_gphone_x86 -k "system-images;android-27;google_apis;x86"
 
-  #     - name: Create apk file
-  #       run: cd android && ./gradlew assembleRelease --no-daemon
+      - name: Create apk file
+        run: cd android && ./gradlew assembleRelease --no-daemon
 
-  #     ## Android abd server
-  #     - name: Start adb server
-  #       run: sudo adb start-server &
+      ## Android abd server
+      - name: Start adb server
+        run: sudo adb start-server &
 
-  #     ## Setup android emulator
-  #     - name: Run emulator
-  #       run: cd /Users/runner/Library/Android/sdk/emulator && ./emulator -avd sdk_gphone_x86 -no-audio -no-window -gpu swiftshader_indirect &
-  #     - name: Wait for device to be operational
-  #       run: adb wait-for-device shell 'while [[ -z $(getprop sys.boot_completed) ]]; do sleep 1; done; input keyevent 82'
+      ## Setup android emulator
+      - name: Run emulator
+        run: |
+          cd /Users/runner/Library/Android/sdk/emulator && ./emulator -avd sdk_gphone_x86 -no-audio -no-window \
+            -gpu swiftshader_indirect &
+      - name: Wait for device to be operational
+        run: adb wait-for-device shell 'while [[ -z $(getprop sys.boot_completed) ]]; do sleep 1; done; input keyevent 82'
 
-  #     - name: Run appium integration Tests
-  #       run: npm run mocha appium/android
+      - name: Run appium integration Tests
+        run: npm run mocha appium/android
 
-  # Build-ios:
-  #   runs-on: macos-latest
-  #   needs:
-  #     - Appium-IOS
+  Build-ios:
+    runs-on: macos-latest
+    needs:
+      - Appium-ios
 
-  #   permissions:
-  #     actions: read
-  #     contents: read
-  #     security-events: write
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
 
-  #   steps:
-  #     - name: Checkout 
-  #       uses: actions/checkout@v2
+    steps:
+      - name: Checkout 
+        uses: actions/checkout@v2
 
-  #     - name: Initialize CodeQL
-  #       uses: github/codeql-action/init@v1
-  #       with:
-  #         languages: "cpp"
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v1
+        with:
+          languages: "cpp"
 
-  #     - name: Setup Node
-  #       uses: actions/setup-node@v2
-  #       with:
-  #         node-version: '14'
-  #         cache: yarn
-  #     - name: Install Node Modules
-  #       run: yarn install
-  #     - name: Install Cocoapods
-  #       run: gem install cocoapods
-  #     - name: Install Pod dependencies
-  #       run: pod install
-  #       working-directory: ios
-  #     - name: Build IOS
-  #       run: xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew clean archive -sdk iphoneos -configuration release -UseModernBuildSystem=NO -archivePath $PWD/ReactNativeSemaphoreNew CODE_SIGNING_ALLOWED=NO
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+          cache: yarn
+      - name: Install Node Modules
+        run: yarn install
+      - name: Install Cocoapods
+        run: gem install cocoapods
+      - name: Install Pod dependencies
+        run: pod install
+        working-directory: ios
+      - name: Build IOS
+        run: |
+          xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew clean archive \
+            -sdk iphoneos -configuration release -UseModernBuildSystem=NO -archivePath $PWD/ReactNativeSemaphoreNew \
+            CODE_SIGNING_ALLOWED=NO
       
-  #     - name: Perform CodeQL Analysis
-  #       uses: github/codeql-action/analyze@v1      
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v1      
       
-  #     - name: Upload artifact
-  #       uses: actions/upload-artifact@v2
-  #       with:
-  #         name: 'ios-artifact'
-  #         path: 'ReactNativeSemaphoreNew.xcarchive/Products/Applications/ReactNativeSemaphoreNew.app'
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: 'ios-artifact'
+          path: 'ReactNativeSemaphoreNew.xcarchive/Products/Applications/ReactNativeSemaphoreNew.app'
 
-  # Build-android:
-  #   runs-on: ubuntu-latest
-  #   needs:
-  #     - Appium-Android
+  Build-android:
+    runs-on: ubuntu-latest
+    needs:
+      - Version
+      - Appium-Android
 
-  #   permissions:
-  #     actions: read
-  #     contents: read
-  #     security-events: write
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
 
-  #   strategy:
-  #     fail-fast: false
-  #     matrix:
-  #       language: [ 'java', 'javascript' ]
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ 'java', 'javascript' ]
 
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v2
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
 
-  #     - name: Initialize CodeQL
-  #       uses: github/codeql-action/init@v1
-  #       with:
-  #         languages: ${{ matrix.language }}
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v1
+        with:
+          languages: ${{ matrix.language }}
 
-  #     - name: Setup Node
-  #       uses: actions/setup-node@v2
-  #       with:
-  #         node-version: '14'
-  #         cache: yarn
-  #     - name: Install node modules
-  #       run: yarn install   
-  #     - name: Build Properties Setup
-  #       run: |
-  #         echo ${{ secrets.KEYSTORE }} | base64 -d > android/app/liatrio.keystore
-  #         echo -e "password=${{ secrets.KEYSTORE_PASSWORD }}\nversion=${{ needs.Version.outputs.VERSION }}" > android/build.properties       
-  #     - name: Build Android App Release Bundle
-  #       run: cd android && ./gradlew bundleRelease --no-daemon
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+          cache: yarn
+      - name: Install node modules
+        run: yarn install   
+      - name: Build Properties Setup
+        run: |
+          echo ${{ secrets.KEYSTORE }} | base64 -d > android/app/liatrio.keystore
+          echo -e "password=${{ secrets.KEYSTORE_PASSWORD }}\nversion=${{ needs.Version.outputs.VERSION }}" > android/build.properties
 
-  #     - name: Perform CodeQL Analysis
-  #       uses: github/codeql-action/analyze@v1
+      - name: Build Android App Release Bundle
+        run: cd android && ./gradlew bundleRelease --no-daemon
 
-  #     - name: Upload release artifacts
-  #       uses: actions/upload-artifact@v2
-  #       with:
-  #         name: 'android-artifact'
-  #         path: '/home/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/android/app/build/outputs/bundle/release/app-release.aab'
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v1
 
-  # create-release-and-publish-ios-android-binaries: 
-  #   runs-on: ubuntu-latest
-  #   if: github.ref == 'refs/heads/main'
-  #   needs:
-  #     - Version 
-  #     - Build-ios
-  #     - Build-android
-  #     - Appium-IOS
-  #     - Appium-Android
-  #   steps:
-  #     - name: Checkout 
-  #       uses: actions/checkout@v2
-  #     - name: Create release
-  #       uses: liatrio/github-actions/github-create-release@master
-  #       with:
-  #         owner: 'liatrio'
-  #         repo: 'mobile-pipeline-poc'
-  #         tag_name: 'v${{ needs.Version.outputs.VERSION }}'
-  #         token_name: 'token'
-  #         name: 'Release: ${{ needs.Version.outputs.VERSION }}'
-  #         pat: ${{ secrets.GITHUB_TOKEN }}  
-  #     - name: Download IOS/Android artifact
-  #       uses: actions/download-artifact@v2
-  #       with: 
-  #         path: /home/runner/work/mobile-pipeline-poc/mobile-pipeline-poc
-  #     - name: Deploy android binary to release assets
-  #       uses: liatrio/github-actions/github-upload-asset@master
-  #       with: 
-  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  #         FILE: android-artifact/app-release.aab
-  #         REPO: ${{ env.REPO }} 
-  #     - name: Deploy IOS binary to release assets
-  #       uses: liatrio/github-actions/github-upload-asset@master
-  #       with: 
-  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  #         FILE: ios-artifact/ReactNativeSemaphoreNew
-  #         REPO: ${{ env.REPO }}
-  #     - name: Fastlane
-  #       run: |
-  #         echo ${{ secrets.GOOGLE_API_KEY }} | base64 -d > fastlane/google_api_key.json
-  #         fastlane android release aab_path:android-artifact/app-release.aab
+      - name: Upload release artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: 'android-artifact'
+          path: '/home/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/android/app/build/outputs/bundle/release/app-release.aab'
+
+  create-release-and-publish-ios-android-binaries: 
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    needs:
+      - Version 
+      - Build-ios
+      - Build-android
+    steps:
+      - name: Checkout 
+        uses: actions/checkout@v2
+      - name: Create release
+        uses: liatrio/github-actions/github-create-release@master
+        with:
+          owner: 'liatrio'
+          repo: 'mobile-pipeline-poc'
+          tag_name: 'v${{ needs.Version.outputs.VERSION }}'
+          token_name: 'token'
+          name: 'Release: ${{ needs.Version.outputs.VERSION }}'
+          pat: ${{ secrets.GITHUB_TOKEN }}  
+      - name: Download IOS/Android artifact
+        uses: actions/download-artifact@v2
+        with: 
+          path: /home/runner/work/mobile-pipeline-poc/mobile-pipeline-poc
+      - name: Deploy android binary to release assets
+        uses: liatrio/github-actions/github-upload-asset@master
+        with: 
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          FILE: android-artifact/app-release.aab
+          REPO: ${{ env.REPO }} 
+      - name: Deploy IOS binary to release assets
+        uses: liatrio/github-actions/github-upload-asset@master
+        with: 
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          FILE: ios-artifact/ReactNativeSemaphoreNew
+          REPO: ${{ env.REPO }}
+      - name: Fastlane
+        run: |
+          echo ${{ secrets.GOOGLE_API_KEY }} | base64 -d > fastlane/google_api_key.json
+          fastlane android release aab_path:android-artifact/app-release.aab
