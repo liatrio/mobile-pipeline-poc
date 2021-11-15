@@ -99,14 +99,13 @@ jobs:
       - name: Start webdriver agent
         run: |
           cd ~/.config/yarn/global/node_modules/appium-webdriveragent/
-          DEVICE_ID=$(echo `xcrun simctl list | grep -v "unavailable, runtime profile not found" | grep "iPhone 11 (" | grep -v "CoreSimulator" | awk '{print $3}' |  tr -d '()'`)
-          xcodebuild -project WebDriverAgent.xcodeproj -scheme WebDriverAgentRunner -destination "id=$DEVICE_ID" test IPHONEOS_DEPLOYMENT_TARGET=15.0 &
+          DEVICE_ID=$(echo `xcrun simctl list | grep -v "unavailable, runtime profile not found" | grep "iPhone 11 (" \
+            | grep -v "CoreSimulator" | awk '{print $3}' |  tr -d '()'`)
+          xcodebuild -project WebDriverAgent.xcodeproj -scheme WebDriverAgentRunner -destination "id=$DEVICE_ID" test \
+            IPHONEOS_DEPLOYMENT_TARGET=15.0 &
 
       - name: Build IOS
         run: xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew clean archive -destination 'generic/platform=iOS Simulator,name=iPhone 11,OS=15.0' -archivePath $PWD/ReactNativeSemaphoreNew.xcarchive CODE_SIGNING_ALLOWED=NO IPHONEOS_DEPLOYMENT_TARGET=15.0
-
-      # - name: Setup upterm session
-      #   uses: lhotari/action-upterm@v1 
 
       - name: Run iOS Appium tests
         run: npm run mocha appium/ios
@@ -166,7 +165,9 @@ jobs:
 
       ## Setup android emulator
       - name: Run emulator
-        run: cd /Users/runner/Library/Android/sdk/emulator && ./emulator -avd sdk_gphone_x86 -no-audio -no-window -gpu swiftshader_indirect &
+        run: |
+          cd /Users/runner/Library/Android/sdk/emulator && ./emulator -avd sdk_gphone_x86 -no-audio -no-window \
+            -gpu swiftshader_indirect &
       - name: Wait for device to be operational
         run: adb wait-for-device shell 'while [[ -z $(getprop sys.boot_completed) ]]; do sleep 1; done; input keyevent 82'
 
@@ -205,7 +206,10 @@ jobs:
         run: pod install
         working-directory: ios
       - name: Build IOS
-        run: xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew clean archive -sdk iphoneos -configuration release -UseModernBuildSystem=NO -archivePath $PWD/ReactNativeSemaphoreNew CODE_SIGNING_ALLOWED=NO
+        run: |
+          xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew clean archive \
+            -sdk iphoneos -configuration release -UseModernBuildSystem=NO -archivePath $PWD/ReactNativeSemaphoreNew \
+            CODE_SIGNING_ALLOWED=NO
       
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v1      
@@ -252,9 +256,6 @@ jobs:
         run: |
           echo ${{ secrets.KEYSTORE }} | base64 -d > android/app/liatrio.keystore
           echo -e "password=${{ secrets.KEYSTORE_PASSWORD }}\nversion=${{ needs.Version.outputs.VERSION }}" > android/build.properties
-          
-      # - name: Setup upterm session
-      #   uses: lhotari/action-upterm@v1 
 
       - name: Build Android App Release Bundle
         run: cd android && ./gradlew bundleRelease --no-daemon
@@ -268,44 +269,44 @@ jobs:
           name: 'android-artifact'
           path: '/home/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/android/app/build/outputs/bundle/release/app-release.aab'
 
-  # create-release-and-publish-ios-android-binaries: 
-  #   runs-on: ubuntu-latest
-  #   if: github.ref == 'refs/heads/main'
-  #   needs:
-  #     - Version 
-  #     - Build-ios
-  #     - Build-android
-  #     - Appium-IOS
-  #     - Appium-Android
-  #   steps:
-  #     - name: Checkout 
-  #       uses: actions/checkout@v2
-  #     - name: Create release
-  #       uses: liatrio/github-actions/github-create-release@master
-  #       with:
-  #         owner: 'liatrio'
-  #         repo: 'mobile-pipeline-poc'
-  #         tag_name: 'v${{ needs.Version.outputs.VERSION }}'
-  #         token_name: 'token'
-  #         name: 'Release: ${{ needs.Version.outputs.VERSION }}'
-  #         pat: ${{ secrets.GITHUB_TOKEN }}  
-  #     - name: Download IOS/Android artifact
-  #       uses: actions/download-artifact@v2
-  #       with: 
-  #         path: /home/runner/work/mobile-pipeline-poc/mobile-pipeline-poc
-  #     - name: Deploy android binary to release assets
-  #       uses: liatrio/github-actions/github-upload-asset@master
-  #       with: 
-  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  #         FILE: android-artifact/app-release.aab
-  #         REPO: ${{ env.REPO }} 
-  #     - name: Deploy IOS binary to release assets
-  #       uses: liatrio/github-actions/github-upload-asset@master
-  #       with: 
-  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  #         FILE: ios-artifact/ReactNativeSemaphoreNew
-  #         REPO: ${{ env.REPO }}
-  #     - name: Fastlane
-  #       run: |
-  #         echo ${{ secrets.GOOGLE_API_KEY }} | base64 -d > fastlane/google_api_key.json
-  #         fastlane android release aab_path:android-artifact/app-release.aab
+  create-release-and-publish-ios-android-binaries: 
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    needs:
+      - Version 
+      - Build-ios
+      - Build-android
+      - Appium-IOS
+      - Appium-Android
+    steps:
+      - name: Checkout 
+        uses: actions/checkout@v2
+      - name: Create release
+        uses: liatrio/github-actions/github-create-release@master
+        with:
+          owner: 'liatrio'
+          repo: 'mobile-pipeline-poc'
+          tag_name: 'v${{ needs.Version.outputs.VERSION }}'
+          token_name: 'token'
+          name: 'Release: ${{ needs.Version.outputs.VERSION }}'
+          pat: ${{ secrets.GITHUB_TOKEN }}  
+      - name: Download IOS/Android artifact
+        uses: actions/download-artifact@v2
+        with: 
+          path: /home/runner/work/mobile-pipeline-poc/mobile-pipeline-poc
+      - name: Deploy android binary to release assets
+        uses: liatrio/github-actions/github-upload-asset@master
+        with: 
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          FILE: android-artifact/app-release.aab
+          REPO: ${{ env.REPO }} 
+      - name: Deploy IOS binary to release assets
+        uses: liatrio/github-actions/github-upload-asset@master
+        with: 
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          FILE: ios-artifact/ReactNativeSemaphoreNew
+          REPO: ${{ env.REPO }}
+      - name: Fastlane
+        run: |
+          echo ${{ secrets.GOOGLE_API_KEY }} | base64 -d > fastlane/google_api_key.json
+          fastlane android release aab_path:android-artifact/app-release.aab

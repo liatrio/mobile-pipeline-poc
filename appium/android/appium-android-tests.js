@@ -29,39 +29,18 @@ function sleep (time) {
 
 describe('Mobile App POC Appium Tests', function () {
 	let client;
-	webDriverReady = false;
 
-	while (webDriverReady == false) {
-		try {
-			beforeEach(async function () {
-				this.timeout(500000);
-				client = await wdio.remote(opts);
-				client.setImplicitTimeout(500000);
-			});
-		
-			afterEach(async function () {
-				this.timeout(500000);
-				const delete_session = await client.deleteSession();
-				assert.isNull(delete_session);
-			});
+	beforeEach(async function () {
+		this.timeout(500000);
+		client = await wdio.remote(opts);
+		client.setImplicitTimeout(500000);
+	}); 
 
-			webDriverReady = true;
-		} catch (error) {
-			sleep(60);
-		}		
-	}
-
-	// beforeEach(async function () {
-	// 	this.timeout(500000);
-	// 	client = await wdio.remote(opts);
-	// 	client.setImplicitTimeout(500000);
-	// }); 
-
-	// afterEach(async function () {
-	// 	this.timeout(500000);
-	// 	const delete_session = await client.deleteSession();
-	// 	assert.isNull(delete_session);
-	// });
+	afterEach(async function () {
+		this.timeout(500000);
+		const delete_session = await client.deleteSession();
+		assert.isNull(delete_session);
+	});
 
 	it('should create and delete a session', async function () {
 		this.timeout(500000);
