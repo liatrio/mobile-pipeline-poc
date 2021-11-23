@@ -1,5 +1,10 @@
 fastlane documentation
 ================
+# Store Setup
+## Google Play Store
+## Apple App Store
+
+
 # Installation
 
 Make sure you have the latest version of the Xcode command line tools installed:
@@ -16,6 +21,11 @@ or alternatively using `brew install fastlane`
 
 # Available Actions
 ## iOS
+### ios certificate_setup
+```
+fastlane ios certificate_setup
+```
+Set up certificates
 ### ios release
 ```
 fastlane ios release
