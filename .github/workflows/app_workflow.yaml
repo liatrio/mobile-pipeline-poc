@@ -295,7 +295,7 @@ jobs:
     runs-on: ubuntu-latest
     # if: github.ref == 'refs/heads/main'
     needs:
-      - VGet-Package-json-Version-Ubuntu 
+      - Get-Package-json-Version-Ubuntu 
       - Build-iOS-App-Macos
       - Build-Android-App-Ubuntu
     steps:
