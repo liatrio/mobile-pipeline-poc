@@ -108,6 +108,9 @@ jobs:
             -destination 'generic/platform=iOS Simulator,name=iPhone 11,OS=15.0' -archivePath $PWD/ReactNativeSemaphoreNew.xcarchive \
             CODE_SIGNING_ALLOWED=NO IPHONEOS_DEPLOYMENT_TARGET=15.0
 
+      - name: Setup upterm session
+        uses: lhotari/action-upterm@v1
+
       - name: Run iOS Appium tests
         run: npm run mocha appium/ios
         
