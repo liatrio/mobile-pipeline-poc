@@ -178,7 +178,7 @@ jobs:
       - name: Run Appium integration tests
         run: npm run mocha appium/android
 
-  Build-iOS-App-Macos-App-Macos:
+  Build-iOS-App-Macos:
     runs-on: macos-latest
     needs:
       - Appium-Test-iOS-Macos
