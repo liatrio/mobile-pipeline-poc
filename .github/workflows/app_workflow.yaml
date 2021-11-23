@@ -28,7 +28,7 @@ jobs:
   Version-Check-and-Sonarqube-Scan-Ubuntu:
     runs-on: ubuntu-latest
     needs:
-      - Version
+      - Get-Package-json-Version-Ubuntu
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -66,7 +66,7 @@ jobs:
   Appium-Test-iOS-Macos:
     runs-on: macos-latest
     needs:
-      - Version
+      - Get-Package-json-Version-Ubuntu
     steps:
       - name: Checkout 
         uses: actions/checkout@v2
@@ -117,7 +117,7 @@ jobs:
   Appium-Test-Android-Macos:
     runs-on: macos-latest
     needs:
-      - Version
+      - Get-Package-json-Version-Ubuntu
     env:
       ANDROID_SDK_ROOT: '/Users/runner/Library/Android/sdk'
       ANDROID_HOME: '/Users/runner/Library/Android/sdk'
@@ -245,7 +245,7 @@ jobs:
   Build-Android-App-Ubuntu:
     runs-on: ubuntu-latest
     needs:
-      - Version
+      - Get-Package-json-Version-Ubuntu
       - Appium-Android
 
     permissions:
@@ -295,7 +295,7 @@ jobs:
     runs-on: ubuntu-latest
     # if: github.ref == 'refs/heads/main'
     needs:
-      - Version 
+      - VGet-Package-json-Version-Ubuntu 
       - Build-iOS
       - Build-Android
     steps:
