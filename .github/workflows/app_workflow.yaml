@@ -14,7 +14,7 @@ env:
 
 jobs:
 
-  Get-Package-json-Version-Ubuntu:
+  Version-Ubuntu:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -25,10 +25,10 @@ jobs:
     outputs:
       version: ${{ steps.version.outputs.VERSION }}
   
-  Version-Check-and-Sonarqube-Scan-Ubuntu:
+  Version-Check-Ubuntu:
     runs-on: ubuntu-latest
     needs:
-      - Get-Package-json-Version-Ubuntu
+      - Version-Ubuntu
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -63,10 +63,10 @@ jobs:
         env:
          SONAR_TOKEN: ${{ secrets.SONAR_SHAREDSVC_TOKEN }}
 
-  Appium-Test-iOS-Macos:
+  Appium-IOS-Macos:
     runs-on: macos-latest
     needs:
-      - Get-Package-json-Version-Ubuntu
+      - Version-Ubuntu
     steps:
       - name: Checkout 
         uses: actions/checkout@v2
@@ -114,10 +114,10 @@ jobs:
       - name: Run iOS Appium tests
         run: npm run mocha appium/ios
         
-  Appium-Test-Android-Macos:
+  Appium-Android-Macos:
     runs-on: macos-latest
     needs:
-      - Get-Package-json-Version-Ubuntu
+      - Version-Ubuntu
     env:
       ANDROID_SDK_ROOT: '/Users/runner/Library/Android/sdk'
       ANDROID_HOME: '/Users/runner/Library/Android/sdk'
@@ -146,7 +146,7 @@ jobs:
 
       - name: Create build properties file
         run: |
-          echo -e "password=${{ secrets.KEYSTORE_PASSWORD }}\nversion=${{ needs.Version.outputs.VERSION }}" > android/build.properties
+          echo -e "password=${{ secrets.KEYSTORE_PASSWORD }}\nversion=${{ needs.Version-Ubuntu.outputs.VERSION }}" > android/build.properties
           echo ${{ secrets.KEYSTORE }} | base64 -d > android/app/liatrio.keystore
       ## Android sdk
       - name: Setup android
@@ -181,7 +181,7 @@ jobs:
   Build-iOS-App-Macos:
     runs-on: macos-latest
     needs:
-      - Appium-Test-iOS-Macos
+      - Appium-IOS-Macos
 
     permissions:
       actions: read
@@ -231,7 +231,7 @@ jobs:
           fastlane ios certificate_setup key_id:$APPLE_APP_STORE_API_KEY_ID issuer_id:$APPLE_APP_STORE_API_ISSUER_ID key_filepath:$APPLE_API_KEY_PATH keychain_path:$KEYCHAIN_PATH keychain_password:"$KEYCHAIN_PASSWORD"      
       - name: Archive and export iOS build
         run: |
-          echo -e "\nCURRENT_PROJECT_VERSION = ${{ needs.Version.outputs.VERSION }}" >> ios/config.xcconfig
+          echo -e "\nCURRENT_PROJECT_VERSION = ${{ needs.Version-Ubuntu.outputs.VERSION }}" >> ios/config.xcconfig
           xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew -sdk iphoneos -configuration release archive -archivePath $PWD/ios/ReactNativeSemaphoreNew.xcarchive -xcconfig ios/config.xcconfig
           xcodebuild -exportArchive -archivePath $PWD/ios/ReactNativeSemaphoreNew.xcarchive -exportPath $PWD/ios/ReactNativeSemaphoreNewIPA -exportOptionsPlist $PWD/ios/exportOptions.plist
       - name: Perform CodeQL analysis
@@ -245,8 +245,8 @@ jobs:
   Build-Android-App-Ubuntu:
     runs-on: ubuntu-latest
     needs:
-      - Get-Package-json-Version-Ubuntu
-      - Appium-Test-Android-Macos
+      - Version-Ubuntu
+      - Appium-Android-Macos
 
     permissions:
       actions: read
@@ -277,7 +277,7 @@ jobs:
       - name: Build properties setup
         run: |
           echo ${{ secrets.KEYSTORE }} | base64 -d > android/app/liatrio.keystore
-          echo -e "password=${{ secrets.KEYSTORE_PASSWORD }}\nversion=${{ needs.Version.outputs.VERSION }}" > android/build.properties
+          echo -e "password=${{ secrets.KEYSTORE_PASSWORD }}\nversion=${{ needs.Version-Ubuntu.outputs.VERSION }}" > android/build.properties
 
       - name: Build Android app release bundle
         run: cd android && ./gradlew bundleRelease --no-daemon
@@ -295,7 +295,7 @@ jobs:
     runs-on: ubuntu-latest
     # if: github.ref == 'refs/heads/main'
     needs:
-      - Get-Package-json-Version-Ubuntu 
+      - Version-Ubuntu 
       - Build-iOS-App-Macos
       - Build-Android-App-Ubuntu
     steps:
@@ -306,9 +306,9 @@ jobs:
         with:
           owner: 'liatrio'
           repo: 'mobile-pipeline-poc'
-          tag_name: 'v${{ needs.Version.outputs.VERSION }}'
+          tag_name: 'v${{ needs.Version-Ubuntu.outputs.VERSION }}'
           token_name: 'token'
-          name: 'Release: ${{ needs.Version.outputs.VERSION }}'
+          name: 'Release: ${{ needs.Version-Ubuntu.outputs.VERSION }}'
           pat: ${{ secrets.GITHUB_TOKEN }}  
       - name: Download IOS/Android artifact
         uses: actions/download-artifact@v2
