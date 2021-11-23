@@ -13,7 +13,8 @@ env:
   APPLE_APP_STORE_API_ISSUER_ID: ${{ secrets.APPLE_APP_STORE_API_ISSUER_ID }}
 
 jobs:
-  Version:
+
+  Get-Package-json-Version-Ubuntu:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -24,7 +25,7 @@ jobs:
     outputs:
       version: ${{ steps.version.outputs.VERSION }}
   
-  Initial-check:
+  Version-Check-and-Sonarqube-Scan-Ubuntu:
     runs-on: ubuntu-latest
     needs:
       - Version
@@ -62,7 +63,7 @@ jobs:
         env:
          SONAR_TOKEN: ${{ secrets.SONAR_SHAREDSVC_TOKEN }}
 
-  Appium-iOS:
+  Appium-Test-iOS-Macos:
     runs-on: macos-latest
     needs:
       - Version
@@ -110,7 +111,7 @@ jobs:
       - name: Run iOS Appium tests
         run: npm run mocha appium/ios
         
-  Appium-Android:
+  Appium-Test-Android-Macos:
     runs-on: macos-latest
     needs:
       - Version
@@ -174,7 +175,7 @@ jobs:
       - name: Run Appium integration tests
         run: npm run mocha appium/android
 
-  Build-iOS:
+  Build-iOS-App-Macos:
     runs-on: macos-latest
     needs:
       - Appium-iOS
@@ -238,7 +239,7 @@ jobs:
           name: 'ios-artifact'
           path: 'ios/ReactNativeSemaphoreNewIPA/ReactNativeSemaphoreNew.ipa'
 
-  Build-Android:
+  Build-Android-App-Ubuntu:
     runs-on: ubuntu-latest
     needs:
       - Version
@@ -287,7 +288,7 @@ jobs:
           name: 'android-artifact'
           path: '/home/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/android/app/build/outputs/bundle/release/app-release.aab'
 
-  Create-release-and-publish-binaries: 
+  Deploy-Binaries-to-Assets-Ubuntu: 
     runs-on: ubuntu-latest
     # if: github.ref == 'refs/heads/main'
     needs:
@@ -327,7 +328,7 @@ jobs:
       #     echo ${{ secrets.GOOGLE_API_KEY }} | base64 -d > fastlane/google_api_key.json
       #     fastlane android release aab_path:android-artifact/app-release.aab
 
-  release-android:
+  Publish-Android-App-Ubuntu:
     runs-on: ubuntu-latest
     needs:
       - Create-release-and-publish-binaries
@@ -344,7 +345,7 @@ jobs:
           echo ${{ secrets.GOOGLE_API_KEY }} | base64 -d > fastlane/google_api_key.json
           fastlane android release aab_path:android-artifact/app-release.aab
       
-  release-iOS:
+  Publish-iOS-App-Macos:
     runs-on: macos-latest
     needs:
       - Create-release-and-publish-binaries
