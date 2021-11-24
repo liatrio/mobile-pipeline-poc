@@ -13,7 +13,6 @@ env:
   APPLE_APP_STORE_API_ISSUER_ID: ${{ secrets.APPLE_APP_STORE_API_ISSUER_ID }}
 
 jobs:
-
   Version-Ubuntu:
     runs-on: ubuntu-latest
     steps:
@@ -147,6 +146,7 @@ jobs:
           echo -e "password=${{ secrets.KEYSTORE_PASSWORD }}\nversion=${{ needs.Version-Ubuntu.outputs.version }}" \
             > android/build.properties
           echo ${{ secrets.KEYSTORE }} | base64 -d > android/app/liatrio.keystore
+      
       ## Android sdk
       - name: Setup android
         uses: android-actions/setup-android@v2
@@ -299,9 +299,9 @@ jobs:
           name: 'android-artifact'
           path: '/home/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/android/app/build/outputs/bundle/release/app-release.aab'
 
-  Deploy-Binaries-to-Assets-Ubuntu: 
+  Deploy-Assets-Ubuntu: 
     runs-on: ubuntu-latest
-    # if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main'
     needs:
       - Version-Ubuntu 
       - Build-iOS-App-Macos
@@ -338,7 +338,7 @@ jobs:
   Publish-Android-App-Ubuntu:
     runs-on: ubuntu-latest
     needs:
-      - Deploy-Binaries-to-Assets-Ubuntu
+      - Deploy-Assets-Ubuntu
     steps:
       - name: Checkout 
         uses: actions/checkout@v2
@@ -354,7 +354,7 @@ jobs:
   Publish-iOS-App-Macos:
     runs-on: macos-latest
     needs:
-      - Deploy-Binaries-to-Assets-Ubuntu
+      - Deploy-Assets-Ubuntu
     steps:
       - name: Checkout 
         uses: actions/checkout@v2
