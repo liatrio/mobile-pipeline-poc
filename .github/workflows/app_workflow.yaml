@@ -231,11 +231,12 @@ jobs:
     
           fastlane ios certificate_setup key_id:$APPLE_APP_STORE_API_KEY_ID issuer_id:$APPLE_APP_STORE_API_ISSUER_ID key_filepath:$APPLE_API_KEY_PATH keychain_path:$KEYCHAIN_PATH keychain_password:"$KEYCHAIN_PASSWORD"      
       - name: Archive iOS build
+          # cat ios/config.xcconfig
+          # //echo -e "\nCURRENT_PROJECT_VERSION = ${{ needs.Version-Ubuntu.outputs.VERSION }}" >> ios/config.xcconfig
+          # cat ios/config.xcconfig
+          xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew -destination 'generic/platform=iOS Simulator,name=iPhone 11,OS=15.0' -configuration release archive -archivePath $PWD/ios/ReactNativeSemaphoreNew.xcarchive -xcconfig ios/config.xcconfig IPHONEOS_DEPLOYMENT_TARGET=15.0"
         run: |
           cat ios/config.xcconfig
-          echo -e "\nCURRENT_PROJECT_VERSION = ${{ needs.Version-Ubuntu.outputs.VERSION }}" >> ios/config.xcconfig
-          cat ios/config.xcconfig
-          xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew -destination 'generic/platform=iOS Simulator,name=iPhone 11,OS=15.0' -configuration release archive -archivePath $PWD/ios/ReactNativeSemaphoreNew.xcarchive -xcconfig ios/config.xcconfig IPHONEOS_DEPLOYMENT_TARGET=15.0"
       - name: Export iOS build
         run: xcodebuild -exportArchive -archivePath $PWD/ios/ReactNativeSemaphoreNew.xcarchive -exportPath $PWD/ios/ReactNativeSemaphoreNewIPA -exportOptionsPlist $PWD/ios/exportOptions.plist
       - name: Perform CodeQL analysis
