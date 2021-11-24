@@ -232,7 +232,7 @@ jobs:
       - name: Archive and export iOS build
         run: |
           echo -e "\nCURRENT_PROJECT_VERSION = ${{ needs.Version-Ubuntu.outputs.VERSION }}" >> ios/config.xcconfig
-          xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew -sdk iphoneos15.0 -destination='name=iPhone 11,OS=15.0' -configuration release archive -archivePath $PWD/ios/ReactNativeSemaphoreNew.xcarchive -xcconfig ios/config.xcconfig IPHONEOS_DEPLOYMENT_TARGET=15.0
+          xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew -sdk iphoneos15.0 -destination='name=iPhone 11,OS=15.0' -configuration release archive -archivePath $PWD/ios/ReactNativeSemaphoreNew.xcarchive -xcconfig ios/config.xcconfig IPHONEOS_DEPLOYMENT_TARGET=15.0 PROVISIONING_PROFILE="com.liatrio.mobile-pipeline-poc AppStore"
           xcodebuild -exportArchive -archivePath $PWD/ios/ReactNativeSemaphoreNew.xcarchive -exportPath $PWD/ios/ReactNativeSemaphoreNewIPA -exportOptionsPlist $PWD/ios/exportOptions.plist
       - name: Perform CodeQL analysis
         uses: github/codeql-action/analyze@v1      
