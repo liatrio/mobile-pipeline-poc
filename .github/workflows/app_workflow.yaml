@@ -341,7 +341,7 @@ jobs:
       - name: Download Android artifact
         uses: actions/download-artifact@v2
         with: 
-          path: /Users/runner/work/mobile-pipeline-poc/mobile-pipeline-poc
+          path: /home/runner/work/mobile-pipeline-poc/mobile-pipeline-poc
       - name: Fastlane Android release
         run: |
           echo ${{ secrets.GOOGLE_API_KEY }} | base64 -d > fastlane/google_api_key.json
