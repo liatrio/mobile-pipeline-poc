@@ -39,8 +39,8 @@ jobs:
         run: echo ::set-output name=SOURCE_TAG::$(git describe --tags --abbrev=0)
       - name: Check version
         run: |
-          if [ "v${{ needs.Version-Ubuntu.outputs.VERSION }}" == "${{ steps.tag.outputs.SOURCE_TAG }}" ]; then
-            echo "Version: ${{ needs.Version-Ubuntu.outputs.VERSION }} needs to be updated in package.json" 
+          if [ "v${{ needs.Version-Ubuntu.outputs.version }}" == "${{ steps.tag.outputs.SOURCE_TAG }}" ]; then
+            echo "Version: ${{ needs.Version-Ubuntu.outputs.version }} needs to be updated in package.json" 
             exit 1
           fi 
       - name: Setup node
@@ -146,7 +146,7 @@ jobs:
 
       - name: Create build properties file
         run: |
-          echo -e "password=${{ secrets.KEYSTORE_PASSWORD }}\nversion=${{ needs.Version-Ubuntu.outputs.VERSION }}" > android/build.properties
+          echo -e "password=${{ secrets.KEYSTORE_PASSWORD }}\nversion=${{ needs.Version-Ubuntu.outputs.version }}" > android/build.properties
           echo ${{ secrets.KEYSTORE }} | base64 -d > android/app/liatrio.keystore
       ## Android sdk
       - name: Setup android
@@ -229,21 +229,10 @@ jobs:
           security import $CERTIFICATE_KEY_PATH -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
           security add-certificates -k $KEYCHAIN_PATH $CERTIFICATE_PATH
     
-          fastlane ios certificate_setup key_id:$APPLE_APP_STORE_API_KEY_ID issuer_id:$APPLE_APP_STORE_API_ISSUER_ID key_filepath:$APPLE_API_KEY_PATH keychain_path:$KEYCHAIN_PATH keychain_password:"$KEYCHAIN_PASSWORD"      
+          fastlane ios certificate_setup key_id:$APPLE_APP_STORE_API_KEY_ID issuer_id:$APPLE_APP_STORE_API_ISSUER_ID key_filepath:$APPLE_API_KEY_PATH keychain_path:$KEYCHAIN_PATH keychain_password:"$KEYCHAIN_PASSWORD"
       - name: Archive iOS build
-          # cat ios/config.xcconfig
-          # echo -e "\nCURRENT_PROJECT_VERSION = ${{ needs.Version-Ubuntu.outputs.VERSION }}" >> ios/config.xcconfig
-          # cat ios/config.xcconfig
-          # xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew -destination 'generic/platform=iOS Simulator,name=iPhone 11,OS=15.0' -configuration release archive -archivePath $PWD/ios/ReactNativeSemaphoreNew.xcarchive -xcconfig ios/config.xcconfig IPHONEOS_DEPLOYMENT_TARGET=15.0"
         run: |
-          cat ios/config.xcconfig
-      - name: Archive iOS build
-          # cat ios/config.xcconfig
-          # echo -e "\nCURRENT_PROJECT_VERSION = ${{ needs.Version-Ubuntu.outputs.VERSION }}" >> ios/config.xcconfig
-          # cat ios/config.xcconfig
-          # xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew -destination 'generic/platform=iOS Simulator,name=iPhone 11,OS=15.0' -configuration release archive -archivePath $PWD/ios/ReactNativeSemaphoreNew.xcarchive -xcconfig ios/config.xcconfig IPHONEOS_DEPLOYMENT_TARGET=15.0"
-        run: |
-          echo -e "CURRENT_PROJECT_VERSION = ${{ needs.Version-Ubuntu.outputs.VERSION }}\n" >> ios/config.xcconfig
+          echo -e "CURRENT_PROJECT_VERSION = ${{ needs.Version-Ubuntu.outputs.version }}\n" >> ios/config.xcconfig
           xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew -destination 'generic/platform=iOS Simulator,name=iPhone 11,OS=15.0' -configuration release archive -archivePath $PWD/ios/ReactNativeSemaphoreNew.xcarchive -xcconfig ios/config.xcconfig IPHONEOS_DEPLOYMENT_TARGET=15.0"
       - name: Export iOS build
         run: xcodebuild -exportArchive -archivePath $PWD/ios/ReactNativeSemaphoreNew.xcarchive -exportPath $PWD/ios/ReactNativeSemaphoreNewIPA -exportOptionsPlist $PWD/ios/exportOptions.plist
@@ -290,7 +279,7 @@ jobs:
       - name: Build properties setup
         run: |
           echo ${{ secrets.KEYSTORE }} | base64 -d > android/app/liatrio.keystore
-          echo -e "password=${{ secrets.KEYSTORE_PASSWORD }}\nversion=${{ needs.Version-Ubuntu.outputs.VERSION }}" > android/build.properties
+          echo -e "password=${{ secrets.KEYSTORE_PASSWORD }}\nversion=${{ needs.Version-Ubuntu.outputs.version }}" > android/build.properties
 
       - name: Build Android app release bundle
         run: cd android && ./gradlew bundleRelease --no-daemon
@@ -319,9 +308,9 @@ jobs:
         with:
           owner: 'liatrio'
           repo: 'mobile-pipeline-poc'
-          tag_name: 'v${{ needs.Version-Ubuntu.outputs.VERSION }}'
+          tag_name: 'v${{ needs.Version-Ubuntu.outputs.version }}'
           token_name: 'token'
-          name: 'Release: ${{ needs.Version-Ubuntu.outputs.VERSION }}'
+          name: 'Release: ${{ needs.Version-Ubuntu.outputs.version }}'
           pat: ${{ secrets.GITHUB_TOKEN }}  
       - name: Download IOS/Android artifact
         uses: actions/download-artifact@v2
