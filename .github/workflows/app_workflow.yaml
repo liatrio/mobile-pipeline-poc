@@ -237,15 +237,22 @@ jobs:
           # xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew -destination 'generic/platform=iOS Simulator,name=iPhone 11,OS=15.0' -configuration release archive -archivePath $PWD/ios/ReactNativeSemaphoreNew.xcarchive -xcconfig ios/config.xcconfig IPHONEOS_DEPLOYMENT_TARGET=15.0"
         run: |
           cat ios/config.xcconfig
-      - name: Export iOS build
-        run: xcodebuild -exportArchive -archivePath $PWD/ios/ReactNativeSemaphoreNew.xcarchive -exportPath $PWD/ios/ReactNativeSemaphoreNewIPA -exportOptionsPlist $PWD/ios/exportOptions.plist
-      - name: Perform CodeQL analysis
-        uses: github/codeql-action/analyze@v1      
-      - name: Upload iOS artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: 'ios-artifact'
-          path: 'ios/ReactNativeSemaphoreNewIPA/ReactNativeSemaphoreNew.ipa'
+      - name: Archive iOS build
+          # cat ios/config.xcconfig
+          # echo -e "\nCURRENT_PROJECT_VERSION = ${{ needs.Version-Ubuntu.outputs.VERSION }}" >> ios/config.xcconfig
+          # cat ios/config.xcconfig
+          # xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew -destination 'generic/platform=iOS Simulator,name=iPhone 11,OS=15.0' -configuration release archive -archivePath $PWD/ios/ReactNativeSemaphoreNew.xcarchive -xcconfig ios/config.xcconfig IPHONEOS_DEPLOYMENT_TARGET=15.0"
+        run: |
+          echo -e "\nCURRENT_PROJECT_VERSION = ${{ needs.Version-Ubuntu.outputs.VERSION }}"
+      # - name: Export iOS build
+      #   run: xcodebuild -exportArchive -archivePath $PWD/ios/ReactNativeSemaphoreNew.xcarchive -exportPath $PWD/ios/ReactNativeSemaphoreNewIPA -exportOptionsPlist $PWD/ios/exportOptions.plist
+      # - name: Perform CodeQL analysis
+      #   uses: github/codeql-action/analyze@v1      
+      # - name: Upload iOS artifact
+      #   uses: actions/upload-artifact@v2
+      #   with:
+      #     name: 'ios-artifact'
+      #     path: 'ios/ReactNativeSemaphoreNewIPA/ReactNativeSemaphoreNew.ipa'
 
   Build-Android-App-Ubuntu:
     runs-on: ubuntu-latest
