@@ -240,7 +240,7 @@ jobs:
               -xcconfig ios/config.xcconfig IPHONEOS_DEPLOYMENT_TARGET=15.0
       - name: Export iOS build 
         run: xcodebuild -exportArchive -archivePath $PWD/ios/ReactNativeSemaphoreNew.xcarchive \
-          -exportPath $PWD/ios/ReactNativeSemaphoreNewIPA -exportOptionsPlist $PWD/ios/exportOptions.plist
+              -exportPath $PWD/ios/ReactNativeSemaphoreNewIPA -exportOptionsPlist $PWD/ios/exportOptions.plist
       - name: Perform CodeQL analysis
         uses: github/codeql-action/analyze@v1      
       - name: Upload iOS artifact
