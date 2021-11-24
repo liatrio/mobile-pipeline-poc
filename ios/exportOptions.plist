@@ -21,6 +21,8 @@
 	<true/>
 	<!-- <key>teamID</key>
 	<string>RPJWBWRGNS</string>  -->
+	<key>teamID</key>
+	<string>RPJWBWRGNS</string>
 	<key>uploadBitcode</key>
 	<true/>
 	<key>uploadSymbols</key>
