@@ -108,9 +108,6 @@ jobs:
             -destination 'generic/platform=iOS Simulator,name=iPhone 11,OS=15.0' -archivePath $PWD/ReactNativeSemaphoreNew.xcarchive \
             CODE_SIGNING_ALLOWED=NO IPHONEOS_DEPLOYMENT_TARGET=15.0
 
-      # - name: Setup upterm session
-      #   uses: lhotari/action-upterm@v1
-
       - name: Run iOS Appium tests
         run: npm run mocha appium/ios
         
@@ -230,17 +227,9 @@ jobs:
           security add-certificates -k $KEYCHAIN_PATH $CERTIFICATE_PATH
     
           fastlane ios certificate_setup key_id:$APPLE_APP_STORE_API_KEY_ID issuer_id:$APPLE_APP_STORE_API_ISSUER_ID key_filepath:$APPLE_API_KEY_PATH keychain_path:$KEYCHAIN_PATH keychain_password:"$KEYCHAIN_PASSWORD"
-      # - name: Archive iOS build
-      #   run: |
-      #     echo -e "CURRENT_PROJECT_VERSION = ${{ needs.Version-Ubuntu.outputs.version }}\n" >> ios/config.xcconfig
-      #     xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew -destination 'generic/platform=iOS Simulator,name=iPhone 11,OS=15.0' -configuration release archive -archivePath $PWD/ios/ReactNativeSemaphoreNew.xcarchive -xcconfig ios/config.xcconfig IPHONEOS_DEPLOYMENT_TARGET=15.0
-      # - name: Export iOS build
-      #   run: xcodebuild -exportArchive -archivePath $PWD/ios/ReactNativeSemaphoreNew.xcarchive -exportPath $PWD/ios/ReactNativeSemaphoreNewIPA -exportOptionsPlist $PWD/ios/exportOptions.plist
-
-      # sed -i -e 's/org.reactjs.native.example.ReactNativeSemaphoreNew/$(PRODUCT_BUNDLE_IDENTIFIER)/g' ios/ReactNativeSemaphoreNew/Info.plist
       - name: Archive iOS build
         run: |
-          echo -e "CURRENT_PROJECT_VERSION = ${{ needs.Version-Ubuntu.outputs.version }}/n" >> ios/config.xcconfig
+          echo -e "CURRENT_PROJECT_VERSION = ${{ needs.Version-Ubuntu.outputs.version }}" >> ios/config.xcconfig
           sed -i -e 's/org.reactjs.native.example.ReactNativeSemaphoreNew/$(PRODUCT_BUNDLE_IDENTIFIER)/g' ios/ReactNativeSemaphoreNew/Info.plist
           xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew -sdk iphoneos -configuration release archive -archivePath $PWD/ios/ReactNativeSemaphoreNew.xcarchive -xcconfig ios/config.xcconfig IPHONEOS_DEPLOYMENT_TARGET=15.0
       - name: Export iOS build 
@@ -353,7 +342,6 @@ jobs:
         uses: actions/download-artifact@v2
         with: 
           path: /Users/runner/work/mobile-pipeline-poc/mobile-pipeline-poc
-          name: android-artifact
       - name: Fastlane Android release
         run: |
           echo ${{ secrets.GOOGLE_API_KEY }} | base64 -d > fastlane/google_api_key.json
