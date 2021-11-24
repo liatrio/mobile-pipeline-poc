@@ -240,7 +240,7 @@ jobs:
         run: |
           echo -e "CURRENT_PROJECT_VERSION = ${{ needs.Version-Ubuntu.outputs.version }}/n" >> ios/config.xcconfig
           sed -i -e 's/org.reactjs.native.example.ReactNativeSemaphoreNew/$(PRODUCT_BUNDLE_IDENTIFIER)/g' ios/ReactNativeSemaphoreNew/Info.plist
-          xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew -sdk iphoneos -configuration release archive -archivePath $PWD/ios/ReactNativeSemaphoreNew.xcarchive -xcconfig ios/config.xcconfig
+          xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew -sdk iphoneos -configuration release archive -archivePath $PWD/ios/ReactNativeSemaphoreNew.xcarchive -xcconfig ios/config.xcconfig IPHONEOS_DEPLOYMENT_TARGET=15.0
       - name: Export iOS build 
         run: xcodebuild -exportArchive -archivePath $PWD/ios/ReactNativeSemaphoreNew.xcarchive -exportPath $PWD/ios/ReactNativeSemaphoreNewIPA -exportOptionsPlist $PWD/ios/exportOptions.plist
       - name: Perform CodeQL analysis
