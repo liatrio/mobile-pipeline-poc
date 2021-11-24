@@ -63,56 +63,56 @@ jobs:
         env:
          SONAR_TOKEN: ${{ secrets.SONAR_SHAREDSVC_TOKEN }}
 
-  # Appium-iOS-Macos:
-  #   runs-on: macos-latest
-  #   needs:
-  #     - Version-Ubuntu
-  #   steps:
-  #     - name: Checkout 
-  #       uses: actions/checkout@v2
+  Appium-iOS-Macos:
+    runs-on: macos-latest
+    needs:
+      - Version-Ubuntu
+    steps:
+      - name: Checkout 
+        uses: actions/checkout@v2
 
-  #     - name: Install node modules
-  #       run: yarn install
+      - name: Install node modules
+        run: yarn install
 
-  #     - name: Install pod dependencies
-  #       run: pod install
-  #       working-directory: ios
+      - name: Install pod dependencies
+        run: pod install
+        working-directory: ios
 
-  #     - name: Install Appium globally
-  #       run: yarn global add appium
+      - name: Install Appium globally
+        run: yarn global add appium
 
-  #     # Setup Appium  
-  #     - name: Run Appium-doctor        
-  #       run: npm run appium-doctor --ios
-  #     - name: Run Appium in the background        
-  #       run: npm run appium &
-  #     - name: Check Appium server status        
-  #       run: curl http://localhost:4723/wd/hub/status
+      # Setup Appium  
+      - name: Run Appium-doctor        
+        run: npm run appium-doctor --ios
+      - name: Run Appium in the background        
+        run: npm run appium &
+      - name: Check Appium server status        
+        run: curl http://localhost:4723/wd/hub/status
 
-  #     - name: Select XCode version
-  #       run: |
-  #         sudo xcode-select --switch /Applications/Xcode_13.0.app
-  #         xcodebuild -version
+      - name: Select XCode version
+        run: |
+          sudo xcode-select --switch /Applications/Xcode_13.0.app
+          xcodebuild -version
 
-  #     - name: Start webdriver agent
-  #       run: |
-  #         cd ~/.config/yarn/global/node_modules/appium-webdriveragent/
-  #         DEVICE_ID=$(echo `xcrun simctl list | grep -v "unavailable, runtime profile not found" | grep "iPhone 11 (" \
-  #           | grep -v "CoreSimulator" | awk '{print $3}' |  tr -d '()'`)
-  #         xcodebuild -project WebDriverAgent.xcodeproj -scheme WebDriverAgentRunner -destination "id=$DEVICE_ID" test \
-  #           IPHONEOS_DEPLOYMENT_TARGET=15.0 &
+      - name: Start webdriver agent
+        run: |
+          cd ~/.config/yarn/global/node_modules/appium-webdriveragent/
+          DEVICE_ID=$(echo `xcrun simctl list | grep -v "unavailable, runtime profile not found" | grep "iPhone 11 (" \
+            | grep -v "CoreSimulator" | awk '{print $3}' |  tr -d '()'`)
+          xcodebuild -project WebDriverAgent.xcodeproj -scheme WebDriverAgentRunner -destination "id=$DEVICE_ID" test \
+            IPHONEOS_DEPLOYMENT_TARGET=15.0 &
 
-  #     - name: Build iOS
-  #       run: |
-  #         xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew clean archive \
-  #           -destination 'generic/platform=iOS Simulator,name=iPhone 11,OS=15.0' -archivePath $PWD/ReactNativeSemaphoreNew.xcarchive \
-  #           CODE_SIGNING_ALLOWED=NO IPHONEOS_DEPLOYMENT_TARGET=15.0
+      - name: Build iOS
+        run: |
+          xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -configuration debug -scheme ReactNativeSemaphoreNew clean archive \
+            -destination 'generic/platform=iOS Simulator,name=iPhone 11,OS=15.0' -archivePath $PWD/ReactNativeSemaphoreNew.xcarchive \
+            CODE_SIGNING_ALLOWED=NO IPHONEOS_DEPLOYMENT_TARGET=15.0
 
-  #     # - name: Setup upterm session
-  #     #   uses: lhotari/action-upterm@v1
+      # - name: Setup upterm session
+      #   uses: lhotari/action-upterm@v1
 
-  #     - name: Run iOS Appium tests
-  #       run: npm run mocha appium/ios
+      - name: Run iOS Appium tests
+        run: npm run mocha appium/ios
         
   Appium-Android-Macos:
     runs-on: macos-latest
@@ -236,10 +236,11 @@ jobs:
       #     xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew -destination 'generic/platform=iOS Simulator,name=iPhone 11,OS=15.0' -configuration release archive -archivePath $PWD/ios/ReactNativeSemaphoreNew.xcarchive -xcconfig ios/config.xcconfig IPHONEOS_DEPLOYMENT_TARGET=15.0
       # - name: Export iOS build
       #   run: xcodebuild -exportArchive -archivePath $PWD/ios/ReactNativeSemaphoreNew.xcarchive -exportPath $PWD/ios/ReactNativeSemaphoreNewIPA -exportOptionsPlist $PWD/ios/exportOptions.plist
+
+      # sed -i -e 's/org.reactjs.native.example.ReactNativeSemaphoreNew/$(PRODUCT_BUNDLE_IDENTIFIER)/g' ios/ReactNativeSemaphoreNew/Info.plist
       - name: Archive iOS build
         run: |
           echo -e "CURRENT_PROJECT_VERSION = ${{ needs.Version-Ubuntu.outputs.version }}/n" >> ios/config.xcconfig
-          sed -i -e 's/org.reactjs.native.example.ReactNativeSemaphoreNew/$(PRODUCT_BUNDLE_IDENTIFIER)/g' ios/ReactNativeSemaphoreNew/Info.plist
           xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew -sdk iphoneos -configuration release archive -archivePath $PWD/ios/ReactNativeSemaphoreNew.xcarchive -xcconfig ios/config.xcconfig IPHONEOS_DEPLOYMENT_TARGET=15.0
       - name: Export iOS build 
         run: xcodebuild -exportArchive -archivePath $PWD/ios/ReactNativeSemaphoreNew.xcarchive -exportPath $PWD/ios/ReactNativeSemaphoreNewIPA -exportOptionsPlist $PWD/ios/exportOptions.plist
