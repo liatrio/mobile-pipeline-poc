@@ -233,6 +233,7 @@ jobs:
       - name: Archive iOS build
         #       # echo -e "CURRENT_PROJECT_VERSION = ${{ needs.Version-Ubuntu.outputs.version }}\n" >> ios/config.xcconfig
         run: |
+          echo -e "CURRENT_PROJECT_VERSION = 0.4.1\n" >> ios/config.xcconfig
           xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew -destination 'generic/platform=iOS Simulator,name=iPhone 11,OS=15.0' -configuration release archive -archivePath $PWD/ios/ReactNativeSemaphoreNew.xcarchive -xcconfig ios/config.xcconfig IPHONEOS_DEPLOYMENT_TARGET=15.0"
       - name: Export iOS build
         run: xcodebuild -exportArchive -archivePath $PWD/ios/ReactNativeSemaphoreNew.xcarchive -exportPath $PWD/ios/ReactNativeSemaphoreNewIPA -exportOptionsPlist $PWD/ios/exportOptions.plist
