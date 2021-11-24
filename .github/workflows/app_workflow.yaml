@@ -63,7 +63,7 @@ jobs:
         env:
          SONAR_TOKEN: ${{ secrets.SONAR_SHAREDSVC_TOKEN }}
 
-  Appium-IOS-Macos:
+  Appium-iOS-Macos:
     runs-on: macos-latest
     needs:
       - Version-Ubuntu
@@ -181,7 +181,7 @@ jobs:
   Build-iOS-App-Macos:
     runs-on: macos-latest
     needs:
-      - Appium-IOS-Macos
+      - Appium-iOS-Macos
 
     permissions:
       actions: read
