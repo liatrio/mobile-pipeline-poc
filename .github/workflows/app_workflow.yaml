@@ -39,8 +39,8 @@ jobs:
         run: echo ::set-output name=SOURCE_TAG::$(git describe --tags --abbrev=0)
       - name: Check version
         run: |
-          if [ "v${{ needs.Version.outputs.VERSION }}" == "${{ steps.tag.outputs.SOURCE_TAG }}" ]; then
-            echo "Version: ${{ needs.Version.outputs.VERSION }} needs to be updated in package.json" 
+          if [ "v${{ needs.Version-Ubuntu.outputs.VERSION }}" == "${{ steps.tag.outputs.SOURCE_TAG }}" ]; then
+            echo "Version: ${{ needs.Version-Ubuntu.outputs.VERSION }} needs to be updated in package.json" 
             exit 1
           fi 
       - name: Setup node
