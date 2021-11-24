@@ -157,7 +157,7 @@ describe('Mobile App POC Appium Tests', function () {
 
 	it('should find the search button, click it, enter `United States`, and verify the search box value as `United States`', async function () {
 		this.timeout(500000);
-		this.retries(3)
+		this.retries(6)
 		client.setImplicitTimeout(100000);
 
 		// Find the home page text 'Step One'
