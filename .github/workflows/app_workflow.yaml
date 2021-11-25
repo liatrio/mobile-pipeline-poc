@@ -1,4 +1,4 @@
-name: "Build Release iOS/android"
+name: "Build Release iOS/Android"
 
 on:
   pull_request: 
