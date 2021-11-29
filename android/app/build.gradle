@@ -124,8 +124,8 @@ def jscFlavor = 'org.webkit:android-jsc:+'
  * and the benefits of using Hermes will therefore be sharply reduced.
  */
 def enableHermes = project.ext.react.get("enableHermes", false)
-def buildPropertiesFile = rootProject.file("build.properties")
-def buildProperties = new Properties()
+/*def buildPropertiesFile = rootProject.file("build.properties")
+//def buildProperties = new Properties()
 buildProperties.load(new FileInputStream(buildPropertiesFile))
 
 // parsing semversion to generate versionCode
@@ -137,7 +137,7 @@ def version_major = match.group(1)
 def version_minor = match.group(2)
 def version_patch = match.group(3)
 
-def version_code = (version_major + version_minor.padLeft(3, "0") + version_patch.padLeft(3, "0")) as int
+def version_code = (version_major + version_minor.padLeft(3, "0") + version_patch.padLeft(3, "0")) as int*/
 
 android {
     ndkVersion rootProject.ext.ndkVersion
@@ -153,8 +153,10 @@ android {
         applicationId "com.reactnativesemaphorenew"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode version_code
-        versionName buildProperties['version']
+        //versionCode version_code
+        versionCode 1
+        //versionName buildProperties['version']
+        versionName "1.0"
         testBuildType System.getProperty('testBuildType', 'debug')  // This will later be used to control the test apk build type
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
@@ -174,25 +176,19 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
-        release {
-            storeFile file(RELEASE_STORE_FILE)
-            storePassword buildProperties['password']
-            keyAlias RELEASE_KEY_ALIAS
-            keyPassword buildProperties['password']
-        }
     }
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
-            testCoverageEnabled = true
+            //testCoverageEnabled = true
         }
-        release {
+        /*release {
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
             signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
-        }
+        }*/
     }
 
     // applicationVariants are e.g. debug, release
