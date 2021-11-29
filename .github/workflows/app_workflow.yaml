@@ -1,4 +1,4 @@
-name: "Build Release ios/android"
+name: "Build Release iOS/Android"
 
 on:
   pull_request: 
@@ -7,38 +7,42 @@ on:
 env:
   REPO: 'mobile-pipeline-poc'
   SONAR_HOST: 'https://sonarqube.services.liatr.io'
+  KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
+  APPLE_DISTRIBUTION_KEY: ${{ secrets.APPLE_DISTRIBUTION_KEY }}
+  APPLE_APP_STORE_API_KEY_ID: ${{ secrets.APPLE_APP_STORE_API_KEY_ID }}
+  APPLE_APP_STORE_API_ISSUER_ID: ${{ secrets.APPLE_APP_STORE_API_ISSUER_ID }}
 
 jobs:
-  Version:
+  Version-Ubuntu:
     runs-on: ubuntu-latest
     steps:
-      - name: checkout code
+      - name: Checkout code
         uses: actions/checkout@v2
-      - name: Get Version
+      - name: Get version
         id: version
         run: echo ::set-output name=VERSION::$(jq -r .version package.json)
     outputs:
       version: ${{ steps.version.outputs.VERSION }}
   
-  Initial-check:
+  Version-Check-Ubuntu:
     runs-on: ubuntu-latest
     needs:
-      - Version
+      - Version-Ubuntu
     steps:
-      - name: checkout code
+      - name: Checkout code
         uses: actions/checkout@v2
         with: 
           fetch-depth: 0
-      - name: Get Tag
+      - name: Get tag
         id: tag
         run: echo ::set-output name=SOURCE_TAG::$(git describe --tags --abbrev=0)
-      - name: Check Version
+      - name: Check version
         run: |
-          if [ "v${{ needs.Version.outputs.VERSION }}" == "${{ steps.tag.outputs.SOURCE_TAG }}" ]; then
-            echo "Version: ${{ needs.Version.outputs.VERSION }} needs to be updated in package.json" 
+          if [ "v${{ needs.Version-Ubuntu.outputs.version }}" == "${{ steps.tag.outputs.SOURCE_TAG }}" ]; then
+            echo "Version: ${{ needs.Version-Ubuntu.outputs.version }} needs to be updated in package.json" 
             exit 1
           fi 
-      - name: Setup Node
+      - name: Setup node
         uses: actions/setup-node@v2
         with:
           node-version: '14'
@@ -47,22 +51,21 @@ jobs:
         run: yarn install
       - name: Generate Sonarqube reports
         run: yarn test
-      - name: SonarQube Scan
+      - name: Sonarqube scan
         uses: docker://sonarsource/sonar-scanner-cli:4.6
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_SHAREDSVC_TOKEN }}
           SONAR_HOST_URL: ${{ env.SONAR_HOST }}
-      - name: SonarQube Quality Gate check
+      - name: Sonarqube quality gate check
         uses: sonarsource/sonarqube-quality-gate-action@master
-        # Force to fail step after specific time
         timeout-minutes: 5
         env:
          SONAR_TOKEN: ${{ secrets.SONAR_SHAREDSVC_TOKEN }}
 
-  Appium-ios:
+  Appium-iOS-Macos:
     runs-on: macos-latest
     needs:
-      - Version
+      - Version-Ubuntu
     steps:
       - name: Checkout 
         uses: actions/checkout@v2
@@ -70,26 +73,20 @@ jobs:
       - name: Install node modules
         run: yarn install
 
-      - name: Install Pod dependencies
+      - name: Install pod dependencies
         run: pod install
         working-directory: ios
 
-      - name: Install appium globally
+      - name: Install Appium globally
         run: yarn global add appium
 
-      # Setup appium  
-      - name: Run appium-doctor        
+      # Setup Appium  
+      - name: Run Appium-doctor        
         run: npm run appium-doctor --ios
-      - name: Run appium in the background        
+      - name: Run Appium in the background        
         run: npm run appium &
-      - name: Check appium server status        
+      - name: Check Appium server status        
         run: curl http://localhost:4723/wd/hub/status
-
-      - name: List devices
-        run: xcrun simctl list
-
-      - name: List sdks
-        run: xcodebuild -showsdks
 
       - name: Select XCode version
         run: |
@@ -99,12 +96,13 @@ jobs:
       - name: Start webdriver agent
         run: |
           cd ~/.config/yarn/global/node_modules/appium-webdriveragent/
-          DEVICE_ID=$(echo `xcrun simctl list | grep -v "unavailable, runtime profile not found" | grep "iPhone 11 (" \
+          DEVICE_ID=$(echo `xcrun simctl list | grep -v "unavailable, runtime profile not found" \
+            | grep "iPhone 11 (" \
             | grep -v "CoreSimulator" | awk '{print $3}' |  tr -d '()'`)
           xcodebuild -project WebDriverAgent.xcodeproj -scheme WebDriverAgentRunner -destination "id=$DEVICE_ID" test \
             IPHONEOS_DEPLOYMENT_TARGET=15.0 &
 
-      - name: Build IOS
+      - name: Build iOS
         run: |
           xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew clean archive \
             -destination 'generic/platform=iOS Simulator,name=iPhone 11,OS=15.0' -archivePath $PWD/ReactNativeSemaphoreNew.xcarchive \
@@ -113,10 +111,10 @@ jobs:
       - name: Run iOS Appium tests
         run: npm run mocha appium/ios
         
-  Appium-Android:
+  Appium-Android-Macos:
     runs-on: macos-latest
     needs:
-      - Version
+      - Version-Ubuntu
     env:
       ANDROID_SDK_ROOT: '/Users/runner/Library/Android/sdk'
       ANDROID_HOME: '/Users/runner/Library/Android/sdk'
@@ -135,20 +133,22 @@ jobs:
       - name: Install Appium Globally
         run: yarn global add appium
 
-      ## Setup appium  
-      - name: Run appium-doctor        
+      ## Setup Appium  
+      - name: Run Appium-doctor        
         run: npm run appium-doctor --android
-      - name: Run appium in the background        
+      - name: Run Appium in the background        
         run: npm run appium &
-      - name: Check appium server status        
+      - name: Check Appium server status        
         run: curl http://localhost:4723/wd/hub/status
 
       - name: Create build properties file
         run: |
-          echo -e "password=${{ secrets.KEYSTORE_PASSWORD }}\nversion=${{ needs.Version.outputs.VERSION }}" > android/build.properties
+          echo -e "password=${{ secrets.KEYSTORE_PASSWORD }}\nversion=${{ needs.Version-Ubuntu.outputs.version }}" \
+            > android/build.properties
           echo ${{ secrets.KEYSTORE }} | base64 -d > android/app/liatrio.keystore
+      
       ## Android sdk
-      - name: Setup android SDK
+      - name: Setup android
         uses: android-actions/setup-android@v2
       - name: Platform tools installation
         run: sdkmanager "platform-tools" "platforms;android-27"
@@ -174,13 +174,14 @@ jobs:
       - name: Wait for device to be operational
         run: adb wait-for-device shell 'while [[ -z $(getprop sys.boot_completed) ]]; do sleep 1; done; input keyevent 82'
 
-      - name: Run appium integration Tests
+      - name: Run Appium integration tests
         run: npm run mocha appium/android
 
-  Build-ios:
+  Build-iOS-App-Macos:
     runs-on: macos-latest
     needs:
-      - Appium-ios
+      - Version-Ubuntu
+      - Appium-iOS-Macos
 
     permissions:
       actions: read
@@ -196,37 +197,64 @@ jobs:
         with:
           languages: "cpp"
 
-      - name: Setup Node
+      - name: Setup node
         uses: actions/setup-node@v2
         with:
           node-version: '14'
           cache: yarn
-      - name: Install Node Modules
+      - name: Install node modules
         run: yarn install
-      - name: Install Cocoapods
+      - name: Install cocoapods
         run: gem install cocoapods
-      - name: Install Pod dependencies
+      - name: Install pod dependencies
         run: pod install
         working-directory: ios
-      - name: Build IOS
+      - name: Certificate
         run: |
-          xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew clean archive \
-            -sdk iphoneos -configuration release -archivePath $PWD/ReactNativeSemaphoreNew CODE_SIGNING_ALLOWED=NO
+          KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
+          CERTIFICATE_KEY_PATH=$RUNNER_TEMP/build_certificate.p12
+          CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.cer
+          APPLE_API_KEY_PATH=$RUNNER_TEMP/apple_api_key.p8
+
+          echo -e ${{ secrets.APPLE_APP_STORE_API_KEY }} | base64 -d --output $APPLE_API_KEY_PATH
+          echo -e ${{ secrets.APPLE_DISTRIBUTION_KEY }} | base64 -d --output $CERTIFICATE_KEY_PATH
+          echo -e ${{ secrets.APPLE_DISTRIBUTION_CERTIFICATE}} | base64 -d --output $CERTIFICATE_PATH
       
-      - name: Perform CodeQL Analysis
+          security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+          security default-keychain -s $KEYCHAIN_PATH
+          security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+
+          security import $CERTIFICATE_KEY_PATH -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
+          security add-certificates -k $KEYCHAIN_PATH $CERTIFICATE_PATH
+    
+          fastlane ios certificate_setup key_id:$APPLE_APP_STORE_API_KEY_ID issuer_id:$APPLE_APP_STORE_API_ISSUER_ID \
+            key_filepath:$APPLE_API_KEY_PATH keychain_path:$KEYCHAIN_PATH keychain_password:"$KEYCHAIN_PASSWORD"
+      - name: Archive iOS build
+        run: |
+          echo -e "CURRENT_PROJECT_VERSION = ${{ needs.Version-Ubuntu.outputs.version }}" >> ios/config.xcconfig
+          sed -i -e 's/org.reactjs.native.example.ReactNativeSemaphoreNew/$(PRODUCT_BUNDLE_IDENTIFIER)/g' \
+            ios/ReactNativeSemaphoreNew/Info.plist
+          xcodebuild -workspace ios/ReactNativeSemaphoreNew.xcworkspace -scheme ReactNativeSemaphoreNew \
+            -sdk iphoneos -configuration release archive -archivePath $PWD/ios/ReactNativeSemaphoreNew.xcarchive \
+            -xcconfig ios/config.xcconfig IPHONEOS_DEPLOYMENT_TARGET=15.0
+      - name: Export iOS build 
+        run: |
+          xcodebuild -exportArchive -archivePath $PWD/ios/ReactNativeSemaphoreNew.xcarchive \
+            -exportPath $PWD/ios/ReactNativeSemaphoreNewIPA -exportOptionsPlist $PWD/ios/exportOptions.plist
+      - name: Perform CodeQL analysis
         uses: github/codeql-action/analyze@v1      
-      
-      - name: Upload artifact
+      - name: Upload iOS artifact
         uses: actions/upload-artifact@v2
         with:
           name: 'ios-artifact'
-          path: 'ReactNativeSemaphoreNew.xcarchive/Products/Applications/ReactNativeSemaphoreNew.app'
+          path: 'ios/ReactNativeSemaphoreNewIPA/ReactNativeSemaphoreNew.ipa'
 
-  Build-android:
+  Build-Android-App-Ubuntu:
     runs-on: ubuntu-latest
     needs:
-      - Version
-      - Appium-Android
+      - Version-Ubuntu
+      - Appium-Android-Macos
 
     permissions:
       actions: read
@@ -247,37 +275,38 @@ jobs:
         with:
           languages: ${{ matrix.language }}
 
-      - name: Setup Node
+      - name: Setup node
         uses: actions/setup-node@v2
         with:
           node-version: '14'
           cache: yarn
       - name: Install node modules
         run: yarn install   
-      - name: Build Properties Setup
+      - name: Build properties setup
         run: |
           echo ${{ secrets.KEYSTORE }} | base64 -d > android/app/liatrio.keystore
-          echo -e "password=${{ secrets.KEYSTORE_PASSWORD }}\nversion=${{ needs.Version.outputs.VERSION }}" > android/build.properties
+          echo -e "password=${{ secrets.KEYSTORE_PASSWORD }}\nversion=${{ needs.Version-Ubuntu.outputs.version }}" \
+            > android/build.properties
 
-      - name: Build Android App Release Bundle
+      - name: Build Android app release bundle
         run: cd android && ./gradlew bundleRelease --no-daemon
 
-      - name: Perform CodeQL Analysis
+      - name: Perform CodeQL analysis
         uses: github/codeql-action/analyze@v1
 
-      - name: Upload release artifacts
+      - name: Upload Android artifact
         uses: actions/upload-artifact@v2
         with:
           name: 'android-artifact'
           path: '/home/runner/work/mobile-pipeline-poc/mobile-pipeline-poc/android/app/build/outputs/bundle/release/app-release.aab'
 
-  create-release-and-publish-ios-android-binaries: 
+  Deploy-Assets-Ubuntu: 
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
     needs:
-      - Version 
-      - Build-ios
-      - Build-android
+      - Version-Ubuntu 
+      - Build-iOS-App-Macos
+      - Build-Android-App-Ubuntu
     steps:
       - name: Checkout 
         uses: actions/checkout@v2
@@ -286,9 +315,9 @@ jobs:
         with:
           owner: 'liatrio'
           repo: 'mobile-pipeline-poc'
-          tag_name: 'v${{ needs.Version.outputs.VERSION }}'
+          tag_name: 'v${{ needs.Version-Ubuntu.outputs.version }}'
           token_name: 'token'
-          name: 'Release: ${{ needs.Version.outputs.VERSION }}'
+          name: 'Release: ${{ needs.Version-Ubuntu.outputs.version }}'
           pat: ${{ secrets.GITHUB_TOKEN }}  
       - name: Download IOS/Android artifact
         uses: actions/download-artifact@v2
@@ -300,13 +329,43 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           FILE: android-artifact/app-release.aab
           REPO: ${{ env.REPO }} 
-      - name: Deploy IOS binary to release assets
+      - name: Deploy iOS binary to release assets
         uses: liatrio/github-actions/github-upload-asset@master
         with: 
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          FILE: ios-artifact/ReactNativeSemaphoreNew
+          FILE: ios-artifact/ReactNativeSemaphoreNew.ipa
           REPO: ${{ env.REPO }}
-      - name: Fastlane
+
+  Publish-Android-App-Ubuntu:
+    runs-on: ubuntu-latest
+    needs:
+      - Deploy-Assets-Ubuntu
+    steps:
+      - name: Checkout 
+        uses: actions/checkout@v2
+      - name: Download Android artifact
+        uses: actions/download-artifact@v2
+        with: 
+          path: /home/runner/work/mobile-pipeline-poc/mobile-pipeline-poc
+      - name: Fastlane Android release
         run: |
           echo ${{ secrets.GOOGLE_API_KEY }} | base64 -d > fastlane/google_api_key.json
           fastlane android release aab_path:android-artifact/app-release.aab
+      
+  Publish-iOS-App-Macos:
+    runs-on: macos-latest
+    needs:
+      - Deploy-Assets-Ubuntu
+    steps:
+      - name: Checkout 
+        uses: actions/checkout@v2
+      - name: Download iOS artifact
+        uses: actions/download-artifact@v2
+        with: 
+          path: /Users/runner/work/mobile-pipeline-poc/mobile-pipeline-poc
+      - name: Fastlane iOS release
+        run: |
+          APPLE_API_KEY_PATH=$RUNNER_TEMP/apple_api_key.p8
+          echo -e ${{ secrets.APPLE_APP_STORE_API_KEY }} | base64 -d > $APPLE_API_KEY_PATH
+          fastlane ios release key_id:$APPLE_APP_STORE_API_KEY_ID issuer_id:$APPLE_APP_STORE_API_ISSUER_ID \
+            key_filepath:$APPLE_API_KEY_PATH ipa_path:ios-artifact/ReactNativeSemaphoreNew.ipa

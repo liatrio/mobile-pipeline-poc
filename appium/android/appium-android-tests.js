@@ -40,6 +40,7 @@ describe('Mobile App POC Appium Tests', function () {
 
 	it('should create and delete a session', async function () {
 		this.timeout(500000);
+		this.retries(3)
 		client.setImplicitTimeout(100000);
 
 		const res = await client.status();
@@ -51,6 +52,7 @@ describe('Mobile App POC Appium Tests', function () {
 
 	it('should find the home page text `Step One`', async function () {
 		this.timeout(500000);
+		this.retries(3)
 		client.setImplicitTimeout(100000);
 
 		// Find the home page text 'Step One'
@@ -62,6 +64,7 @@ describe('Mobile App POC Appium Tests', function () {
 
 	it('should find the toggle element and toggle it', async function () {
 		this.timeout(500000);
+		this.retries(3)
 		client.setImplicitTimeout(100000);
 
 		const element = await client.findElement('class name', 'android.widget.Switch');
@@ -77,6 +80,7 @@ describe('Mobile App POC Appium Tests', function () {
 
 	it('should find the search button, click it, and verify the search text `Select Country`', async function () {
 		this.timeout(500000);
+		this.retries(3)
 		client.setImplicitTimeout(100000);
 
 		// Click the search button
@@ -93,6 +97,7 @@ describe('Mobile App POC Appium Tests', function () {
 
 	it('should find the search button, click it, and return to the home page', async function () {
 		this.timeout(500000);
+		this.retries(3)
 		client.setImplicitTimeout(100000);
 
 		// Find the home page text 'Step One'

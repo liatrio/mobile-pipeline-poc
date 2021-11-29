@@ -64,6 +64,28 @@
             ReferencedContainer = "container:ReactNativeSemaphoreNew.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
+      <EnvironmentVariables>
+         <EnvironmentVariable
+            key = "PRODUCT_BUNDLE_IDENTIFIER"
+            value = "$(PRODUCT_BUNDLE_IDENTIFIER)"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "PROVISIONING_PROFILE_SPECIER"
+            value = "$(PROVISIONING_PROFILE_SPECIFIER)"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "CODE_SIGN_IDENTITY"
+            value = "$(CODE_SIGN_IDENTITY)"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "DEVELOPMENT_TEAM"
+            value = "$(DEVELOPMENT_TEAM)"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+      </EnvironmentVariables>
       <Testables>
          <TestableReference
             skipped = "NO">
