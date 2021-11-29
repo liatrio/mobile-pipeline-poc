@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 yarn install
 
-pod ios/install
+cd ios && pod install
 
