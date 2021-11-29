@@ -31,6 +31,7 @@
     "@testing-library/react-native": "^7.2.0",
     "appcenter": "4.3.0",
     "appcenter-analytics": "4.3.0",
+    "appcenter-cli": "^2.10.6",
     "appcenter-crashes": "4.3.0",
     "countries-list": "^2.6.1",
     "react": "17.0.1",
