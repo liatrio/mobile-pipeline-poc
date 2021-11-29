@@ -3,6 +3,6 @@
 <plist version="1.0">
     <dict>
     <key>AppSecret</key>
-    <string></string>
+    <string>$(IOS_KEY)</string>
     </dict>
 </plist>
