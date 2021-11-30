@@ -7,6 +7,7 @@ platform :ios, '10.0'
 
 target 'ReactNativeSemaphoreNew' do
   config = use_native_modules!
+  # pod 'AppCenter'
 
   use_react_native!(
     :path => config[:reactNativePath],
