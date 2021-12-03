@@ -24,7 +24,7 @@ jobs:
     outputs:
       version: ${{ steps.version.outputs.VERSION }}
   
-  Version-Check-Ubuntu:
+  Static-Analysis-Ubuntu:
     runs-on: ubuntu-latest
     needs:
       - Version-Ubuntu
@@ -62,7 +62,7 @@ jobs:
         env:
          SONAR_TOKEN: ${{ secrets.SONAR_SHAREDSVC_TOKEN }}
 
-  Appium-iOS-Macos:
+  Integration-Test-iOS-Macos:
     runs-on: macos-latest
     needs:
       - Version-Ubuntu
@@ -111,7 +111,7 @@ jobs:
       - name: Run iOS Appium tests
         run: npm run mocha appium/ios
         
-  Appium-Android-Macos:
+  Integration-Test-Android-Macos:
     runs-on: macos-latest
     needs:
       - Version-Ubuntu
@@ -181,7 +181,7 @@ jobs:
     runs-on: macos-latest
     needs:
       - Version-Ubuntu
-      - Appium-iOS-Macos
+      - Integration-Test-iOS-Macos
 
     permissions:
       actions: read
@@ -254,7 +254,7 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - Version-Ubuntu
-      - Appium-Android-Macos
+      - Integration-Test-Android-Macos
 
     permissions:
       actions: read
